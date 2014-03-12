@@ -8,4 +8,6 @@ public class Configuration {
 
     public static final int    indentForCommandTemplates = 5;
 
+    public static final String sshPassphrase             = "??";
+
 }
