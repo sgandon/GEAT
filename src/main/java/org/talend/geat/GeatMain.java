@@ -13,6 +13,7 @@ import org.eclipse.jgit.transport.JschConfigSessionFactory;
 import org.eclipse.jgit.transport.OpenSshConfig;
 import org.eclipse.jgit.transport.SshSessionFactory;
 import org.eclipse.jgit.transport.URIish;
+import org.talend.geat.SanityCheck.CheckLevel;
 import org.talend.geat.commands.Command;
 import org.talend.geat.commands.FeatureFinish;
 import org.talend.geat.commands.FeatureStart;
@@ -33,12 +34,14 @@ public class GeatMain {
     public static void main(String[] args) {
         String workingDir = System.getProperty("user.dir");
 
-        initSsh();
-
         if (args.length == 1 && args[0].equals("dev")) {
             args = new String[] { "feature-finish", "tagada", "f" };
             workingDir = "/tmp/repo-test";
         }
+
+        SanityCheck.check(workingDir, CheckLevel.GIT_REPO_ONLY, true, true);
+
+        initSsh();
 
         Map<String, Command> commands = new HashMap<String, Command>();
         commands.put("feature-start", new FeatureStart());
