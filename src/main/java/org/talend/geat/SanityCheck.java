@@ -18,11 +18,7 @@ public class SanityCheck {
             if (verbose) {
                 System.out.println("'" + workingDir + "' is not a folder.");
             }
-            if (exitOnError) {
-                System.exit(1);
-            } else {
-                return false;
-            }
+            return exit(exitOnError);
         }
 
         Git repo = null;
@@ -32,11 +28,7 @@ public class SanityCheck {
             if (verbose) {
                 System.out.println("'" + workingDir + "' is not a GIT repository.");
             }
-            if (exitOnError) {
-                System.exit(1);
-            } else {
-                return false;
-            }
+            return exit(exitOnError);
         }
 
         if (checkLevel.ordinal() >= CheckLevel.NO_UNCOMMITTED_CHANGES.ordinal()) {
@@ -46,25 +38,27 @@ public class SanityCheck {
                     if (verbose) {
                         System.out.println("Your GIT repository has uncommitted changes.");
                     }
-                    if (exitOnError) {
-                        System.exit(1);
-                    } else {
-                        return false;
-                    }
+                    return exit(exitOnError);
                 }
             } catch (Exception e) {
                 if (verbose) {
                     e.printStackTrace();
                 }
-                if (exitOnError) {
-                    System.exit(1);
-                } else {
-                    return false;
-                }
+                return exit(exitOnError);
             }
         }
 
         return true;
+    }
+
+    private static boolean exit(boolean exitOnError) {
+        if (exitOnError) {
+            System.out.println("Aborting.");
+            System.exit(1);
+            return false; // Just to avoid eclipse compilation error
+        } else {
+            return false;
+        }
     }
 
 }
