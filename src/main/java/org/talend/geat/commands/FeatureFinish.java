@@ -13,6 +13,8 @@ import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.lib.Ref;
 import org.talend.geat.Configuration;
 
+import com.google.common.base.Strings;
+
 public class FeatureFinish extends AbstractCommand {
 
     public String getDescription() {
@@ -39,7 +41,11 @@ public class FeatureFinish extends AbstractCommand {
                 System.exit(1);
             }
 
-            // 2. Try to rebase the branch
+            // 2. Update sources from remote
+            repo.checkout().setName(Configuration.featureStartPoint).call();
+            repo.pull().setRebase(true).setRemote("origin").call();
+
+            // 3. Try to rebase feature branch
             repo.checkout().setName(featureBranchName).call();
             repo.rebase().setUpstream(Configuration.featureStartPoint).call();
             repo.checkout().setName(Configuration.featureStartPoint).call();
@@ -47,14 +53,20 @@ public class FeatureFinish extends AbstractCommand {
             ref = repo.getRepository().getRef(featureBranchName);
             repo.merge().setFastForward(FastForwardMode.FF_ONLY).include(ref).call();
 
-            // 3. Remove feature branch
+            // 4. Remove feature branch
             repo.branchDelete().setBranchNames(featureBranchName).call();
-            
+
             System.out.println("Summary of actions:");
-            System.out.println(" - The feature branch '" + featureBranchName + "' was merged into '"
+            System.out.println(" - New commit on 'origin/" + Configuration.featureStartPoint + "' has been pulled");
+            System.out.println(" - The feature branch '" + featureBranchName + "' was rebased into '"
                     + Configuration.featureStartPoint + "'");
             System.out.println(" - Feature branch '" + featureBranchName + "' has been removed");
             System.out.println(" - You are now on branch '" + Configuration.featureStartPoint + "'");
+            System.out.println("");
+            System.out.println("Now, your new feature is ready to be pushed. To do this, use:");
+            System.out.println("");
+            System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "git push origin "
+                    + Configuration.featureStartPoint);
             System.out.println("");
         } catch (IOException e) {
             // TODO Auto-generated catch block
