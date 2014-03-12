@@ -17,7 +17,8 @@ public class GeatMain {
     }
 
     public static void main(String[] args) {
-        args = new String[] { "feature-start", "feat_13" };
+        if (args.length == 1 && args[0] == "dev")
+            args = new String[] { "feature-start", "feat_13" };
 
         Map<String, Command> commands = new HashMap<String, Command>();
         commands.put("hello", new Command() {
@@ -30,7 +31,7 @@ public class GeatMain {
                 return "Will say hello";
             }
         });
-        commands.put("feature start", new FeatureStart());
+        commands.put("feature-start", new FeatureStart());
 
         if (args.length < 1 || !commands.containsKey(args[0])) {
             usage(commands);
