@@ -10,7 +10,7 @@ public class InputsUtils {
         return askUser(question, "");
     }
 
-    public static String askUser(String question, String defaultValue) throws IOException {
+    public static String askUser(String question, String defaultValue) {
         if (question != null) {
             System.out.print(question);
         }
@@ -22,12 +22,21 @@ public class InputsUtils {
         InputStreamReader isr = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(isr);
 
-        String str = br.readLine();
-        if (str == null || str.length() < 1) {
+        try {
+            String str = br.readLine();
+            if (str == null || str.length() < 1) {
+                return defaultValue;
+            } else {
+                return str;
+            }
+        } catch (IOException e) {
+            System.out.println("WARN: " + e.getMessage());
             return defaultValue;
-        } else {
-            return str;
         }
     }
 
+    public static boolean askUserAsBoolean(String question) {
+        String answer = askUser(question + " (Yes/No)", "Yes");
+        return answer.equalsIgnoreCase("yes");
+    }
 }
