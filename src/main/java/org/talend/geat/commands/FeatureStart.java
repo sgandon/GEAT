@@ -10,6 +10,9 @@ import org.eclipse.jgit.api.errors.InvalidRefNameException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.talend.geat.Configuration;
+import org.talend.geat.InputsUtils;
+import org.talend.geat.SanityCheck;
+import org.talend.geat.SanityCheck.CheckLevel;
 
 import com.google.common.base.Strings;
 
@@ -28,6 +31,11 @@ public class FeatureStart extends AbstractCommand {
     }
 
     public void run(String[] args) {
+        if (!SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES, true, false)
+                && !InputsUtils.askUserAsBoolean("Proceed anyway")) {
+            System.out.println("Aborting.");
+            System.exit(1);
+        }
         try {
             Git repo = Git.open(new File(getWorkingDir()));
             String featureBranchName = Configuration.featurePrefix + "/" + args[1];
