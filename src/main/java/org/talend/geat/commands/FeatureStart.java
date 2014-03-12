@@ -40,8 +40,8 @@ public class FeatureStart extends AbstractCommand {
             System.out.println("");
             System.out.println("Now, start committing on your feature. When done, use:");
             System.out.println("");
-            System.out.println("     git flow feature finish " + args[1]);
-
+            System.out.println("     geat feature-finish " + args[1]);
+            System.out.println("");
         } catch (RefAlreadyExistsException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
