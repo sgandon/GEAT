@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.talend.geat.commands.Command;
+import org.talend.geat.commands.FeatureFinish;
 import org.talend.geat.commands.FeatureStart;
 
 public class GeatMain {
@@ -26,6 +27,7 @@ public class GeatMain {
 
         Map<String, Command> commands = new HashMap<String, Command>();
         commands.put("feature-start", new FeatureStart());
+        commands.put("feature-finish", new FeatureFinish());
 
         if (args.length < 1 || !commands.containsKey(args[0])) {
             usage(commands);
