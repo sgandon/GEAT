@@ -12,6 +12,8 @@ import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.lib.Ref;
 import org.talend.geat.Configuration;
+import org.talend.geat.SanityCheck;
+import org.talend.geat.SanityCheck.CheckLevel;
 
 import com.google.common.base.Strings;
 
@@ -30,6 +32,8 @@ public class FeatureFinish extends AbstractCommand {
     }
 
     public void run(String[] args) {
+        SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES, true, true);
+
         try {
             Git repo = Git.open(new File(getWorkingDir()));
             String featureBranchName = Configuration.featurePrefix + "/" + args[1];
