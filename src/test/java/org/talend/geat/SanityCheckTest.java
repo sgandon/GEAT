@@ -25,7 +25,6 @@ public class SanityCheckTest {
         try {
             Git.init().setDirectory(tempDir).call();
         } catch (GitAPIException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         Assert.assertTrue(SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY, false, false));
@@ -46,14 +45,14 @@ public class SanityCheckTest {
             Assert.assertFalse(SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NO_UNCOMMITTED_CHANGES, false,
                     false));
 
+            Assert.assertTrue(SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY, false, false));
+
             repo.commit().setMessage("Initial commit").call();
             Assert.assertTrue(SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NO_UNCOMMITTED_CHANGES, false,
                     false));
         } catch (GitAPIException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
