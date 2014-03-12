@@ -17,8 +17,12 @@ public class GeatMain {
     }
 
     public static void main(String[] args) {
-        if (args.length == 1 && args[0].equals("dev"))
+        String workingDir = System.getProperty("user.dir");
+
+        if (args.length == 1 && args[0].equals("dev")) {
             args = new String[] { "feature-start", "feat_13" };
+            workingDir = "/tmp/repo-test";
+        }
 
         Map<String, Command> commands = new HashMap<String, Command>();
         commands.put("feature-start", new FeatureStart());
@@ -35,7 +39,7 @@ public class GeatMain {
             System.exit(1);
         }
 
-        command.setWorkingDir(System.getProperty("user.dir")).run(args);
+        command.setWorkingDir(workingDir).run(args);
     }
 
 }
