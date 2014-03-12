@@ -57,7 +57,7 @@ public class FeatureFinish extends AbstractCommand {
             repo.branchDelete().setBranchNames(featureBranchName).call();
 
             System.out.println("Summary of actions:");
-            System.out.println(" - New commit on 'origin/" + Configuration.featureStartPoint + "' has been pulled");
+            System.out.println(" - New commits from 'origin/" + Configuration.featureStartPoint + "' has been pulled");
             System.out.println(" - The feature branch '" + featureBranchName + "' was rebased into '"
                     + Configuration.featureStartPoint + "'");
             System.out.println(" - Feature branch '" + featureBranchName + "' has been removed");
