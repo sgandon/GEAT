@@ -1,5 +1,6 @@
 package org.talend.geat;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -60,35 +61,46 @@ public class GeatMain {
     }
 
     private static void initSsh() {
-        JschConfigSessionFactory sessionFactory = new JschConfigSessionFactory() {
+        try {
+            final String sshPassphrase = InputsUtils.askUser(
+                    "SSH passphrase (will not be stored), leave empty to skip", null);
 
-            @Override
-            protected void configure(OpenSshConfig.Host hc, Session session) {
-                CredentialsProvider provider = new CredentialsProvider() {
-
-                    @Override
-                    public boolean isInteractive() {
-                        return false;
-                    }
+            if (sshPassphrase != null) {
+                JschConfigSessionFactory sessionFactory = new JschConfigSessionFactory() {
 
                     @Override
-                    public boolean supports(CredentialItem... items) {
-                        return true;
-                    }
+                    protected void configure(OpenSshConfig.Host hc, Session session) {
+                        CredentialsProvider provider = new CredentialsProvider() {
 
-                    @Override
-                    public boolean get(URIish uri, CredentialItem... items) throws UnsupportedCredentialItem {
-                        for (CredentialItem item : items) {
-                            ((CredentialItem.StringType) item).setValue(Configuration.sshPassphrase);
-                        }
-                        return true;
+                            @Override
+                            public boolean isInteractive() {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean supports(CredentialItem... items) {
+                                return true;
+                            }
+
+                            @Override
+                            public boolean get(URIish uri, CredentialItem... items) throws UnsupportedCredentialItem {
+                                for (CredentialItem item : items) {
+                                    ((CredentialItem.StringType) item).setValue(sshPassphrase);
+                                }
+                                return true;
+                            }
+                        };
+                        UserInfo userInfo = new CredentialsProviderUserInfo(session, provider);
+                        session.setUserInfo(userInfo);
                     }
                 };
-                UserInfo userInfo = new CredentialsProviderUserInfo(session, provider);
-                session.setUserInfo(userInfo);
+                SshSessionFactory.setInstance(sessionFactory);
+            } else {
+                System.out.println("WARN: SSH not set.");
             }
-        };
-        SshSessionFactory.setInstance(sessionFactory);
+        } catch (IOException e) {
+            System.out.println("WARN: Cannot read SSH passphrase.");
+        }
     }
 
 }
