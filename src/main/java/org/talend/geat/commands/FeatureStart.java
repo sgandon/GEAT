@@ -17,9 +17,17 @@ public class FeatureStart implements Command {
         return "Create a branch to work on a new feature";
     }
 
+    public String getUsage() {
+        return "<feature-name>";
+    }
+
+    public int getArgsNumber() {
+        return 1;
+    }
+
     public void run(String[] args) {
         try {
-            Git repo = Git.open(new File("/tmp/jgit-test"));
+            Git repo = Git.open(new File("/home/stephane/java/workspace/GitEasyAtTalend"));
             String featureBranchName = Configuration.featurePrefix + "/" + args[1];
 
             repo.checkout().setCreateBranch(true).setStartPoint(Configuration.featureStartPoint)

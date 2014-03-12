@@ -6,4 +6,8 @@ public interface Command {
 
     public String getDescription();
 
+    public int getArgsNumber();
+
+    public String getUsage();
+
 }

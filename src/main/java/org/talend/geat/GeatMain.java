@@ -17,27 +17,24 @@ public class GeatMain {
     }
 
     public static void main(String[] args) {
-        if (args.length == 1 && args[0] == "dev")
+        if (args.length == 1 && args[0].equals("dev"))
             args = new String[] { "feature-start", "feat_13" };
 
         Map<String, Command> commands = new HashMap<String, Command>();
-        commands.put("hello", new Command() {
-
-            public void run(String[] args) {
-                System.out.println("Hello!");
-            }
-
-            public String getDescription() {
-                return "Will say hello";
-            }
-        });
         commands.put("feature-start", new FeatureStart());
 
         if (args.length < 1 || !commands.containsKey(args[0])) {
             usage(commands);
-            System.exit(0);
+            System.exit(1);
         }
         Command command = commands.get(args[0]);
+
+        if (command.getArgsNumber() != args.length - 1) {
+            System.out.println("Wrong number of parameters for this command");
+            System.out.println("   " + args[0] + " " + command.getUsage());
+            System.exit(1);
+        }
+
         command.run(args);
     }
 
