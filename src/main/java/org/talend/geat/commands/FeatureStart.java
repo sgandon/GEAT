@@ -11,6 +11,8 @@ import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.talend.geat.Configuration;
 
+import com.google.common.base.Strings;
+
 public class FeatureStart extends AbstractCommand {
 
     public String getDescription() {
@@ -40,7 +42,8 @@ public class FeatureStart extends AbstractCommand {
             System.out.println("");
             System.out.println("Now, start committing on your feature. When done, use:");
             System.out.println("");
-            System.out.println("     geat feature-finish " + args[1]);
+            System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "geat feature-finish "
+                    + args[1]);
             System.out.println("");
         } catch (RefAlreadyExistsException e) {
             // TODO Auto-generated catch block

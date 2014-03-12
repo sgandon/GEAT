@@ -6,4 +6,6 @@ public class Configuration {
 
     public static final String featurePrefix     = "feature";
 
+    public static final int    indentForCommandTemplates = 5;
+
 }

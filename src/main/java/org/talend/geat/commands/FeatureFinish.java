@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand.FastForwardMode;
+import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.errors.CheckoutConflictException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRefNameException;
@@ -43,7 +44,8 @@ public class FeatureFinish extends AbstractCommand {
             repo.checkout().setName(featureBranchName).call();
             repo.rebase().setUpstream(Configuration.featureStartPoint).call();
             repo.checkout().setName(Configuration.featureStartPoint).call();
-            repo.merge().setFastForward(FastForwardMode.FF_ONLY).include(ref).call();
+            MergeResult mergeResult = repo.merge().setFastForward(FastForwardMode.FF_ONLY).include(ref).call();
+            System.out.println(mergeResult);
 
             // 3. Remove feature branch
             repo.branchDelete().setBranchNames(featureBranchName).call();

@@ -8,6 +8,8 @@ import org.talend.geat.commands.Command;
 import org.talend.geat.commands.FeatureFinish;
 import org.talend.geat.commands.FeatureStart;
 
+import com.google.common.base.Strings;
+
 public class GeatMain {
 
     private static void usage(Map<String, Command> commands) {
@@ -21,7 +23,7 @@ public class GeatMain {
         String workingDir = System.getProperty("user.dir");
 
         if (args.length == 1 && args[0].equals("dev")) {
-            args = new String[] { "feature-start", "feat_13" };
+            args = new String[] { "feature-finish", "tagada", "f" };
             workingDir = "/tmp/repo-test";
         }
 
@@ -36,8 +38,8 @@ public class GeatMain {
         Command command = commands.get(args[0]);
 
         if (command.getArgsNumber() != args.length - 1) {
-            System.out.println("Wrong number of parameters for this command");
-            System.out.println("   " + args[0] + " " + command.getUsage());
+            System.out.println("Wrong number of parameters for this command!\nUsage is:\n");
+            System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates)  + args[0] + " " + command.getUsage());
             System.exit(1);
         }
 
