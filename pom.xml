@@ -36,7 +36,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>org.talend.geat.TestJLine</mainClass>
+							<mainClass>org.talend.geat.GeatMain</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
