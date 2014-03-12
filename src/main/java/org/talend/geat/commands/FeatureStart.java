@@ -11,7 +11,7 @@ import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.talend.geat.Configuration;
 
-public class FeatureStart implements Command {
+public class FeatureStart extends AbstractCommand {
 
     public String getDescription() {
         return "Create a branch to work on a new feature";
@@ -27,7 +27,7 @@ public class FeatureStart implements Command {
 
     public void run(String[] args) {
         try {
-            Git repo = Git.open(new File("/home/stephane/java/workspace/GitEasyAtTalend"));
+            Git repo = Git.open(new File(getWorkingDir()));
             String featureBranchName = Configuration.featurePrefix + "/" + args[1];
 
             repo.checkout().setCreateBranch(true).setStartPoint(Configuration.featureStartPoint)

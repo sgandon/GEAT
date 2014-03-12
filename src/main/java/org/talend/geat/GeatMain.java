@@ -35,7 +35,7 @@ public class GeatMain {
             System.exit(1);
         }
 
-        command.run(args);
+        command.setWorkingDir(System.getProperty("user.dir")).run(args);
     }
 
 }
