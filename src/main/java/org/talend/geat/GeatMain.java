@@ -1,5 +1,9 @@
 package org.talend.geat;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.errors.UnsupportedCredentialItem;
 import org.eclipse.jgit.transport.CredentialItem;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -29,7 +33,13 @@ public class GeatMain {
 
         SanityCheck.check(workingDir, CheckLevel.GIT_REPO_ONLY, true, true);
 
-        initSsh();
+        try {
+            if (GitUtils.hasRemote("origin", Git.open(new File(workingDir)).getRepository())) {
+                initSsh();
+            }
+        } catch (IOException e) {
+            // Should not occurs (check above in SanityCheck)
+        }
 
         if (args.length < 1) {
             usage();
