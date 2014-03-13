@@ -11,6 +11,7 @@ import org.eclipse.jgit.transport.URIish;
 import org.talend.geat.SanityCheck.CheckLevel;
 import org.talend.geat.commands.Command;
 import org.talend.geat.commands.CommandsRegistry;
+import org.talend.geat.commands.Help;
 
 import com.google.common.base.Strings;
 import com.jcraft.jsch.Session;
@@ -50,7 +51,7 @@ public class GeatMain {
     }
 
     private static void usage() {
-        CommandsRegistry.INSTANCE.getCommand("help").run(null);
+        CommandsRegistry.INSTANCE.getCommand(Help.NAME).run(null);
         System.exit(1);
     }
 

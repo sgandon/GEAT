@@ -22,9 +22,9 @@ public class CommandsRegistry {
     }
 
     private void registerCommands() {
-        commands.put("help", new Help());
+        commands.put(Help.NAME, new Help());
         commands.put("feature-start", new FeatureStart());
-        commands.put("feature-finish", new FeatureFinish());
+        commands.put(FeatureFinish.NAME, new FeatureFinish());
     }
 
     protected Map<String, Command> getCommands() {

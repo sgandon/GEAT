@@ -19,6 +19,8 @@ import com.google.common.base.Strings;
 
 public class FeatureFinish extends AbstractCommand {
 
+    public static final String NAME = "feature-finish";
+
     public String getDescription() {
         return "Merge and close a feature branch when work is finished";
     }

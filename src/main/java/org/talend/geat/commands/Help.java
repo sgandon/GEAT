@@ -4,6 +4,8 @@ import java.util.Map.Entry;
 
 public class Help extends AbstractCommand {
 
+    public static final String NAME = "help";
+
     public void run(String[] args) {
         System.out.println("Available commands are:");
         for (Entry<String, Command> command : CommandsRegistry.INSTANCE.getCommands().entrySet()) {

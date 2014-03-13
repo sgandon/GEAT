@@ -50,7 +50,8 @@ public class FeatureStart extends AbstractCommand {
             System.out.println("");
             System.out.println("Now, start committing on your feature. When done, use:");
             System.out.println("");
-            System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "geat feature-finish "
+            System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "geat "
+                    + FeatureFinish.NAME + " "
                     + args[1]);
             System.out.println("");
         } catch (RefAlreadyExistsException e) {
