@@ -57,7 +57,7 @@ public class SanityCheck {
         return true;
     }
 
-    private static boolean exit(boolean exitOnError) {
+    public static boolean exit(boolean exitOnError) {
         if (exitOnError) {
             System.out.println("Aborting.");
             System.exit(1);
