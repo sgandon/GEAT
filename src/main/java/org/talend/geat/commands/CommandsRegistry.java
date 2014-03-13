@@ -2,7 +2,6 @@ package org.talend.geat.commands;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class CommandsRegistry {
 
@@ -23,29 +22,13 @@ public class CommandsRegistry {
     }
 
     private void registerCommands() {
-        commands.put("help", new AbstractCommand() {
-
-            public void run(String[] args) {
-                System.out.println("Available commands are:");
-                for (Entry<String, Command> command : commands.entrySet()) {
-                    System.out.println(" - " + command.getKey() + " - " + command.getValue().getDescription());
-                }
-            }
-
-            public String getUsage() {
-                return "";
-            }
-
-            public String getDescription() {
-                return "Displays this help";
-            }
-
-            public int getArgsNumber() {
-                return 0;
-            }
-        });
+        commands.put("help", new Help());
         commands.put("feature-start", new FeatureStart());
         commands.put("feature-finish", new FeatureFinish());
+    }
+
+    protected Map<String, Command> getCommands() {
+        return commands;
     }
 
 }
