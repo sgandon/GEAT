@@ -1,9 +1,5 @@
 package org.talend.geat;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.eclipse.jgit.errors.UnsupportedCredentialItem;
 import org.eclipse.jgit.transport.CredentialItem;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -13,23 +9,14 @@ import org.eclipse.jgit.transport.OpenSshConfig;
 import org.eclipse.jgit.transport.SshSessionFactory;
 import org.eclipse.jgit.transport.URIish;
 import org.talend.geat.SanityCheck.CheckLevel;
-import org.talend.geat.commands.AbstractCommand;
 import org.talend.geat.commands.Command;
-import org.talend.geat.commands.FeatureFinish;
-import org.talend.geat.commands.FeatureStart;
+import org.talend.geat.commands.CommandsRegistry;
 
 import com.google.common.base.Strings;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
 
 public class GeatMain {
-
-    private static void usage(Map<String, Command> commands) {
-        System.out.println("Available commands are:");
-        for (Entry<String, Command> command : commands.entrySet()) {
-            System.out.println(" - " + command.getKey() + " - " + command.getValue().getDescription());
-        }
-    }
 
     public static void main(String[] args) {
         String workingDir = System.getProperty("user.dir");
@@ -43,33 +30,14 @@ public class GeatMain {
 
         initSsh();
 
-        final Map<String, Command> commands = new HashMap<String, Command>();
-        commands.put("help", new AbstractCommand() {
-
-            public void run(String[] args) {
-                usage(commands);
-            }
-
-            public String getUsage() {
-                return "";
-            }
-
-            public String getDescription() {
-                return "Displays this help";
-            }
-
-            public int getArgsNumber() {
-                return 0;
-            }
-        });
-        commands.put("feature-start", new FeatureStart());
-        commands.put("feature-finish", new FeatureFinish());
-
-        if (args.length < 1 || !commands.containsKey(args[0])) {
-            usage(commands);
-            System.exit(1);
+        if (args.length < 1) {
+            usage();
         }
-        Command command = commands.get(args[0]);
+
+        Command command = CommandsRegistry.INSTANCE.getCommand(args[0]);
+        if (command == null) {
+            usage();
+        }
 
         if (command.getArgsNumber() != args.length - 1) {
             System.out.println("Wrong number of parameters for this command!\nUsage is:\n");
@@ -79,6 +47,11 @@ public class GeatMain {
         }
 
         command.setWorkingDir(workingDir).run(args);
+    }
+
+    private static void usage() {
+        CommandsRegistry.INSTANCE.getCommand("help").run(null);
+        System.exit(1);
     }
 
     private static void initSsh() {
