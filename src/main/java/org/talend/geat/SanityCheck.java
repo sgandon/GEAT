@@ -6,6 +6,8 @@ import java.io.IOException;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 
+import com.google.common.base.Strings;
+
 public class SanityCheck {
 
     public enum CheckLevel {
@@ -37,6 +39,10 @@ public class SanityCheck {
                 if (status.hasUncommittedChanges()) {
                     if (verbose) {
                         System.out.println("Your GIT repository has uncommitted changes.");
+                        System.out.println("To see these changes, use:\n");
+                        System.out
+                                .println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + " git status");
+                        System.out.println("");
                     }
                     return exit(exitOnError);
                 }
