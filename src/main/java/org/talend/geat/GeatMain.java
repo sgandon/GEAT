@@ -13,6 +13,7 @@ import org.eclipse.jgit.transport.OpenSshConfig;
 import org.eclipse.jgit.transport.SshSessionFactory;
 import org.eclipse.jgit.transport.URIish;
 import org.talend.geat.SanityCheck.CheckLevel;
+import org.talend.geat.commands.AbstractCommand;
 import org.talend.geat.commands.Command;
 import org.talend.geat.commands.FeatureFinish;
 import org.talend.geat.commands.FeatureStart;
@@ -42,7 +43,25 @@ public class GeatMain {
 
         initSsh();
 
-        Map<String, Command> commands = new HashMap<String, Command>();
+        final Map<String, Command> commands = new HashMap<String, Command>();
+        commands.put("help", new AbstractCommand() {
+
+            public void run(String[] args) {
+                usage(commands);
+            }
+
+            public String getUsage() {
+                return "";
+            }
+
+            public String getDescription() {
+                return "Displays this help";
+            }
+
+            public int getArgsNumber() {
+                return 0;
+            }
+        });
         commands.put("feature-start", new FeatureStart());
         commands.put("feature-finish", new FeatureFinish());
 
