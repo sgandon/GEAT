@@ -1,0 +1,1 @@
+Tool make usage of git workflow easier.
