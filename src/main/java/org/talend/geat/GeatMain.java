@@ -43,7 +43,7 @@ public class GeatMain {
         if (command.getArgsNumber() != args.length - 1) {
             System.out.println("Wrong number of parameters for this command!\nUsage is:\n");
             System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + args[0] + " "
-                    + command.getUsage());
+                    + command.getUsage() + "\n");
             System.exit(1);
         }
 
