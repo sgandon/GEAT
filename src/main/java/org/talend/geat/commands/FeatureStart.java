@@ -33,8 +33,7 @@ public class FeatureStart extends AbstractCommand {
     public void run(String[] args) {
         if (!SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES, true, false)
                 && !InputsUtils.askUserAsBoolean("Proceed anyway")) {
-            System.out.println("Aborting.");
-            System.exit(1);
+            SanityCheck.exit(true);
         }
         try {
             Git repo = Git.open(new File(getWorkingDir()));
