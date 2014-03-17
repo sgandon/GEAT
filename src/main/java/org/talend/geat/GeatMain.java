@@ -27,8 +27,8 @@ public class GeatMain {
         String workingDir = System.getProperty("user.dir");
 
         if (args.length == 1 && args[0].equals("dev")) {
-            args = new String[] { "feature-finish", "conflict", "rebase" };
-            workingDir = "/tmp/repo-git-test";
+            args = new String[] { "feature-start", "test" };
+            // workingDir = "/tmp/repo-git-test";
         }
 
         SanityCheck.check(workingDir, CheckLevel.GIT_REPO_ONLY, true, true);
