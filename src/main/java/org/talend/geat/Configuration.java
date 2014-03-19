@@ -1,11 +1,88 @@
 package org.talend.geat;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.StoredConfig;
+
 public class Configuration {
 
-    public static final String featureStartPoint = "master";
+    public static final int      indentForCommandTemplates = 5;
 
-    public static final String featurePrefix     = "feature";
+    private static Configuration singleton;
 
-    public static final int    indentForCommandTemplates = 5;
+    private StoredConfig         config;
+
+    public static void setInstance(String workingDir) throws IOException {
+        if (singleton == null) {
+            singleton = new Configuration();
+            Git repo = Git.open(new File(workingDir));
+            singleton.config = repo.getRepository().getConfig();
+            singleton.setDefaultValues();
+        }
+    }
+
+    public static Configuration getInstance() {
+        if (singleton == null) {
+            throw new RuntimeException("Configuration not set");
+        } else {
+            return singleton;
+        }
+    }
+
+    private static final Map<String, String> defaultValues = new HashMap<String, String>();
+
+    static {
+        defaultValues.put("finishmergemode", "squash");
+        defaultValues.put("featureStartPoint", "master");
+        defaultValues.put("featurePrefix", "feature");
+    }
+
+    private void setDefaultValues() {
+        for (Entry<String, String> current : defaultValues.entrySet()) {
+            if (get(current.getKey()) == null) {
+                set(current.getKey(), current.getValue());
+            }
+        }
+    }
+
+    /**
+     * Sets in the local config a param value.
+     * 
+     * All param are supposed to belongs to 'geat' section. So param key must not contains it.
+     * 
+     * Correct value are: finishmergemode - which will return value of param geat.finishmergemode
+     */
+    public void set(String key, String value) {
+        config.setString("geat", null, key, value);
+        try {
+            config.save();
+        } catch (IOException e) {
+            System.out.println("WARN: Cannot write configuration (" + e.getMessage() + "");
+        }
+    }
+
+    /**
+     * Gets from config, the value of param 'key' where key contains the git config separator '.'.
+     * 
+     * Corrects values are user.email, geat.finishmergemode
+     * 
+     * @throws Exception
+     */
+    public String get(String key) {
+        if (!key.contains(".")) {
+            key = "geat." + key;
+        }
+        String[] split = key.split("\\.", 2);
+        if (split.length != 2) {
+            System.out.println("Malformed configuration key '" + key + "'");
+            System.exit(1);
+        }
+        return config.getString(split[0], null, split[1]);
+    }
 
 }

@@ -28,31 +28,34 @@ public class FeatureFinish extends AbstractCommand {
 
     public static final String NAME = "feature-finish";
 
-    private enum MergePolicy {
+    protected enum MergePolicy {
         REBASE, SQUASH;
     }
+
+    protected String      featureName;
+
+    protected MergePolicy mergePolicy;
 
     public String getDescription() {
         return "Merge and close a feature branch when work is finished";
     }
 
     public String getUsage() {
-        return "<feature-name> <policy (squash(def), rebase)>";
+        return "<feature-name> [policy (squash(def)|rebase)]";
     }
 
-    public int getArgsNumber() {
-        return 2;
-    }
+    public Command parseArgs(String[] args) {
+        if (args.length < 2) {
+            displayWrongNumberOfParams(args[0]);
+        }
+        featureName = args[1];
 
-    public void run(String[] args) {
-        SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES, true, true);
-
-        // ---------------------------------------------------------------------------------
-        // Checkin merge policy:
-        // ---------------------------------------------------------------------------------
-        MergePolicy mergePolicy = null;
         try {
-            mergePolicy = MergePolicy.valueOf(args[2].toUpperCase());
+            if (args.length >= 3) {
+                mergePolicy = MergePolicy.valueOf(args[2].toUpperCase());
+            } else {
+                mergePolicy = MergePolicy.valueOf(Configuration.getInstance().get("finishmergemode").toUpperCase());
+            }
         } catch (IllegalArgumentException e) {
             System.out.println("Unknown merge policy '" + args[2] + "'");
             System.out.println("Availables merge policy are:");
@@ -61,14 +64,19 @@ public class FeatureFinish extends AbstractCommand {
             }
             SanityCheck.exit(true);
         }
-        // ---------------------------------------------------------------------------------
+
+        return this;
+    }
+
+    public void run() {
+        SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES, true, true);
 
         try {
             Git repo = Git.open(new File(getWorkingDir()));
-            String featureBranchName = Configuration.featurePrefix + "/" + args[1];
+            String featureBranchName = Configuration.getInstance().get("featurePrefix") + "/" + featureName;
             boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
-            boolean continueAfterConflict = previouslyFinishingThisFeature(args[1]);
+            boolean continueAfterConflict = previouslyFinishingThisFeature(featureName);
 
             // 1. Test if such a branch exists
             Ref ref = repo.getRepository().getRef(featureBranchName);
@@ -84,7 +92,8 @@ public class FeatureFinish extends AbstractCommand {
 
             // 2. Update sources from remote
             if (hasRemote) {
-                repo.checkout().setName(Configuration.featureStartPoint).call(); // git checkout master
+                repo.checkout().setName(Configuration.getInstance().get("featureStartPoint")).call(); // git checkout
+                                                                                                      // master
                 repo.pull().setRebase(true).setRemote("origin").call(); // git pull --rebase origin
             }
 
@@ -94,15 +103,16 @@ public class FeatureFinish extends AbstractCommand {
                     // git checkout feature/myfeature
                     repo.checkout().setName(featureBranchName).call();
                     // git rebase master
-                    RebaseResult rebaseResult = repo.rebase().setUpstream(Configuration.featureStartPoint).call();
+                    RebaseResult rebaseResult = repo.rebase()
+                            .setUpstream(Configuration.getInstance().get("featureStartPoint")).call();
 
                     if (rebaseResult.getStatus() == RebaseResult.Status.STOPPED) {
-                        createMergeAbortedMarker(args);
+                        createMergeAbortedMarker();
                     }
                 }
 
                 // git checkout master
-                repo.checkout().setName(Configuration.featureStartPoint).call();
+                repo.checkout().setName(Configuration.getInstance().get("featureStartPoint")).call();
                 // re-init featureBranchName because we just changed it:
                 ref = repo.getRepository().getRef(featureBranchName);
                 // git merge feature/myfeature
@@ -110,15 +120,15 @@ public class FeatureFinish extends AbstractCommand {
             } else if (mergePolicy == MergePolicy.SQUASH) {
                 if (!continueAfterConflict) {
                     // git checkout master
-                    repo.checkout().setName(Configuration.featureStartPoint).call();
+                    repo.checkout().setName(Configuration.getInstance().get("featureStartPoint")).call();
                     // git merge --squash feature/myfeature
                     MergeResult mergeResult = repo.merge().setSquash(true).include(ref).call();
 
                     if (mergeResult.getMergeStatus() == MergeStatus.CONFLICTING) {
-                        createMergeAbortedMarker(args);
+                        createMergeAbortedMarker();
                     }
 
-                    String msg = InputsUtils.askUser("Commit message", "Finish feature " + args[1]);
+                    String msg = InputsUtils.askUser("Commit message", "Finish feature " + featureName);
                     repo.commit().setMessage(msg).call();
                 }
             }
@@ -128,19 +138,20 @@ public class FeatureFinish extends AbstractCommand {
 
             System.out.println("Summary of actions:");
             if (hasRemote) {
-                System.out.println(" - New commits from 'origin/" + Configuration.featureStartPoint
-                        + "' has been pulled");
+                System.out.println(" - New commits from 'origin/"
+                        + Configuration.getInstance().get("featureStartPoint") + "' has been pulled");
             }
             System.out.println(" - The feature branch '" + featureBranchName + "' was rebased into '"
-                    + Configuration.featureStartPoint + "'");
+                    + Configuration.getInstance().get("featureStartPoint") + "'");
             System.out.println(" - Feature branch '" + featureBranchName + "' has been removed");
-            System.out.println(" - You are now on branch '" + Configuration.featureStartPoint + "'");
+            System.out.println(" - You are now on branch '" + Configuration.getInstance().get("featureStartPoint")
+                    + "'");
             System.out.println("");
             if (hasRemote) {
                 System.out.println("Now, your new feature is ready to be pushed. To do this, use:");
                 System.out.println("");
                 System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "git push origin "
-                        + Configuration.featureStartPoint);
+                        + Configuration.getInstance().get("featureStartPoint"));
                 System.out.println("");
             }
         } catch (IOException e) {
@@ -196,18 +207,20 @@ public class FeatureFinish extends AbstractCommand {
         }
     }
 
-    private void createMergeAbortedMarker(String[] args) throws IOException {
+    private void createMergeAbortedMarker() throws IOException {
         File mergeMarker = new File(getGeatConfigFolfer(), "MERGE");
         Files.createParentDirs(mergeMarker);
         Files.touch(mergeMarker);
-        Files.write(("MERGE " + args[1] + " IN " + Configuration.featureStartPoint).getBytes(), mergeMarker);
+        Files.write(
+                ("MERGE " + featureName + " IN " + Configuration.getInstance().get("featureStartPoint")).getBytes(),
+                mergeMarker);
 
         System.out.println("There were merge conflicts. To see more details, use:\n");
         System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "git status");
         System.out.println("");
         System.out.println("When resolved, you can then complete the finish by running it again.\n");
         System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "geat " + FeatureFinish.NAME
-                + " " + args[1] + " " + args[2]);
+                + " " + featureName + " " + mergePolicy.toString().toLowerCase());
         System.out.println("");
         System.exit(1);
     }

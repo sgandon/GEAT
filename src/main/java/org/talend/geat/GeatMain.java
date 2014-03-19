@@ -17,7 +17,6 @@ import org.talend.geat.commands.Command;
 import org.talend.geat.commands.CommandsRegistry;
 import org.talend.geat.commands.Help;
 
-import com.google.common.base.Strings;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
 
@@ -27,13 +26,17 @@ public class GeatMain {
         String workingDir = System.getProperty("user.dir");
 
         if (args.length == 1 && args[0].equals("dev")) {
-            args = new String[] { "feature-start", "test" };
-            // workingDir = "/tmp/repo-git-test";
+            args = new String[] { "help" };
+            args = new String[] { "feature-start", "tagada" };
+            args = new String[] { "feature-finish", "config" };
+            // workingDir = "/tmp/test";
         }
 
         SanityCheck.check(workingDir, CheckLevel.GIT_REPO_ONLY, true, true);
 
         try {
+            Configuration.setInstance(workingDir);
+
             if (GitUtils.hasRemote("origin", Git.open(new File(workingDir)).getRepository())) {
                 initSsh();
             }
@@ -50,58 +53,60 @@ public class GeatMain {
             usage();
         }
 
-        if (command.getArgsNumber() != args.length - 1) {
-            System.out.println("Wrong number of parameters for this command!\nUsage is:\n");
-            System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + args[0] + " "
-                    + command.getUsage() + "\n");
-            System.exit(1);
-        }
-
-        command.setWorkingDir(workingDir).run(args);
+        command.setWorkingDir(workingDir).parseArgs(args).run();
     }
 
     private static void usage() {
-        CommandsRegistry.INSTANCE.getCommand(Help.NAME).run(null);
+        CommandsRegistry.INSTANCE.getCommand(Help.NAME).run();
         System.exit(1);
     }
 
     private static void initSsh() {
-        final String sshPassphrase = InputsUtils.askUser("SSH passphrase (will not be stored), leave empty to skip",
-                null);
+        String sshPassphrase = Configuration.getInstance().get("sshpassphrase");
+        if (sshPassphrase == null) {
+            sshPassphrase = InputsUtils.askUser("SSH passphrase, leave empty to skip", null);
+            if (InputsUtils.askUserAsBoolean("Do you want to save this passphrase in your local gitconfig file")) {
+                Configuration.getInstance().set("sshpassphrase", sshPassphrase);
+            }
+        }
 
         if (sshPassphrase != null) {
-            JschConfigSessionFactory sessionFactory = new JschConfigSessionFactory() {
-
-                @Override
-                protected void configure(OpenSshConfig.Host hc, Session session) {
-                    CredentialsProvider provider = new CredentialsProvider() {
-
-                        @Override
-                        public boolean isInteractive() {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean supports(CredentialItem... items) {
-                            return true;
-                        }
-
-                        @Override
-                        public boolean get(URIish uri, CredentialItem... items) throws UnsupportedCredentialItem {
-                            for (CredentialItem item : items) {
-                                ((CredentialItem.StringType) item).setValue(sshPassphrase);
-                            }
-                            return true;
-                        }
-                    };
-                    UserInfo userInfo = new CredentialsProviderUserInfo(session, provider);
-                    session.setUserInfo(userInfo);
-                }
-            };
-            SshSessionFactory.setInstance(sessionFactory);
+            setSshPassphrase(sshPassphrase);
         } else {
             System.out.println("WARN: SSH not set.");
         }
+    }
+
+    private static void setSshPassphrase(final String sshPassphrase) {
+        JschConfigSessionFactory sessionFactory = new JschConfigSessionFactory() {
+
+            @Override
+            protected void configure(OpenSshConfig.Host hc, Session session) {
+                CredentialsProvider provider = new CredentialsProvider() {
+
+                    @Override
+                    public boolean isInteractive() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean supports(CredentialItem... items) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean get(URIish uri, CredentialItem... items) throws UnsupportedCredentialItem {
+                        for (CredentialItem item : items) {
+                            ((CredentialItem.StringType) item).setValue(sshPassphrase);
+                        }
+                        return true;
+                    }
+                };
+                UserInfo userInfo = new CredentialsProviderUserInfo(session, provider);
+                session.setUserInfo(userInfo);
+            }
+        };
+        SshSessionFactory.setInstance(sessionFactory);
     }
 
 }

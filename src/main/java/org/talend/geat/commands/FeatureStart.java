@@ -23,6 +23,16 @@ import com.google.common.base.Strings;
 
 public class FeatureStart extends AbstractCommand {
 
+    protected String featureName;
+
+    public Command parseArgs(String[] args) {
+        if (args.length < 2) {
+            displayWrongNumberOfParams(args[0]);
+        }
+        featureName = args[1];
+
+        return this;
+    }
     public String getDescription() {
         return "Create a branch to work on a new feature";
     }
@@ -31,18 +41,14 @@ public class FeatureStart extends AbstractCommand {
         return "<feature-name>";
     }
 
-    public int getArgsNumber() {
-        return 1;
-    }
-
-    public void run(String[] args) {
+    public void run() {
         if (!SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES, true, false)
                 && !InputsUtils.askUserAsBoolean("Proceed anyway")) {
             SanityCheck.exit(true);
         }
         try {
             Git repo = Git.open(new File(getWorkingDir()));
-            String featureBranchName = Configuration.featurePrefix + "/" + args[1];
+            String featureBranchName = Configuration.getInstance().get("featurePrefix") + "/" + featureName;
             boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
             // Test if such a branch exists locally:
@@ -69,31 +75,33 @@ public class FeatureStart extends AbstractCommand {
                 }
 
                 // git checkout master
-                repo.checkout().setName(Configuration.featureStartPoint).call();
+                repo.checkout().setName(Configuration.getInstance().get("featureStartPoint")).call();
 
                 // git pull --rebase origin
                 // 1. git fetch
                 repo.fetch()
                         .setRefSpecs(
-                                new RefSpec("refs/heads/" + Configuration.featureStartPoint + ":refs/remotes/origin/"
-                                        + Configuration.featureStartPoint)).setRemote("origin").call();
+                                new RefSpec("refs/heads/" + Configuration.getInstance().get("featureStartPoint")
+                                        + ":refs/remotes/origin/"
+                                        + Configuration.getInstance().get("featureStartPoint"))).setRemote("origin")
+                        .call();
                 // 2. git merge ff
                 Ref refOriginMaster = repo.getRepository().getRef("origin/master");
                 repo.merge().setFastForward(FastForwardMode.FF_ONLY).include(refOriginMaster).call();
             }
 
-            repo.checkout().setCreateBranch(true).setStartPoint(Configuration.featureStartPoint)
+            repo.checkout().setCreateBranch(true).setStartPoint(Configuration.getInstance().get("featureStartPoint"))
                     .setName(featureBranchName).call();
 
             System.out.println("Summary of actions:");
             System.out.println(" - A new branch '" + featureBranchName + "' was created, based on '"
-                    + Configuration.featureStartPoint + "'");
+                    + Configuration.getInstance().get("featureStartPoint") + "'");
             System.out.println(" - You are now on branch '" + featureBranchName + "'");
             System.out.println("");
             System.out.println("Now, start committing on your feature. When done, use:");
             System.out.println("");
             System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "geat "
-                    + FeatureFinish.NAME + " " + args[1] + " <policy>");
+                    + FeatureFinish.NAME + " " + featureName + " <policy>");
             System.out.println("");
         } catch (RefAlreadyExistsException e) {
             // TODO Auto-generated catch block

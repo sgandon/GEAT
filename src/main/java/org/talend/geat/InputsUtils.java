@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class InputsUtils {
 
-    public static String askUser(String question) throws IOException {
+    public static String askUser(String question) {
         return askUser(question, "");
     }
 

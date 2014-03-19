@@ -6,7 +6,7 @@ public class Help extends AbstractCommand {
 
     public static final String NAME = "help";
 
-    public void run(String[] args) {
+    public void run() {
         System.out.println("Available commands are:");
         for (Entry<String, Command> command : CommandsRegistry.INSTANCE.getCommands().entrySet()) {
             System.out.println(" - " + command.getKey() + " - " + command.getValue().getDescription());
@@ -21,7 +21,4 @@ public class Help extends AbstractCommand {
         return "Displays this help";
     }
 
-    public int getArgsNumber() {
-        return 0;
-    }
 }
