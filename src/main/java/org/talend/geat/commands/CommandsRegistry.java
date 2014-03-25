@@ -25,6 +25,7 @@ public class CommandsRegistry {
         commands.put(Help.NAME, new Help());
         commands.put("feature-start", new FeatureStart());
         commands.put(FeatureFinish.NAME, new FeatureFinish());
+        commands.put(FeaturePush.NAME, new FeaturePush());
     }
 
     protected Map<String, Command> getCommands() {

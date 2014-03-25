@@ -2,7 +2,6 @@ package org.talend.geat.commands;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand.FastForwardMode;
@@ -33,6 +32,7 @@ public class FeatureStart extends AbstractCommand {
 
         return this;
     }
+
     public String getDescription() {
         return "Create a branch to work on a new feature";
     }
@@ -61,17 +61,14 @@ public class FeatureStart extends AbstractCommand {
 
             if (hasRemote) {
                 // Test if branch exist remotely:
-                Collection<Ref> lsRemoteBranches = repo.lsRemote().setTags(false).setRemote("origin").call();
-                for (Ref current : lsRemoteBranches) {
-                    if (current.getName().equals("refs/heads/" + featureBranchName)) {
-                        System.out.println("A remote branch named '" + featureBranchName + "' already exist.");
-                        System.out.println("To checkout this branch locally, use:");
-                        System.out.println("");
-                        System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates)
-                                + "git fetch && git checkout " + featureBranchName);
-                        System.out.println("");
-                        System.exit(1);
-                    }
+                if (GitUtils.hasRemoteBranch(repo.getRepository(), featureBranchName)) {
+                    System.out.println("A remote branch named '" + featureBranchName + "' already exist.");
+                    System.out.println("To checkout this branch locally, use:");
+                    System.out.println("");
+                    System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates)
+                            + "git fetch && git checkout " + featureBranchName);
+                    System.out.println("");
+                    System.exit(1);
                 }
 
                 // git checkout master
@@ -102,6 +99,11 @@ public class FeatureStart extends AbstractCommand {
             System.out.println("");
             System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "geat "
                     + FeatureFinish.NAME + " " + featureName + " <policy>");
+            System.out.println("");
+            System.out.println("To share this branch, use:");
+            System.out.println("");
+            System.out.println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "geat "
+                    + FeaturePush.NAME + " " + featureName);
             System.out.println("");
         } catch (RefAlreadyExistsException e) {
             // TODO Auto-generated catch block

@@ -66,7 +66,7 @@ public class GeatMain {
         if (sshPassphrase == null) {
             sshPassphrase = InputsUtils.askUser("SSH passphrase, leave empty to skip", null);
             if (InputsUtils.askUserAsBoolean("Do you want to save this passphrase in your local gitconfig file")) {
-                Configuration.getInstance().set("sshpassphrase", sshPassphrase);
+                Configuration.getInstance().set(Configuration.CONFIG_PREFIX, "sshpassphrase", sshPassphrase);
             }
         }
 

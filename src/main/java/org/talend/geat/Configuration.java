@@ -11,6 +11,8 @@ import org.eclipse.jgit.lib.StoredConfig;
 
 public class Configuration {
 
+    public static final String   CONFIG_PREFIX             = "geat";
+
     public static final int      indentForCommandTemplates = 5;
 
     private static Configuration singleton;
@@ -45,7 +47,7 @@ public class Configuration {
     private void setDefaultValues() {
         for (Entry<String, String> current : defaultValues.entrySet()) {
             if (get(current.getKey()) == null) {
-                set(current.getKey(), current.getValue());
+                set(CONFIG_PREFIX, current.getKey(), current.getValue());
             }
         }
     }
@@ -57,8 +59,12 @@ public class Configuration {
      * 
      * Correct value are: finishmergemode - which will return value of param geat.finishmergemode
      */
-    public void set(String key, String value) {
-        config.setString("geat", null, key, value);
+    public void set(String section, String key, String value) {
+        set(section, null, key, value);
+    }
+
+    public void set(String section, String subsection, String key, String value) {
+        config.setString(section, subsection, key, value);
         try {
             config.save();
         } catch (IOException e) {
@@ -75,7 +81,7 @@ public class Configuration {
      */
     public String get(String key) {
         if (!key.contains(".")) {
-            key = "geat." + key;
+            key = CONFIG_PREFIX + "." + key;
         }
         String[] split = key.split("\\.", 2);
         if (split.length != 2) {

@@ -92,9 +92,8 @@ public class FeatureFinish extends AbstractCommand {
 
             // 2. Update sources from remote
             if (hasRemote) {
-                repo.checkout().setName(Configuration.getInstance().get("featureStartPoint")).call(); // git checkout
-                                                                                                      // master
-                repo.pull().setRebase(true).setRemote("origin").call(); // git pull --rebase origin
+                GitUtils.callFetch(repo.getRepository(), Configuration.getInstance().get("featureStartPoint"));
+                GitUtils.callFetch(repo.getRepository(), featureBranchName);
             }
 
             // 3. Try to rebase feature branch
