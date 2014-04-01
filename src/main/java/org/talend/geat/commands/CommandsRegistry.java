@@ -15,7 +15,12 @@ public class CommandsRegistry {
 
     public Command getCommand(String key) {
         if (commands.containsKey(key)) {
-            return commands.get(key);
+            try {
+                return commands.get(key).getClass().newInstance();
+            } catch (Exception e) {
+                System.out.println("ERROR: " + e.getMessage());
+                return null;
+            }
         } else {
             return null;
         }
@@ -23,7 +28,7 @@ public class CommandsRegistry {
 
     private void registerCommands() {
         commands.put(Help.NAME, new Help());
-        commands.put("feature-start", new FeatureStart());
+        commands.put(FeatureStart.NAME, new FeatureStart());
         commands.put(FeatureFinish.NAME, new FeatureFinish());
         commands.put(FeaturePush.NAME, new FeaturePush());
         commands.put(FeaturePull.NAME, new FeaturePull());

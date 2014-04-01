@@ -7,13 +7,7 @@ import java.util.List;
 
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.CheckoutConflictException;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRefNameException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
-import org.eclipse.jgit.api.errors.RefNotFoundException;
-import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.RefSpec;
@@ -40,8 +34,7 @@ public class GitUtils {
         return repository.getRef(branch) != null;
     }
 
-    public static boolean hasRemoteBranch(Repository repository, String branch) throws InvalidRemoteException,
-            TransportException, GitAPIException {
+    public static boolean hasRemoteBranch(Repository repository, String branch) throws GitAPIException {
         boolean hasRemote = GitUtils.hasRemote("origin", repository);
         if (!hasRemote) {
             return false;
@@ -65,8 +58,7 @@ public class GitUtils {
      * @throws NotRemoteException
      *             if no remote branch name <branch> exists
      */
-    public static boolean callFetch(Repository repository, String branch) throws RefAlreadyExistsException,
-            RefNotFoundException, InvalidRefNameException, CheckoutConflictException, GitAPIException, IOException,
+    public static boolean callFetch(Repository repository, String branch) throws GitAPIException, IOException,
             NotRemoteException {
         Git git = new Git(repository);
 

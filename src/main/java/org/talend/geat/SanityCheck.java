@@ -5,6 +5,9 @@ import java.io.IOException;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.NoWorkTreeException;
+import org.talend.geat.exception.IncorrectRepositoryStateException;
 
 import com.google.common.base.Strings;
 
@@ -14,56 +17,34 @@ public class SanityCheck {
         GIT_REPO_ONLY, NO_UNCOMMITTED_CHANGES;
     }
 
-    public static boolean check(String workingDir, CheckLevel checkLevel, boolean verbose, boolean exitOnError) {
+    public static void check(String workingDir, CheckLevel checkLevel) throws IncorrectRepositoryStateException {
         File repoPath = new File(workingDir);
         if (!repoPath.exists() || !repoPath.isDirectory()) {
-            if (verbose) {
-                System.out.println("'" + workingDir + "' is not a folder.");
-            }
-            return exit(exitOnError);
+            throw new IncorrectRepositoryStateException("'" + workingDir + "' is not a folder.");
         }
 
         Git repo = null;
         try {
             repo = Git.open(new File(workingDir));
         } catch (IOException e) {
-            if (verbose) {
-                System.out.println("'" + workingDir + "' is not a GIT repository.");
-            }
-            return exit(exitOnError);
+            throw new IncorrectRepositoryStateException("'" + workingDir + "' is not a GIT repository.");
         }
 
         if (checkLevel.ordinal() >= CheckLevel.NO_UNCOMMITTED_CHANGES.ordinal()) {
             try {
                 Status status = repo.status().call();
                 if (status.hasUncommittedChanges()) {
-                    if (verbose) {
-                        System.out.println("Your GIT repository has uncommitted changes.");
-                        System.out.println("To see these changes, use:\n");
-                        System.out
-                                .println(Strings.repeat(" ", Configuration.indentForCommandTemplates) + " git status");
-                        System.out.println("");
-                    }
-                    return exit(exitOnError);
+                    IncorrectRepositoryStateException iwse = new IncorrectRepositoryStateException(
+                            "Your GIT repository has uncommitted changes.");
+                    iwse.addLine("To see these changes, use:\n");
+                    iwse.addLine(Strings.repeat(" ", Configuration.indentForCommandTemplates) + " git status");
+                    throw iwse;
                 }
-            } catch (Exception e) {
-                if (verbose) {
-                    e.printStackTrace();
-                }
-                return exit(exitOnError);
+            } catch (NoWorkTreeException e) {
+                throw new IncorrectRepositoryStateException(e);
+            } catch (GitAPIException e) {
+                throw new IncorrectRepositoryStateException(e);
             }
-        }
-
-        return true;
-    }
-
-    public static boolean exit(boolean exitOnError) {
-        if (exitOnError) {
-            System.out.println("Aborting.");
-            System.exit(1);
-            return false; // Just to avoid eclipse compilation error
-        } else {
-            return false;
         }
     }
 

@@ -1,15 +1,21 @@
 package org.talend.geat.commands;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Map.Entry;
 
-public class Help extends AbstractCommand {
+public class Help extends Command {
 
     public static final String NAME = "help";
 
-    public void run() {
-        System.out.println("Available commands are:");
+    protected Help() {
+        super();
+    }
+
+    public void execute(Writer writer) throws IOException {
+        writer.write("Available commands are:");
         for (Entry<String, Command> command : CommandsRegistry.INSTANCE.getCommands().entrySet()) {
-            System.out.println(" - " + command.getKey() + " - " + command.getValue().getDescription());
+            writer.write(" - " + command.getKey() + " - " + command.getValue().getDescription());
         }
     }
 
@@ -19,6 +25,10 @@ public class Help extends AbstractCommand {
 
     public String getDescription() {
         return "Displays this help";
+    }
+
+    public String getCommandName() {
+        return NAME;
     }
 
 }

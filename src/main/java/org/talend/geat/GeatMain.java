@@ -12,10 +12,11 @@ import org.eclipse.jgit.transport.JschConfigSessionFactory;
 import org.eclipse.jgit.transport.OpenSshConfig;
 import org.eclipse.jgit.transport.SshSessionFactory;
 import org.eclipse.jgit.transport.URIish;
-import org.talend.geat.SanityCheck.CheckLevel;
 import org.talend.geat.commands.Command;
 import org.talend.geat.commands.CommandsRegistry;
 import org.talend.geat.commands.Help;
+import org.talend.geat.exception.IncorrectRepositoryStateException;
+import org.talend.geat.exception.InterruptedCommandException;
 
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UserInfo;
@@ -31,8 +32,6 @@ public class GeatMain {
             args = new String[] { "feature-finish", "config" };
             // workingDir = "/tmp/test";
         }
-
-        SanityCheck.check(workingDir, CheckLevel.GIT_REPO_ONLY, true, true);
 
         try {
             Configuration.setInstance(workingDir);
@@ -53,11 +52,27 @@ public class GeatMain {
             usage();
         }
 
-        command.setWorkingDir(workingDir).parseArgs(args).run();
+        try {
+            command.parseArgs(args).run();
+        } catch (IncorrectRepositoryStateException e) {
+            System.out.println(e.getDetails());
+        } catch (InterruptedCommandException e) {
+            System.out.println(e.getDetails());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("");
     }
 
     private static void usage() {
-        CommandsRegistry.INSTANCE.getCommand(Help.NAME).run();
+        try {
+            CommandsRegistry.INSTANCE.getCommand(Help.NAME).run();
+        } catch (IncorrectRepositoryStateException e) {
+            System.out.println(e.getDetails());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("");
         System.exit(1);
     }
 

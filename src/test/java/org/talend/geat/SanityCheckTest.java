@@ -1,59 +1,84 @@
 package org.talend.geat;
 
-
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.talend.geat.SanityCheck.CheckLevel;
+import org.talend.geat.exception.IncorrectRepositoryStateException;
 
 import com.google.common.io.Files;
 
 public class SanityCheckTest {
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Test
-    public void testCheckBasic() {
-        Assert.assertFalse(SanityCheck.check("/one/folder/that/should/not/exists", CheckLevel.GIT_REPO_ONLY, false,
-                false));
-
-        File tempDir = Files.createTempDir();
-        Assert.assertFalse(SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY, false, false));
-
-        try {
-            Git.init().setDirectory(tempDir).call();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
-        Assert.assertTrue(SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY, false, false));
+    public void testCheckGitRepoOnlyNonExistingFolder() throws IncorrectRepositoryStateException {
+        thrown.expect(IncorrectRepositoryStateException.class);
+        SanityCheck.check("/one/folder/that/should/not/exists", CheckLevel.GIT_REPO_ONLY);
     }
 
     @Test
-    public void testCheckUntracked() {
+    public void testCheckGitRepoOnlyExistingFolder() throws IncorrectRepositoryStateException {
+        thrown.expect(IncorrectRepositoryStateException.class);
+        File tempDir = Files.createTempDir();
+        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY);
+    }
+
+    @Test
+    public void testCheckGitRepoOnlyGitRepo() throws GitAPIException, IncorrectRepositoryStateException {
+        File tempDir = Files.createTempDir();
+        Git.init().setDirectory(tempDir).call();
+        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY);
+    }
+
+    @Test
+    public void testCheckUntracked1() throws GitAPIException, IOException, IncorrectRepositoryStateException {
+        thrown.expect(IncorrectRepositoryStateException.class);
         File tempDir = Files.createTempDir();
 
-        try {
-            Git.init().setDirectory(tempDir).call();
+        Git.init().setDirectory(tempDir).call();
 
-            Git repo = Git.open(tempDir);
-            File child = new File(tempDir, "child");
-            child.createNewFile();
-            repo.add().addFilepattern("child").call();
+        Git repo = Git.open(tempDir);
+        File child = new File(tempDir, "child");
+        child.createNewFile();
+        repo.add().addFilepattern("child").call();
 
-            Assert.assertFalse(SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NO_UNCOMMITTED_CHANGES, false,
-                    false));
+        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NO_UNCOMMITTED_CHANGES);
+    }
 
-            Assert.assertTrue(SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY, false, false));
+    @Test
+    public void testCheckUntracked2() throws GitAPIException, IOException, IncorrectRepositoryStateException {
+        File tempDir = Files.createTempDir();
 
-            repo.commit().setMessage("Initial commit").call();
-            Assert.assertTrue(SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NO_UNCOMMITTED_CHANGES, false,
-                    false));
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Git.init().setDirectory(tempDir).call();
+
+        Git repo = Git.open(tempDir);
+        File child = new File(tempDir, "child");
+        child.createNewFile();
+        repo.add().addFilepattern("child").call();
+
+        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY);
+    }
+
+    @Test
+    public void testCheckUntracked3() throws GitAPIException, IOException, IncorrectRepositoryStateException {
+        File tempDir = Files.createTempDir();
+
+        Git.init().setDirectory(tempDir).call();
+
+        Git repo = Git.open(tempDir);
+        File child = new File(tempDir, "child");
+        child.createNewFile();
+        repo.add().addFilepattern("child").call();
+
+        repo.commit().setMessage("Initial commit").call();
+        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NO_UNCOMMITTED_CHANGES);
     }
 }
