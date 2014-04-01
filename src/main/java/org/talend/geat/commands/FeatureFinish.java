@@ -79,7 +79,17 @@ public class FeatureFinish extends AbstractCommand {
 
             boolean continueAfterConflict = previouslyFinishingThisFeature(featureName);
 
-            // 1. Test if such a branch exists
+            // 1. Update sources from remote
+            if (hasRemote) {
+                try {
+                    GitUtils.callFetch(repo.getRepository(), Configuration.getInstance().get("featureStartPoint"));
+                    GitUtils.callFetch(repo.getRepository(), featureBranchName);
+                } catch (NotRemoteException e) {
+                    // We don't care
+                }
+            }
+
+            // 2. Test if such a branch exists
             if (!GitUtils.hasLocalBranch(repo.getRepository(), featureBranchName)) {
                 // TODO if continueAfterConflict==true, then we have an obsolete MERGE file, delete it
                 System.out.println("No local branch named '" + featureBranchName + "'");
@@ -88,16 +98,6 @@ public class FeatureFinish extends AbstractCommand {
                         + "git branch --list feature/*");
                 System.out.println("");
                 System.exit(1);
-            }
-
-            // 2. Update sources from remote
-            if (hasRemote) {
-                try {
-                    GitUtils.callFetch(repo.getRepository(), Configuration.getInstance().get("featureStartPoint"));
-                    GitUtils.callFetch(repo.getRepository(), featureBranchName);
-                } catch (NotRemoteException e) {
-                    // Should not occurs
-                }
             }
 
             // 3. Try to rebase feature branch
