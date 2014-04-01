@@ -11,7 +11,7 @@ import com.google.common.base.Strings;
 public class SanityCheck {
 
     public enum CheckLevel {
-        GIT_REPO_ONLY, NO_UNCOMMITTED_CHANGES, CLEAN;
+        GIT_REPO_ONLY, NO_UNCOMMITTED_CHANGES;
     }
 
     public static boolean check(String workingDir, CheckLevel checkLevel, boolean verbose, boolean exitOnError) {

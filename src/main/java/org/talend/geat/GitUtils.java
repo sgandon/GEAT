@@ -1,9 +1,11 @@
 package org.talend.geat;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.CheckoutConflictException;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -14,7 +16,9 @@ import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteConfig;
+import org.talend.geat.exception.NotRemoteException;
 
 public class GitUtils {
 
@@ -30,6 +34,10 @@ public class GitUtils {
             System.out.println("WARN: " + e.getMessage());
         }
         return false;
+    }
+
+    public static boolean hasLocalBranch(Repository repository, String branch) throws IOException {
+        return repository.getRef(branch) != null;
     }
 
     public static boolean hasRemoteBranch(Repository repository, String branch) throws InvalidRemoteException,
@@ -53,26 +61,33 @@ public class GitUtils {
     /**
      * Choosen policy is git pull --rebase
      * 
-     * @throws GitAPIException
-     * @throws CheckoutConflictException
-     * @throws InvalidRefNameException
-     * @throws RefNotFoundException
-     * @throws RefAlreadyExistsException
+     * @return true if local branch has been created, false if branch previously exists and was only updated
+     * @throws NotRemoteException
+     *             if no remote branch name <branch> exists
      */
     public static boolean callFetch(Repository repository, String branch) throws RefAlreadyExistsException,
-            RefNotFoundException, InvalidRefNameException, CheckoutConflictException, GitAPIException {
+            RefNotFoundException, InvalidRefNameException, CheckoutConflictException, GitAPIException, IOException,
+            NotRemoteException {
         Git git = new Git(repository);
-        if (hasRemoteBranch(repository, branch)) {
 
-            // git checkout master
+        if (!hasRemoteBranch(repository, branch)) {
+            throw new NotRemoteException("No remote branch '" + branch + "'. Cannot fetch it.");
+        }
+
+        if (hasLocalBranch(repository, branch)) {
+            // git checkout <branch>
             git.checkout().setName(branch).call();
 
             // git pull --rebase origin
             git.pull().setRebase(true).setRemote("origin").call();
 
-            return true;
-        } else {
             return false;
+        } else {
+            git.fetch().setRefSpecs(new RefSpec("refs/heads/" + branch + ":refs/heads/" + branch)).setRemote("origin")
+                    .call();
+            git.checkout().setName(branch).setUpstreamMode(CreateBranchCommand.SetupUpstreamMode.TRACK)
+                    .setStartPoint("origin/" + branch).call();
+            return true;
         }
     }
 }

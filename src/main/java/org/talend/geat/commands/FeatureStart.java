@@ -52,8 +52,7 @@ public class FeatureStart extends AbstractCommand {
             boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
             // Test if such a branch exists locally:
-            Ref ref = repo.getRepository().getRef(featureBranchName);
-            if (ref != null) {
+            if (GitUtils.hasLocalBranch(repo.getRepository(), featureBranchName)) {
                 System.out.println("A local branch named '" + featureBranchName + "' already exist.");
                 System.out.println("");
                 System.exit(1);

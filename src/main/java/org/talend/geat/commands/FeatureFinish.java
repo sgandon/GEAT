@@ -19,6 +19,7 @@ import org.talend.geat.GitUtils;
 import org.talend.geat.InputsUtils;
 import org.talend.geat.SanityCheck;
 import org.talend.geat.SanityCheck.CheckLevel;
+import org.talend.geat.exception.NotRemoteException;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
@@ -79,8 +80,7 @@ public class FeatureFinish extends AbstractCommand {
             boolean continueAfterConflict = previouslyFinishingThisFeature(featureName);
 
             // 1. Test if such a branch exists
-            Ref ref = repo.getRepository().getRef(featureBranchName);
-            if (ref == null) {
+            if (!GitUtils.hasLocalBranch(repo.getRepository(), featureBranchName)) {
                 // TODO if continueAfterConflict==true, then we have an obsolete MERGE file, delete it
                 System.out.println("No local branch named '" + featureBranchName + "'");
                 System.out.println("To see feature branches that may be finish, use:\n");
@@ -92,8 +92,12 @@ public class FeatureFinish extends AbstractCommand {
 
             // 2. Update sources from remote
             if (hasRemote) {
-                GitUtils.callFetch(repo.getRepository(), Configuration.getInstance().get("featureStartPoint"));
-                GitUtils.callFetch(repo.getRepository(), featureBranchName);
+                try {
+                    GitUtils.callFetch(repo.getRepository(), Configuration.getInstance().get("featureStartPoint"));
+                    GitUtils.callFetch(repo.getRepository(), featureBranchName);
+                } catch (NotRemoteException e) {
+                    // Should not occurs
+                }
             }
 
             // 3. Try to rebase feature branch
@@ -113,7 +117,7 @@ public class FeatureFinish extends AbstractCommand {
                 // git checkout master
                 repo.checkout().setName(Configuration.getInstance().get("featureStartPoint")).call();
                 // re-init featureBranchName because we just changed it:
-                ref = repo.getRepository().getRef(featureBranchName);
+                Ref ref = repo.getRepository().getRef(featureBranchName);
                 // git merge feature/myfeature
                 repo.merge().setFastForward(FastForwardMode.FF_ONLY).include(ref).call();
             } else if (mergePolicy == MergePolicy.SQUASH) {
@@ -121,6 +125,7 @@ public class FeatureFinish extends AbstractCommand {
                     // git checkout master
                     repo.checkout().setName(Configuration.getInstance().get("featureStartPoint")).call();
                     // git merge --squash feature/myfeature
+                    Ref ref = repo.getRepository().getRef(featureBranchName);
                     MergeResult mergeResult = repo.merge().setSquash(true).include(ref).call();
 
                     if (mergeResult.getMergeStatus() == MergeStatus.CONFLICTING) {

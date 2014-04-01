@@ -10,6 +10,8 @@ import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.Ref;
 import org.talend.geat.Configuration;
 import org.talend.geat.GitUtils;
+import org.talend.geat.SanityCheck;
+import org.talend.geat.SanityCheck.CheckLevel;
 
 import com.google.common.base.Strings;
 
@@ -30,7 +32,7 @@ public class FeaturePush extends AbstractCommand {
 
     public void run() {
         try {
-            // TODO sanity check, repo clean
+            SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES, true, true);
 
             Git repo = Git.open(new File(getWorkingDir()));
 
@@ -99,7 +101,7 @@ public class FeaturePush extends AbstractCommand {
     }
 
     public String getUsage() {
-        return "";
+        return "<feature-name>";
     }
 
     public String getDescription() {
