@@ -4,14 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoFilepatternException;
-import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
-import org.eclipse.jgit.api.errors.UnmergedPathsException;
-import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.junit.Assert;
@@ -84,9 +78,7 @@ public class GitUtilsTest {
         return git;
     }
 
-    private void createInitialCommit(Git git, String fileName) throws IOException, GitAPIException,
-            NoFilepatternException, NoHeadException, NoMessageException, UnmergedPathsException,
-            ConcurrentRefUpdateException, WrongRepositoryStateException {
+    private void createInitialCommit(Git git, String fileName) throws IOException, GitAPIException {
         File aFile = new File(git.getRepository().getDirectory().getAbsoluteFile().getParentFile(), fileName);
         aFile.createNewFile();
         git.add().addFilepattern(fileName).call();

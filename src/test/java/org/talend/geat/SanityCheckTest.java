@@ -81,4 +81,12 @@ public class SanityCheckTest {
         repo.commit().setMessage("Initial commit").call();
         SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NO_UNCOMMITTED_CHANGES);
     }
+
+    @Test
+    public void testCheckUntrackedWithUtils() throws GitAPIException, IOException, IncorrectRepositoryStateException {
+        Git git = JUnitUtils.createTempRepo();
+        JUnitUtils.createInitialCommit(git, "file1");
+        SanityCheck.check(git.getRepository().getDirectory().getParent(), CheckLevel.GIT_REPO_ONLY);
+        SanityCheck.check(git.getRepository().getDirectory().getParent(), CheckLevel.NO_UNCOMMITTED_CHANGES);
+    }
 }

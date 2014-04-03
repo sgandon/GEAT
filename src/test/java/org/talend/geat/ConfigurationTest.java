@@ -18,29 +18,21 @@ public class ConfigurationTest {
     public ExpectedException thrown = ExpectedException.none();
 
     // @Test
-    public void testNonInit() {
+    public void testNonInit() throws GitAPIException {
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("Configuration not set");
 
         File tempDir = Files.createTempDir();
 
-        try {
-            Git.init().setDirectory(tempDir).call();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
+        Git.init().setDirectory(tempDir).call();
         Configuration.getInstance().get("test");
     }
 
     @Test
-    public void testInit() throws IOException {
+    public void testInit() throws IOException, GitAPIException {
         File tempDir = Files.createTempDir();
 
-        try {
-            Git.init().setDirectory(tempDir).call();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
+        Git.init().setDirectory(tempDir).call();
         Configuration.setInstance(tempDir.getAbsolutePath());
 
         Assert.assertNull(Configuration.getInstance().get("test"));
