@@ -3,6 +3,9 @@ package org.talend.geat.io;
 import java.io.IOException;
 import java.io.Writer;
 
+/**
+ * Simple utility java.io.Writer wrapper used to 1. add a carriage return after each line, 2. flush every line.
+ */
 public class AutoFlushLineWriter extends Writer {
 
     private Writer writer;

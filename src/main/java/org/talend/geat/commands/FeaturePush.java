@@ -16,6 +16,9 @@ import org.talend.geat.exception.IncorrectRepositoryStateException;
 
 import com.google.common.base.Strings;
 
+/**
+ * Use this command to push to remote a feature branch (in order to share with co-workers).
+ */
 public class FeaturePush extends Command {
 
     public static final String NAME = "feature-push";

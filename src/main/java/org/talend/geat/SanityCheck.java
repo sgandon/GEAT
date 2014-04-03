@@ -11,10 +11,16 @@ import org.talend.geat.exception.IncorrectRepositoryStateException;
 
 import com.google.common.base.Strings;
 
+/**
+ * Used to check if the working dir is ready for what we need.
+ * 
+ * Different check levels are availables, regarding the command to process.
+ */
 public class SanityCheck {
 
     public enum CheckLevel {
-        GIT_REPO_ONLY, NO_UNCOMMITTED_CHANGES;
+        GIT_REPO_ONLY, // only checks that the folder is a initialized git repository
+        NO_UNCOMMITTED_CHANGES; // in addition to GIT_REPO_ONLY, also checks that there are now uncommitted changes
     }
 
     public static void check(String workingDir, CheckLevel checkLevel) throws IncorrectRepositoryStateException {

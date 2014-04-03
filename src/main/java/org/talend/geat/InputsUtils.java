@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Utility class used to ask something to the user.
+ */
 public class InputsUtils {
 
     public static String askUser(String question) {

@@ -7,6 +7,8 @@ import com.google.common.base.Strings;
 
 /**
  * When arguments don't match what the command expects.
+ * 
+ * When launched, the repository has NOT been changed.
  */
 public class IllegalCommandArgumentException extends Exception {
 

@@ -19,6 +19,14 @@ import org.talend.geat.exception.IncorrectRepositoryStateException;
 
 import com.google.common.base.Strings;
 
+/**
+ * Command that starts a feature. Means:
+ * <ul>
+ * <li>fetch develop branch</li>
+ * <li>create a local branch based on develop branch</li>
+ * <li>checkout new feature branch</li>
+ * </ul>
+ */
 public class FeatureStart extends Command {
 
     public static final String NAME = "feature-start";

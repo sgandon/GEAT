@@ -4,6 +4,8 @@ package org.talend.geat.exception;
 /**
  * When a command has to stop, and, in general, can be re-launch later.
  * 
+ * When launched, the repository has been changed.
+ * 
  * Examples: conflicts appears in the middle of some operations
  */
 public class InterruptedCommandException extends Exception {

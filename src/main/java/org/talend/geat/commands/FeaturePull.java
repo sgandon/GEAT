@@ -15,6 +15,9 @@ import org.talend.geat.exception.IncorrectRepositoryStateException;
 
 import com.google.common.base.Strings;
 
+/**
+ * Use this command to fetch locally a remote feature branch.
+ */
 public class FeaturePull extends Command {
 
     public static final String NAME = "feature-pull";

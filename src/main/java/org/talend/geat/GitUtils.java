@@ -14,6 +14,9 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteConfig;
 import org.talend.geat.exception.NotRemoteException;
 
+/**
+ * Utility class to mutualize some current GIT operation.
+ */
 public class GitUtils {
 
     public static boolean hasRemote(String remoteName, Repository repository) {

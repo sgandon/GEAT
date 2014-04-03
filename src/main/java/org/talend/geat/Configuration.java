@@ -9,6 +9,13 @@ import java.util.Map.Entry;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 
+/**
+ * Used to interact with git config.
+ * 
+ * This class must be initialized with a working directory path. This path must be a GIT repository.
+ * 
+ * When first init, default values are written in config.
+ */
 public class Configuration {
 
     public static final String   CONFIG_PREFIX             = "geat";
@@ -76,8 +83,6 @@ public class Configuration {
      * Gets from config, the value of param 'key' where key contains the git config separator '.'.
      * 
      * Corrects values are user.email, geat.finishmergemode
-     * 
-     * @throws Exception
      */
     public String get(String key) {
         if (!key.contains(".")) {

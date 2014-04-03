@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map.Entry;
 
+/**
+ * Displays all commands name and description.
+ */
 public class Help extends Command {
 
     public static final String NAME = "help";

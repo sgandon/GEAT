@@ -25,6 +25,15 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
 
+/**
+ * Command that finish a feature. Means:
+ * <ul>
+ * <li>fetch feature branch</li>
+ * <li>fetch develop branch</li>
+ * <li>merge feature branch into develop branch (differents policy can be applied here)</li>
+ * <li>delete feature branch</li>
+ * </ul>
+ */
 public class FeatureFinish extends Command {
 
     public static final String NAME = "feature-finish";
