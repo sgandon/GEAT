@@ -17,10 +17,11 @@ public class JUnitUtils {
         return git;
     }
 
-    public static void createInitialCommit(Git git, String fileName) throws IOException, GitAPIException {
+    public static File createInitialCommit(Git git, String fileName) throws IOException, GitAPIException {
         File aFile = new File(git.getRepository().getDirectory().getAbsoluteFile().getParentFile(), fileName);
         aFile.createNewFile();
         git.add().addFilepattern(fileName).call();
         git.commit().setMessage("Initial commit (add " + fileName + ")").call();
+        return aFile;
     }
 }

@@ -238,4 +238,20 @@ public class FeatureFinish extends Command {
         return folder;
     }
 
+    public String getFeatureName() {
+        return featureName;
+    }
+
+    public void setFeatureName(String featureName) {
+        this.featureName = featureName;
+    }
+
+    public MergePolicy getMergePolicy() {
+        return mergePolicy;
+    }
+
+    public void setMergePolicy(MergePolicy mergePolicy) {
+        this.mergePolicy = mergePolicy;
+    }
+
 }
