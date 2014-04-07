@@ -15,6 +15,7 @@ import org.eclipse.jgit.transport.URIish;
 import org.talend.geat.commands.Command;
 import org.talend.geat.commands.CommandsRegistry;
 import org.talend.geat.commands.Help;
+import org.talend.geat.commands.Version;
 import org.talend.geat.exception.IncorrectRepositoryStateException;
 import org.talend.geat.exception.InterruptedCommandException;
 
@@ -66,11 +67,11 @@ public class GeatMain {
 
     private static void usage() {
         try {
+            CommandsRegistry.INSTANCE.getCommand(Version.NAME).run();
+            System.out.println("\n");
             CommandsRegistry.INSTANCE.getCommand(Help.NAME).run();
-        } catch (IncorrectRepositoryStateException e) {
-            System.out.println(e.getDetails());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            // Should not occurs
         }
         System.out.println("");
         System.exit(1);

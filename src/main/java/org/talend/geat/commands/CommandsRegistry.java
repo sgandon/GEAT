@@ -28,6 +28,7 @@ public class CommandsRegistry {
 
     private void registerCommands() {
         commands.put(Help.NAME, new Help());
+        commands.put(Version.NAME, new Version());
         commands.put(FeatureStart.NAME, new FeatureStart());
         commands.put(FeatureFinish.NAME, new FeatureFinish());
         commands.put(FeaturePush.NAME, new FeaturePush());
