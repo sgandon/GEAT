@@ -90,6 +90,12 @@ public abstract class Command {
 
     public Command setWorkingDir(String path) {
         this.workingDir = path;
+        try {
+            Configuration.setInstance(getWorkingDir());
+        } catch (IOException e) {
+            // TODO Manage this cleaner
+            e.printStackTrace();
+        }
         return this;
     }
 
