@@ -1,6 +1,6 @@
 package org.talend.geat.exception;
 
-import org.talend.geat.Configuration;
+import org.talend.geat.GitConfiguration;
 import org.talend.geat.commands.Command;
 
 import com.google.common.base.Strings;
@@ -19,7 +19,7 @@ public class IllegalCommandArgumentException extends Exception {
     public static IllegalCommandArgumentException build(Command command) {
         IllegalCommandArgumentException toReturn = new IllegalCommandArgumentException(
                 "Wrong number of parameters for this command!\nUsage is:\n"
-                        + Strings.repeat(" ", Configuration.indentForCommandTemplates) + command.getCommandName() + " "
+                        + Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + command.getCommandName() + " "
                         + command.getUsage());
         return toReturn;
     }

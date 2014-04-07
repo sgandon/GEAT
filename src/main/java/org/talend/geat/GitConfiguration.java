@@ -16,26 +16,26 @@ import org.eclipse.jgit.lib.StoredConfig;
  * 
  * When first init, default values are written in config.
  */
-public class Configuration {
+public class GitConfiguration {
 
     public static final String   CONFIG_PREFIX             = "geat";
 
     public static final int      indentForCommandTemplates = 5;
 
-    private static Configuration singleton;
+    private static GitConfiguration singleton;
 
     private StoredConfig         config;
 
     public static void setInstance(String workingDir) throws IOException {
         if (singleton == null) {
-            singleton = new Configuration();
+            singleton = new GitConfiguration();
             Git repo = Git.open(new File(workingDir));
             singleton.config = repo.getRepository().getConfig();
             singleton.setDefaultValues();
         }
     }
 
-    public static Configuration getInstance() {
+    public static GitConfiguration getInstance() {
         if (singleton == null) {
             throw new RuntimeException("Configuration not set");
         } else {

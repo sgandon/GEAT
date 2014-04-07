@@ -7,7 +7,7 @@ import java.io.Writer;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
-import org.talend.geat.Configuration;
+import org.talend.geat.GitConfiguration;
 import org.talend.geat.GitUtils;
 import org.talend.geat.SanityCheck.CheckLevel;
 import org.talend.geat.exception.IllegalCommandArgumentException;
@@ -55,12 +55,12 @@ public class FeaturePush extends Command {
             IncorrectRepositoryStateException irse = new IncorrectRepositoryStateException(
                     "No remote defined for this repository. To add one, use:");
             irse.addLine("");
-            irse.addLine(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "git remote add <name> <url>");
+            irse.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "git remote add <name> <url>");
             throw irse;
         }
 
         // Check if local branch exist
-        String featureBranchName = Configuration.getInstance().get("featurePrefix") + "/" + featureName;
+        String featureBranchName = GitConfiguration.getInstance().get("featurePrefix") + "/" + featureName;
         Ref ref = repo.getRepository().getRef(featureBranchName);
         if (ref == null) {
             IncorrectRepositoryStateException irse = new IncorrectRepositoryStateException("No local branch named '"
@@ -74,17 +74,17 @@ public class FeaturePush extends Command {
                     + featureBranchName + "' already exists.");
             irse.addLine("If remote branch is related to your local, get newer content with:");
             irse.addLine("");
-            irse.addLine(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "git fetch");
+            irse.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "git fetch");
             irse.addLine("");
             irse.addLine("And push your latest changes using:");
             irse.addLine("");
-            irse.addLine(Strings.repeat(" ", Configuration.indentForCommandTemplates) + "git push");
+            irse.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "git push");
             throw irse;
         }
 
         // set tracking in config:
-        Configuration.getInstance().set("branch", featureBranchName, "remote", "origin");
-        Configuration.getInstance().set("branch", featureBranchName, "merge", "refs/heads/" + featureBranchName);
+        GitConfiguration.getInstance().set("branch", featureBranchName, "remote", "origin");
+        GitConfiguration.getInstance().set("branch", featureBranchName, "merge", "refs/heads/" + featureBranchName);
 
         // push
         repo.checkout().setName(featureBranchName).call();

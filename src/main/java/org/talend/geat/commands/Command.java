@@ -5,7 +5,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.talend.geat.Configuration;
+import org.talend.geat.GitConfiguration;
 import org.talend.geat.SanityCheck;
 import org.talend.geat.SanityCheck.CheckLevel;
 import org.talend.geat.exception.IllegalCommandArgumentException;
@@ -93,7 +93,7 @@ public abstract class Command {
     public Command setWorkingDir(String path) {
         this.workingDir = path;
         try {
-            Configuration.setInstance(getWorkingDir());
+            GitConfiguration.setInstance(getWorkingDir());
         } catch (IOException e) {
             // TODO Manage this cleaner
             e.printStackTrace();

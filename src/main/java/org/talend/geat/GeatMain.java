@@ -34,7 +34,7 @@ public class GeatMain {
         }
 
         try {
-            Configuration.setInstance(workingDir);
+            GitConfiguration.setInstance(workingDir);
 
             if (GitUtils.hasRemote("origin", Git.open(new File(workingDir)).getRepository())) {
                 initSsh();
@@ -77,11 +77,11 @@ public class GeatMain {
     }
 
     private static void initSsh() {
-        String sshPassphrase = Configuration.getInstance().get("sshpassphrase");
+        String sshPassphrase = GitConfiguration.getInstance().get("sshpassphrase");
         if (sshPassphrase == null) {
             sshPassphrase = InputsUtils.askUser("SSH passphrase, leave empty to skip", null);
             if (InputsUtils.askUserAsBoolean("Do you want to save this passphrase in your local gitconfig file")) {
-                Configuration.getInstance().set(Configuration.CONFIG_PREFIX, "sshpassphrase", sshPassphrase);
+                GitConfiguration.getInstance().set(GitConfiguration.CONFIG_PREFIX, "sshpassphrase", sshPassphrase);
             }
         }
 

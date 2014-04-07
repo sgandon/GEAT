@@ -25,7 +25,7 @@ public class ConfigurationTest {
         File tempDir = Files.createTempDir();
 
         Git.init().setDirectory(tempDir).call();
-        Configuration.getInstance().get("test");
+        GitConfiguration.getInstance().get("test");
     }
 
     @Test
@@ -33,10 +33,10 @@ public class ConfigurationTest {
         File tempDir = Files.createTempDir();
 
         Git.init().setDirectory(tempDir).call();
-        Configuration.setInstance(tempDir.getAbsolutePath());
+        GitConfiguration.setInstance(tempDir.getAbsolutePath());
 
-        Assert.assertNull(Configuration.getInstance().get("test"));
-        Assert.assertEquals("squash", Configuration.getInstance().get("finishmergemode"));
+        Assert.assertNull(GitConfiguration.getInstance().get("test"));
+        Assert.assertEquals("squash", GitConfiguration.getInstance().get("finishmergemode"));
     }
 
 }
