@@ -62,8 +62,8 @@ public class FeatureStart extends Command {
         try {
             SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES);
         } catch (IncorrectRepositoryStateException e) {
-            if (!InputsUtils.askUserAsBoolean("Proceed anyway")) {
-                throw e;
+            if (!InputsUtils.askUserAsBoolean(e.getDetails() + "\n\nProceed anyway")) {
+                return;
             }
         }
 
