@@ -58,6 +58,11 @@ public class FeatureStart extends Command {
         return "<feature-name>";
     }
 
+    @Override
+    public CheckLevel getCheckLevel() {
+        return CheckLevel.GIT_REPO_ONLY;
+    }
+
     public void execute(Writer writer) throws IncorrectRepositoryStateException, IOException, GitAPIException {
         try {
             SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES);

@@ -14,7 +14,6 @@ import org.eclipse.jgit.lib.Ref;
 import org.talend.geat.Configuration;
 import org.talend.geat.GitUtils;
 import org.talend.geat.InputsUtils;
-import org.talend.geat.SanityCheck;
 import org.talend.geat.SanityCheck.CheckLevel;
 import org.talend.geat.exception.IllegalCommandArgumentException;
 import org.talend.geat.exception.IncorrectRepositoryStateException;
@@ -89,10 +88,13 @@ public class FeatureFinish extends Command {
         return this;
     }
 
+    @Override
+    public CheckLevel getCheckLevel() {
+        return CheckLevel.NO_UNCOMMITTED_CHANGES;
+    }
+
     public void execute(Writer writer) throws IncorrectRepositoryStateException, IOException, GitAPIException,
             InterruptedCommandException {
-        SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES);
-
         Git repo = Git.open(new File(getWorkingDir()));
         String featureBranchName = Configuration.getInstance().get("featurePrefix") + "/" + featureName;
         boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());

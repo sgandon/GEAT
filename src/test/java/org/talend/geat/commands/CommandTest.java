@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.talend.geat.SanityCheck.CheckLevel;
 import org.talend.geat.exception.IllegalCommandArgumentException;
 import org.talend.geat.exception.IncorrectRepositoryStateException;
 import org.talend.geat.exception.InterruptedCommandException;
@@ -60,6 +61,11 @@ public class CommandTest {
         public Command parseArgs(String[] args) throws IllegalCommandArgumentException {
             aString = args[0];
             return this;
+        }
+
+        @Override
+        public CheckLevel getCheckLevel() {
+            return CheckLevel.GIT_REPO_ONLY;
         }
 
     }

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Map.Entry;
 
+import org.talend.geat.SanityCheck.CheckLevel;
+
 /**
  * Displays all commands name and description.
  */
@@ -13,6 +15,11 @@ public class Help extends Command {
 
     protected Help() {
         super();
+    }
+
+    @Override
+    public CheckLevel getCheckLevel() {
+        return CheckLevel.NONE;
     }
 
     public void execute(Writer writer) throws IOException {

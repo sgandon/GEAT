@@ -47,6 +47,8 @@ public abstract class Command {
      */
     public abstract String getDescription();
 
+    public abstract CheckLevel getCheckLevel();
+
     /**
      * This is the method to implement to define the behaviour of your command.
      * 
@@ -75,7 +77,7 @@ public abstract class Command {
             InterruptedCommandException {
         checkCallable();
 
-        SanityCheck.check(workingDir, CheckLevel.GIT_REPO_ONLY);
+        SanityCheck.check(workingDir, getCheckLevel());
 
         callable = false;
 

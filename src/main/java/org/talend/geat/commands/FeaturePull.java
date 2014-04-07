@@ -8,7 +8,6 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.talend.geat.Configuration;
 import org.talend.geat.GitUtils;
-import org.talend.geat.SanityCheck;
 import org.talend.geat.SanityCheck.CheckLevel;
 import org.talend.geat.exception.IllegalCommandArgumentException;
 import org.talend.geat.exception.IncorrectRepositoryStateException;
@@ -41,9 +40,12 @@ public class FeaturePull extends Command {
         return this;
     }
 
-    public void execute(Writer writer) throws IncorrectRepositoryStateException, IOException, GitAPIException {
-        SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES);
+    @Override
+    public CheckLevel getCheckLevel() {
+        return CheckLevel.NO_UNCOMMITTED_CHANGES;
+    }
 
+    public void execute(Writer writer) throws IncorrectRepositoryStateException, IOException, GitAPIException {
         Git repo = Git.open(new File(getWorkingDir()));
 
         // Check if remote

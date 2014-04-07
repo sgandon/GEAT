@@ -19,11 +19,16 @@ import com.google.common.base.Strings;
 public class SanityCheck {
 
     public enum CheckLevel {
+        NONE, // No check
         GIT_REPO_ONLY, // only checks that the folder is a initialized git repository
         NO_UNCOMMITTED_CHANGES; // in addition to GIT_REPO_ONLY, also checks that there are now uncommitted changes
     }
 
     public static void check(String workingDir, CheckLevel checkLevel) throws IncorrectRepositoryStateException {
+        if (checkLevel == CheckLevel.NONE) {
+            return;
+        }
+
         File repoPath = new File(workingDir);
         if (!repoPath.exists() || !repoPath.isDirectory()) {
             throw new IncorrectRepositoryStateException("'" + workingDir + "' is not a folder.");

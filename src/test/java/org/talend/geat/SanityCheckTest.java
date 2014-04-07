@@ -19,6 +19,24 @@ public class SanityCheckTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
+    public void testCheckNone1() throws GitAPIException, IncorrectRepositoryStateException {
+        SanityCheck.check("/one/folder/that/should/not/exists", CheckLevel.NONE);
+    }
+
+    @Test
+    public void testCheckNone2() throws GitAPIException, IncorrectRepositoryStateException {
+        File tempDir = Files.createTempDir();
+        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NONE);
+    }
+
+    @Test
+    public void testCheckNone3() throws GitAPIException, IncorrectRepositoryStateException {
+        File tempDir = Files.createTempDir();
+        Git.init().setDirectory(tempDir).call();
+        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NONE);
+    }
+
+    @Test
     public void testCheckGitRepoOnlyNonExistingFolder() throws IncorrectRepositoryStateException {
         thrown.expect(IncorrectRepositoryStateException.class);
         SanityCheck.check("/one/folder/that/should/not/exists", CheckLevel.GIT_REPO_ONLY);
