@@ -71,6 +71,13 @@ public class GitConfiguration {
         set(section, null, key, value);
     }
 
+    /**
+     * Sets in the local config a param value in geat section.
+     */
+    public void set(String key, String value) {
+        set(CONFIG_PREFIX, null, key, value);
+    }
+
     public void set(String section, String subsection, String key, String value) {
         config.setString(section, subsection, key, value);
         try {

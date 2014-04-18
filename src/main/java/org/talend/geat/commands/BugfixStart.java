@@ -120,6 +120,13 @@ public class BugfixStart extends Command {
 
         writer.write("Summary of actions:");
         writer.write(" - A new branch '" + bugBranchName + "' was created, based on '" + startPoint + "'");
+
+        // If all goes well, we set current start-point as default for next time:
+        if (!GitConfiguration.getInstance().get("bugfixStartPoint").equals(startPoint)) {
+            GitConfiguration.getInstance().set("bugfixStartPoint", startPoint);
+            writer.write(" - Default bugfix startpoint is now '" + startPoint + "'.");
+        }
+
         writer.write(" - You are now on branch '" + bugBranchName + "'");
         writer.write("");
         writer.write("Now, start committing on your bug fix. When done, use:");

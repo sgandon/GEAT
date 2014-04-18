@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.talend.geat.GitConfiguration;
 import org.talend.geat.GitUtils;
 import org.talend.geat.JUnitUtils;
 import org.talend.geat.exception.IllegalCommandArgumentException;
@@ -57,8 +58,24 @@ public class BugfixStartTest {
         CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(new String[] { BugfixStart.NAME, "tagada" })
                 .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
         Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/tagada"));
+
+        Assert.assertEquals("master", GitConfiguration.getInstance().get("bugfixStartPoint"));
     }
 
+    @Test
+    public void testExecuteBasicDiffStartPoint() throws GitAPIException, IOException, IllegalCommandArgumentException,
+            IncorrectRepositoryStateException, InterruptedCommandException {
+        Git git = JUnitUtils.createTempRepo();
+        JUnitUtils.createInitialCommit(git, "file1");
+        git.branchCreate().setName("maintenance/1.0").call();
+        Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/tagada"));
+        CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME)
+                .parseArgs(new String[] { BugfixStart.NAME, "tagada", "maintenance/1.0" })
+                .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
+        Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/tagada"));
+
+        Assert.assertEquals("maintenance/1.0", GitConfiguration.getInstance().get("bugfixStartPoint"));
+    }
     @Test
     public void testExecuteBranchAlreadyExist() throws GitAPIException, IOException, IllegalCommandArgumentException,
             IncorrectRepositoryStateException, InterruptedCommandException {
