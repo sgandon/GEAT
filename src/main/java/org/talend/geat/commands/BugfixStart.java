@@ -54,8 +54,6 @@ public class BugfixStart extends Command {
 
         if (args.length == 3) {
             startPoint = args[2];
-        } else {
-            startPoint = GitConfiguration.getInstance().get("bugfixStartPoint");
         }
 
         return this;
@@ -87,6 +85,8 @@ public class BugfixStart extends Command {
         String bugBranchName = GitConfiguration.getInstance().get("bugfixPrefix") + "/" + bugName;
         boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
+        // TODO if startpoint is null, ask the user from the list of availables branches
+        
         // Test if such a branch exists locally:
         if (GitUtils.hasLocalBranch(repo.getRepository(), bugBranchName)) {
             throw new IncorrectRepositoryStateException("A local branch named '" + bugBranchName + "' already exist.");

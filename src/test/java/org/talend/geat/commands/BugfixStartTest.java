@@ -26,8 +26,9 @@ public class BugfixStartTest {
         BugfixStart command = (BugfixStart) CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(
                 new String[] { BugfixStart.NAME, "myBug" });
         Assert.assertEquals("myBug", command.bugName);
-        Assert.assertEquals("master", command.startPoint);
+        Assert.assertNull(command.startPoint);
     }
+
     @Test
     public void testParseArgsOk2() throws IllegalCommandArgumentException {
         BugfixStart command = (BugfixStart) CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(
@@ -55,11 +56,10 @@ public class BugfixStartTest {
         Git git = JUnitUtils.createTempRepo();
         JUnitUtils.createInitialCommit(git, "file1");
         Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/tagada"));
-        CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(new String[] { BugfixStart.NAME, "tagada" })
+        CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME)
+                .parseArgs(new String[] { BugfixStart.NAME, "tagada", "master" })
                 .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
         Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/tagada"));
-
-        Assert.assertEquals("master", GitConfiguration.getInstance().get("bugfixStartPoint"));
     }
 
     @Test
@@ -76,6 +76,7 @@ public class BugfixStartTest {
 
         Assert.assertEquals("maintenance/1.0", GitConfiguration.getInstance().get("bugfixStartPoint"));
     }
+
     @Test
     public void testExecuteBranchAlreadyExist() throws GitAPIException, IOException, IllegalCommandArgumentException,
             IncorrectRepositoryStateException, InterruptedCommandException {
