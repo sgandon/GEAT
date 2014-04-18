@@ -51,6 +51,7 @@ public class GitConfiguration {
         defaultValues.put("featurePrefix", "feature");
         defaultValues.put("bugfixStartPoint", "master");
         defaultValues.put("bugfixPrefix", "bugfix");
+        defaultValues.put("maintenancePrefix", "maintenance");
     }
 
     private void setDefaultValues() {

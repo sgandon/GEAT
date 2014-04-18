@@ -31,7 +31,11 @@ public class BugfixStart extends Command {
 
     public static final String NAME = "bugfix-start";
 
+    // the name of the bug (bugtracker id for example), will be used for the branch name:
     protected String           bugName;
+
+    // the start point of the new branch:
+    protected String           startPoint;
 
     protected BugfixStart() {
         super();
@@ -42,10 +46,16 @@ public class BugfixStart extends Command {
     }
 
     public Command parseArgs(String[] args) throws IllegalCommandArgumentException {
-        if (args.length != 2) {
+        if (args.length != 2 && args.length != 3) {
             throw IllegalCommandArgumentException.build(this);
         }
         bugName = args[1];
+
+        if (args.length == 3) {
+            startPoint = args[2];
+        } else {
+            startPoint = GitConfiguration.getInstance().get("bugfixStartPoint");
+        }
 
         return this;
     }
@@ -55,7 +65,7 @@ public class BugfixStart extends Command {
     }
 
     public String getUsage() {
-        return "<bugfix-name>";
+        return "<bugfix-name> [start-point]";
     }
 
     @Override
@@ -94,33 +104,28 @@ public class BugfixStart extends Command {
             }
 
             // git checkout master
-            repo.checkout().setName(GitConfiguration.getInstance().get("bugfixStartPoint")).call();
+            repo.checkout().setName(startPoint).call();
 
             // git pull --rebase origin
             // 1. git fetch
-            repo.fetch()
-                    .setRefSpecs(
-                            new RefSpec("refs/heads/" + GitConfiguration.getInstance().get("bugfixStartPoint")
-                                    + ":refs/remotes/origin/" + GitConfiguration.getInstance().get("bugfixStartPoint")))
+            repo.fetch().setRefSpecs(new RefSpec("refs/heads/" + startPoint + ":refs/remotes/origin/" + startPoint))
                     .setRemote("origin").call();
             // 2. git merge ff
             Ref refOriginMaster = repo.getRepository().getRef("origin/master");
             repo.merge().setFastForward(FastForwardMode.FF_ONLY).include(refOriginMaster).call();
         }
 
-        repo.checkout().setCreateBranch(true).setStartPoint(GitConfiguration.getInstance().get("bugfixStartPoint"))
-                .setName(bugBranchName).call();
+        repo.checkout().setCreateBranch(true).setStartPoint(startPoint).setName(bugBranchName).call();
 
         writer.write("Summary of actions:");
-        writer.write(" - A new branch '" + bugBranchName + "' was created, based on '"
-                + GitConfiguration.getInstance().get("bugfixStartPoint") + "'");
+        writer.write(" - A new branch '" + bugBranchName + "' was created, based on '" + startPoint + "'");
         writer.write(" - You are now on branch '" + bugBranchName + "'");
         writer.write("");
         writer.write("Now, start committing on your bug fix. When done, use:");
         writer.write("");
         // TODO use coming bugfix-finish command constant
-        writer.write(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "geat " + "bugfix-finish"
-                + " " + bugName + " <policy>");
+        writer.write(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "geat " + "bugfix-finish" + " "
+                + bugName + " <policy>");
         writer.write("");
         writer.write("To share this branch, use:");
         writer.write("");

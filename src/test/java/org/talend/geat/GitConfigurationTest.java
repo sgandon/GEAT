@@ -12,7 +12,7 @@ import org.junit.rules.ExpectedException;
 
 import com.google.common.io.Files;
 
-public class ConfigurationTest {
+public class GitConfigurationTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();

@@ -21,17 +21,25 @@ public class BugfixStartTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void testParseArgsOk() throws IllegalCommandArgumentException {
+    public void testParseArgsOk1() throws IllegalCommandArgumentException {
         BugfixStart command = (BugfixStart) CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(
                 new String[] { BugfixStart.NAME, "myBug" });
         Assert.assertEquals("myBug", command.bugName);
+        Assert.assertEquals("master", command.startPoint);
+    }
+    @Test
+    public void testParseArgsOk2() throws IllegalCommandArgumentException {
+        BugfixStart command = (BugfixStart) CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(
+                new String[] { BugfixStart.NAME, "myBug", "startpoint" });
+        Assert.assertEquals("myBug", command.bugName);
+        Assert.assertEquals("startpoint", command.startPoint);
     }
 
     @Test
     public void testParseArgsWrongNumberArgs1() throws IllegalCommandArgumentException {
         thrown.expect(IllegalCommandArgumentException.class);
         CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(
-                new String[] { BugfixStart.NAME, "myBug", "anotherParam" });
+                new String[] { BugfixStart.NAME, "myBug", "anotherParam", "oneMoreParam" });
     }
 
     @Test
