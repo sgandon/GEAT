@@ -20,8 +20,6 @@ public class GitConfiguration {
 
     public static final String   CONFIG_PREFIX             = "geat";
 
-    public static final int      indentForCommandTemplates = 5;
-
     private static GitConfiguration singleton;
 
     private StoredConfig         config;

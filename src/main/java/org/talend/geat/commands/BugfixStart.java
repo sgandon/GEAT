@@ -9,6 +9,7 @@ import org.eclipse.jgit.api.MergeCommand.FastForwardMode;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.RefSpec;
+import org.talend.geat.Configuration;
 import org.talend.geat.GitConfiguration;
 import org.talend.geat.GitUtils;
 import org.talend.geat.InputsUtils;
@@ -98,7 +99,7 @@ public class BugfixStart extends Command {
                         "A remote branch named '" + bugBranchName + "' already exist.");
                 irse.addLine("To checkout this branch locally, use:");
                 irse.addLine("");
-                irse.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates)
+                irse.addLine(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
                         + "git fetch && git checkout " + bugBranchName);
                 throw irse;
             }
@@ -124,13 +125,13 @@ public class BugfixStart extends Command {
         writer.write("Now, start committing on your bug fix. When done, use:");
         writer.write("");
         // TODO use coming bugfix-finish command constant
-        writer.write(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "geat " + "bugfix-finish" + " "
-                + bugName + " <policy>");
+        writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
+                + "bugfix-finish" + " " + bugName + " <policy>");
         writer.write("");
         writer.write("To share this branch, use:");
         writer.write("");
-        writer.write(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "geat " + "bugfix-push" + " "
-                + bugName);
+        writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
+                + "bugfix-push" + " " + bugName);
     }
 
 }

@@ -11,6 +11,7 @@ import org.eclipse.jgit.api.MergeResult.MergeStatus;
 import org.eclipse.jgit.api.RebaseResult;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
+import org.talend.geat.Configuration;
 import org.talend.geat.GitConfiguration;
 import org.talend.geat.GitUtils;
 import org.talend.geat.InputsUtils;
@@ -58,8 +59,8 @@ public class FeatureFinish extends Command {
     }
 
     public String getUsage() {
-        return "<feature-name> [policy (squash|rebase), default=" + GitConfiguration.getInstance().get("finishmergemode")
-                + "]";
+        return "<feature-name> [policy (squash|rebase), default="
+                + GitConfiguration.getInstance().get("finishmergemode") + "]";
     }
 
     public Command parseArgs(String[] args) throws IllegalCommandArgumentException {
@@ -118,7 +119,8 @@ public class FeatureFinish extends Command {
             IncorrectRepositoryStateException irse = new IncorrectRepositoryStateException("No local branch named '"
                     + featureBranchName + "'");
             irse.addLine("To see feature branches that may be finish, use:\n");
-            irse.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "git branch --list feature/*");
+            irse.addLine(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
+                    + "git branch --list feature/*");
             throw irse;
         }
 
@@ -175,8 +177,8 @@ public class FeatureFinish extends Command {
             writer.write("");
             writer.write("Now, your new feature is ready to be pushed. To do this, use:");
             writer.write("");
-            writer.write(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "git push origin "
-                    + GitConfiguration.getInstance().get("featureStartPoint"));
+            writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
+                    + "git push origin " + GitConfiguration.getInstance().get("featureStartPoint"));
         }
     }
 
@@ -195,14 +197,15 @@ public class FeatureFinish extends Command {
                             + " was aborted because of conflicts.");
                     ice.addLine("Please finish this feature first.");
                     ice.addLine("You can then complete the finish by running it again.\n");
-                    ice.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "geat "
-                            + FeatureFinish.NAME + " " + split[1] + " <policy>");
+                    ice.addLine(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
+                            + "geat " + FeatureFinish.NAME + " " + split[1] + " <policy>");
                     throw ice;
                 }
             } else {
                 // Malformed MERGE file:
                 writer.write("WARN: previous file " + mergeMarker.getAbsolutePath() + " is malformed.");
-                writer.write(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + readFirstLine);
+                writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
+                        + readFirstLine);
                 writer.write("Deleting the file");
                 mergeMarker.delete();
                 return false;
@@ -222,11 +225,12 @@ public class FeatureFinish extends Command {
 
         InterruptedCommandException ice = new InterruptedCommandException(
                 "There were merge conflicts. To see more details, use:\n");
-        ice.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "git status");
+        ice.addLine(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
+                + "git status");
         ice.addLine("");
         ice.addLine("When resolved, you can then complete the finish by running it again.\n");
-        ice.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "geat " + FeatureFinish.NAME
-                + " " + featureName + " " + mergePolicy.toString().toLowerCase());
+        ice.addLine(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
+                + FeatureFinish.NAME + " " + featureName + " " + mergePolicy.toString().toLowerCase());
         throw ice;
     }
 

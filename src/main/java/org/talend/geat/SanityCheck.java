@@ -48,7 +48,8 @@ public class SanityCheck {
                     IncorrectRepositoryStateException iwse = new IncorrectRepositoryStateException(
                             "Your GIT repository has uncommitted changes.");
                     iwse.addLine("To see these changes, use:\n");
-                    iwse.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + " git status");
+                    iwse.addLine(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
+                            + " git status");
                     throw iwse;
                 }
             } catch (NoWorkTreeException e) {

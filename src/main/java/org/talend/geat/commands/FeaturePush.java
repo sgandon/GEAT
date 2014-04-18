@@ -7,6 +7,7 @@ import java.io.Writer;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
+import org.talend.geat.Configuration;
 import org.talend.geat.GitConfiguration;
 import org.talend.geat.GitUtils;
 import org.talend.geat.SanityCheck.CheckLevel;
@@ -55,7 +56,8 @@ public class FeaturePush extends Command {
             IncorrectRepositoryStateException irse = new IncorrectRepositoryStateException(
                     "No remote defined for this repository. To add one, use:");
             irse.addLine("");
-            irse.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "git remote add <name> <url>");
+            irse.addLine(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
+                    + "git remote add <name> <url>");
             throw irse;
         }
 
@@ -74,11 +76,13 @@ public class FeaturePush extends Command {
                     + featureBranchName + "' already exists.");
             irse.addLine("If remote branch is related to your local, get newer content with:");
             irse.addLine("");
-            irse.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "git fetch");
+            irse.addLine(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
+                    + "git fetch");
             irse.addLine("");
             irse.addLine("And push your latest changes using:");
             irse.addLine("");
-            irse.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "git push");
+            irse.addLine(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
+                    + "git push");
             throw irse;
         }
 

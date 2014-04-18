@@ -9,6 +9,7 @@ import org.eclipse.jgit.api.MergeCommand.FastForwardMode;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.RefSpec;
+import org.talend.geat.Configuration;
 import org.talend.geat.GitConfiguration;
 import org.talend.geat.GitUtils;
 import org.talend.geat.InputsUtils;
@@ -89,7 +90,7 @@ public class FeatureStart extends Command {
                         "A remote branch named '" + featureBranchName + "' already exist.");
                 irse.addLine("To checkout this branch locally, use:");
                 irse.addLine("");
-                irse.addLine(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates)
+                irse.addLine(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates"))
                         + "git fetch && git checkout " + featureBranchName);
                 throw irse;
             }
@@ -119,13 +120,13 @@ public class FeatureStart extends Command {
         writer.write("");
         writer.write("Now, start committing on your feature. When done, use:");
         writer.write("");
-        writer.write(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "geat " + FeatureFinish.NAME + " "
-                + featureName + " <policy>");
+        writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
+                + FeatureFinish.NAME + " " + featureName + " <policy>");
         writer.write("");
         writer.write("To share this branch, use:");
         writer.write("");
-        writer.write(Strings.repeat(" ", GitConfiguration.indentForCommandTemplates) + "geat " + FeaturePush.NAME + " "
-                + featureName);
+        writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
+                + FeaturePush.NAME + " " + featureName);
     }
 
 }
