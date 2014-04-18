@@ -1,18 +1,23 @@
 package org.talend.geat;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand.ListMode;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteConfig;
 import org.talend.geat.exception.NotRemoteException;
+import org.talend.geat.jgit.ListBranchCommand;
 
 /**
  * Utility class to mutualize some current GIT operation.
@@ -83,6 +88,37 @@ public class GitUtils {
             git.checkout().setName(branch).setUpstreamMode(CreateBranchCommand.SetupUpstreamMode.TRACK)
                     .setStartPoint("origin/" + branch).call();
             return true;
+        }
+    }
+
+    public static String getShortName(Ref ref) {
+        if (ref.getName().startsWith("refs/heads/")) {
+            return ref.getName().substring("refs/heads/".length());
+        } else if (ref.getName().startsWith("refs/remotes/origin/")) {
+            return ref.getName().substring("refs/remotes/origin/".length());
+        }
+        return ref.getName();
+    }
+
+    public static Set<String> listBranches(Repository repository, final String pattern) throws GitAPIException {
+        Set<String> toReturn = new TreeSet<String>();
+
+        Git git = new Git(repository);
+        List<Ref> call = new ListBranchCommand(git.getRepository()).setListMode(ListMode.ALL).setPattern(pattern)
+                .call();
+
+        for (Ref ref : call) {
+            toReturn.add(getShortName(ref));
+        }
+
+        return toReturn;
+    }
+
+    // TODO changes to junit
+    public static void main(String[] args) throws GitAPIException, IOException {
+        Git repo = Git.open(new File("/home/stephane/talend/checkouts/tac_save"));
+        for (String ref : listBranches(repo.getRepository(), "master|maintenance/.*")) {
+            System.out.println(ref);
         }
     }
 }
