@@ -15,29 +15,29 @@ import org.talend.geat.exception.IncorrectRepositoryStateException;
 import org.talend.geat.exception.InterruptedCommandException;
 import org.talend.geat.io.DoNothingWriter;
 
-public class BugStartTest {
+public class BugfixStartTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testParseArgsOk() throws IllegalCommandArgumentException {
-        BugStart command = (BugStart) CommandsRegistry.INSTANCE.getCommand(BugStart.NAME).parseArgs(
-                new String[] { BugStart.NAME, "myBug" });
+        BugfixStart command = (BugfixStart) CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(
+                new String[] { BugfixStart.NAME, "myBug" });
         Assert.assertEquals("myBug", command.bugName);
     }
 
     @Test
     public void testParseArgsWrongNumberArgs1() throws IllegalCommandArgumentException {
         thrown.expect(IllegalCommandArgumentException.class);
-        CommandsRegistry.INSTANCE.getCommand(BugStart.NAME).parseArgs(
-                new String[] { BugStart.NAME, "myBug", "anotherParam" });
+        CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(
+                new String[] { BugfixStart.NAME, "myBug", "anotherParam" });
     }
 
     @Test
     public void testParseArgsWrongNumberArgs2() throws IllegalCommandArgumentException {
         thrown.expect(IllegalCommandArgumentException.class);
-        CommandsRegistry.INSTANCE.getCommand(BugStart.NAME).parseArgs(new String[] { BugStart.NAME });
+        CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(new String[] { BugfixStart.NAME });
     }
 
     @Test
@@ -45,10 +45,10 @@ public class BugStartTest {
             IncorrectRepositoryStateException, InterruptedCommandException {
         Git git = JUnitUtils.createTempRepo();
         JUnitUtils.createInitialCommit(git, "file1");
-        Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bug/tagada"));
-        CommandsRegistry.INSTANCE.getCommand(BugStart.NAME).parseArgs(new String[] { BugStart.NAME, "tagada" })
+        Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/tagada"));
+        CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(new String[] { BugfixStart.NAME, "tagada" })
                 .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
-        Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bug/tagada"));
+        Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/tagada"));
     }
 
     @Test
@@ -57,12 +57,12 @@ public class BugStartTest {
         thrown.expect(IncorrectRepositoryStateException.class);
         Git git = JUnitUtils.createTempRepo();
         JUnitUtils.createInitialCommit(git, "file1");
-        Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bug/tagada"));
+        Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/tagada"));
 
-        git.branchCreate().setName("bug/tagada").call();
-        Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bug/tagada"));
+        git.branchCreate().setName("bugfix/tagada").call();
+        Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/tagada"));
 
-        CommandsRegistry.INSTANCE.getCommand(BugStart.NAME).parseArgs(new String[] { BugStart.NAME, "tagada" })
+        CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME).parseArgs(new String[] { BugfixStart.NAME, "tagada" })
                 .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
     }
 
