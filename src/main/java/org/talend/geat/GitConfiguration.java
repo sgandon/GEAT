@@ -49,6 +49,8 @@ public class GitConfiguration {
         defaultValues.put("finishmergemode", "squash");
         defaultValues.put("featureStartPoint", "master");
         defaultValues.put("featurePrefix", "feature");
+        defaultValues.put("bugStartPoint", "master");
+        defaultValues.put("bugPrefix", "bug");
     }
 
     private void setDefaultValues() {
