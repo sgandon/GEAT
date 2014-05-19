@@ -6,6 +6,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
@@ -100,7 +102,7 @@ public class GitUtils {
     }
 
     public static List<String> listBranches(Repository repository, final String pattern) throws GitAPIException {
-        List<String> toReturn = new ArrayList<String>();
+        Set<String> toReturn = new TreeSet<String>();
 
         Git git = new Git(repository);
         List<Ref> call = new ListBranchCommand(git.getRepository()).setListMode(ListMode.ALL).setPattern(pattern)
@@ -110,7 +112,7 @@ public class GitUtils {
             toReturn.add(getShortName(ref));
         }
 
-        return toReturn;
+        return new ArrayList<String>(toReturn);
     }
 
     // TODO changes to junit
