@@ -3,6 +3,10 @@ package org.talend.geat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Utility class used to ask something to the user.
@@ -11,6 +15,27 @@ public class InputsUtils {
 
     public static String askUser(String question) {
         return askUser(question, "");
+    }
+
+    public static String askUser(List<String> choices, String defaultValue) {
+        Collections.sort(choices);
+
+        Map<Integer, String> choicesMap = new TreeMap<Integer, String>();
+
+        int defaultValueIndex = 0;
+
+        int i = 1;
+        String question = "";
+        for (String currentChoice : choices) {
+            choicesMap.put(i, currentChoice);
+            question += i + ") " + currentChoice + "\n";
+            if (defaultValue.equals(currentChoice)) {
+                defaultValueIndex = i;
+            }
+            i++;
+        }
+        int answer = askUserAsInt(question, defaultValueIndex);
+        return choicesMap.get(answer);
     }
 
     public static String askUser(String question, String defaultValue) {
@@ -36,6 +61,11 @@ public class InputsUtils {
             System.out.println("WARN: " + e.getMessage());
             return defaultValue;
         }
+    }
+
+    public static int askUserAsInt(String question, Integer defaultValue) {
+        String answer = askUser(question, "" + defaultValue);
+        return Integer.parseInt(answer);
     }
 
     public static boolean askUserAsBoolean(String question) {
