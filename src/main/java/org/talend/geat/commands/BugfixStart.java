@@ -3,6 +3,7 @@ package org.talend.geat.commands;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand.FastForwardMode;
@@ -85,8 +86,12 @@ public class BugfixStart extends Command {
         String bugBranchName = GitConfiguration.getInstance().get("bugfixPrefix") + "/" + bugName;
         boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
-        // TODO if startpoint is null, ask the user from the list of availables branches
-        
+        if (startPoint == null) {
+            List<String> listBranches = GitUtils.listBranches(repo.getRepository(), "master|maintenance/.*");
+            String defaultValue = GitConfiguration.getInstance().get("bugfixStartPoint");
+            startPoint = InputsUtils.askUser(listBranches, defaultValue);
+        }
+
         // Test if such a branch exists locally:
         if (GitUtils.hasLocalBranch(repo.getRepository(), bugBranchName)) {
             throw new IncorrectRepositoryStateException("A local branch named '" + bugBranchName + "' already exist.");
@@ -124,7 +129,7 @@ public class BugfixStart extends Command {
         // If all goes well, we set current start-point as default for next time:
         if (!GitConfiguration.getInstance().get("bugfixStartPoint").equals(startPoint)) {
             GitConfiguration.getInstance().set("bugfixStartPoint", startPoint);
-            writer.write(" - Default bugfix startpoint is now '" + startPoint + "'.");
+            writer.write(" - Default bugfix startpoint is now '" + startPoint + "'");
         }
 
         writer.write(" - You are now on branch '" + bugBranchName + "'");
