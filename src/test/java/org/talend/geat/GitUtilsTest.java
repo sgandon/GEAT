@@ -2,6 +2,8 @@ package org.talend.geat;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -21,6 +23,31 @@ public class GitUtilsTest {
         Git.init().setDirectory(tempDir).call();
         Git git = Git.open(tempDir);
         return git;
+    }
+
+    @Test
+    public void testListBranches() throws IOException, GitAPIException {
+        Git git = createTempRepo();
+        createInitialCommit(git, "myFile");
+
+        List<String> expected = new ArrayList<String>();
+        expected.add("master");
+
+        List<String> listBranches = GitUtils.listBranches(git.getRepository(), ".*");
+        Assert.assertEquals(expected, listBranches);
+
+        git.branchCreate().setName("myBranch").call();
+        git.branchCreate().setName("tagada").call();
+
+        listBranches = GitUtils.listBranches(git.getRepository(), "master");
+        Assert.assertEquals(expected, listBranches);
+
+        listBranches = GitUtils.listBranches(git.getRepository(), "ma.*");
+        Assert.assertEquals(expected, listBranches);
+
+        expected.add("myBranch");
+        listBranches = GitUtils.listBranches(git.getRepository(), "m.*");
+        Assert.assertEquals(expected, listBranches);
     }
 
     @Test

@@ -3,10 +3,9 @@ package org.talend.geat;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
@@ -100,8 +99,8 @@ public class GitUtils {
         return ref.getName();
     }
 
-    public static Set<String> listBranches(Repository repository, final String pattern) throws GitAPIException {
-        Set<String> toReturn = new TreeSet<String>();
+    public static List<String> listBranches(Repository repository, final String pattern) throws GitAPIException {
+        List<String> toReturn = new ArrayList<String>();
 
         Git git = new Git(repository);
         List<Ref> call = new ListBranchCommand(git.getRepository()).setListMode(ListMode.ALL).setPattern(pattern)
