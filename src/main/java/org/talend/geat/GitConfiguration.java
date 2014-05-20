@@ -50,6 +50,7 @@ public class GitConfiguration {
         defaultValues.put("bugfixStartPoint", "master");
         defaultValues.put("bugfixPrefix", "bugfix");
         defaultValues.put("maintenancePrefix", "maintenance");
+        defaultValues.put("releasePrefix", "release");
     }
 
     private void setDefaultValues() {
