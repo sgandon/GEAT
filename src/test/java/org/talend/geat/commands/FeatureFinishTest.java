@@ -9,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.talend.geat.GitUtils;
 import org.talend.geat.JUnitUtils;
-import org.talend.geat.commands.FeatureFinish.MergePolicy;
 import org.talend.geat.exception.IllegalCommandArgumentException;
 import org.talend.geat.exception.IncorrectRepositoryStateException;
 import org.talend.geat.exception.InterruptedCommandException;
@@ -49,8 +48,6 @@ public class FeatureFinishTest {
         Git git = JUnitUtils.createTempRepo();
 
         File file1 = JUnitUtils.createInitialCommit(git, "file1");
-
-        System.out.println(file1.getAbsolutePath());
 
         git.branchCreate().setName("feature/feature1").call();
         File file4 = JUnitUtils.createInitialCommit(git, "file4");
