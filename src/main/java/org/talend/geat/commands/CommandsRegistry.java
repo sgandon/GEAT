@@ -34,6 +34,7 @@ public class CommandsRegistry {
         commands.put(FeaturePush.NAME, new FeaturePush());
         commands.put(FeaturePull.NAME, new FeaturePull());
         commands.put(BugfixStart.NAME, new BugfixStart());
+        commands.put(BugfixFinish.NAME, new BugfixFinish());
     }
 
     protected Map<String, Command> getCommands() {

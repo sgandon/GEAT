@@ -137,14 +137,15 @@ public class BugfixStart extends Command {
         writer.write("");
         writer.write("Now, start committing on your bug fix. When done, use:");
         writer.write("");
-        // TODO use coming bugfix-finish command constant
+
         writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
-                + "bugfix-finish" + " " + bugName + " <policy>");
+                + BugfixFinish.NAME + " " + bugName + " <policy>");
         writer.write("");
         writer.write("To share this branch, use:");
-        writer.write("");
-        writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
-                + "bugfix-push" + " " + bugName);
+        // writer.write("");
+        // TODO use coming bugfix-push command constant
+        // writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
+        // + "bugfix-push" + " " + bugName);
     }
 
     protected String getBugfixBranchName(String startPoint, String bugName) {
