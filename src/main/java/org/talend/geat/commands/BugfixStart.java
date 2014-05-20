@@ -83,14 +83,15 @@ public class BugfixStart extends Command {
         }
 
         Git repo = Git.open(new File(getWorkingDir()));
-        String bugBranchName = getBugfixBranchName(startPoint, bugName);
-        boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
         if (startPoint == null) {
             List<String> listBranches = GitUtils.listBranches(repo.getRepository(), "master|maintenance/.*");
             String defaultValue = GitConfiguration.getInstance().get("bugfixStartPoint");
             startPoint = InputsUtils.askUser(listBranches, defaultValue);
         }
+
+        String bugBranchName = getBugfixBranchName(startPoint, bugName);
+        boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
         // Test if such a branch exists locally:
         if (GitUtils.hasLocalBranch(repo.getRepository(), bugBranchName)) {
