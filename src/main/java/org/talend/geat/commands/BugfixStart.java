@@ -83,7 +83,7 @@ public class BugfixStart extends Command {
         }
 
         Git repo = Git.open(new File(getWorkingDir()));
-        String bugBranchName = GitConfiguration.getInstance().get("bugfixPrefix") + "/" + bugName;
+        String bugBranchName = getBugfixBranchName(startPoint, bugName);
         boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
         if (startPoint == null) {
@@ -144,6 +144,21 @@ public class BugfixStart extends Command {
         writer.write("");
         writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
                 + "bugfix-push" + " " + bugName);
+    }
+
+    protected String getBugfixBranchName(String startPoint, String bugName) {
+        String toReturn = GitConfiguration.getInstance().get("bugfixPrefix");
+        toReturn += "/" + extractRootFromBranchName(startPoint);
+        toReturn += "/" + bugName;
+        return toReturn;
+    }
+
+    protected String extractRootFromBranchName(String branchName) {
+        if (branchName.startsWith(GitConfiguration.getInstance().get("maintenanceprefix"))) {
+            return branchName.substring(GitConfiguration.getInstance().get("maintenanceprefix").length() + 1);
+        } else {
+            return branchName;
+        }
     }
 
 }
