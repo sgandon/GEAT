@@ -149,6 +149,7 @@ public class GitUtils {
             return branchName;
         }
     }
+
     /**
      * Merge (or rebase or squash) a branch on another. Used by FeatureFinish & BugfixFinish.
      * 
@@ -165,14 +166,13 @@ public class GitUtils {
             String branchType, MergePolicy mergePolicy, String command) throws IOException,
             InterruptedCommandException, GitAPIException, IncorrectRepositoryStateException {
         String source = getBugfixBranchName(target, name);
-        if (branchType.equals("feature")){
+        if (branchType.equals("feature")) {
             source = sourcePrefix + "/" + name;
         }
-        
+
         boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
-        boolean continueAfterConflict = previouslyFinishingThisFeature(repo.getRepository().getDirectory().getParent(),
-                source, writer, command);
+        boolean continueAfterConflict = previouslyFinishingThisFeature(source, writer, command);
 
         // 1. Update sources from remote
         if (hasRemote) {
@@ -205,8 +205,7 @@ public class GitUtils {
                 RebaseResult rebaseResult = repo.rebase().setUpstream(target).call();
 
                 if (rebaseResult.getStatus() == RebaseResult.Status.STOPPED) {
-                    createMergeAbortedMarker(repo.getRepository().getDirectory().getParent(), source, target, name,
-                            mergePolicy, command);
+                    createMergeAbortedMarker(source, target, name, mergePolicy, command);
                 }
             }
 
@@ -225,8 +224,7 @@ public class GitUtils {
                 MergeResult mergeResult = repo.merge().setSquash(true).include(ref).call();
 
                 if (mergeResult.getMergeStatus() == MergeStatus.CONFLICTING) {
-                    createMergeAbortedMarker(repo.getRepository().getDirectory().getParent(), source, target, name,
-                            mergePolicy, command);
+                    createMergeAbortedMarker(source, target, name, mergePolicy, command);
                 }
 
                 String msg = InputsUtils.askUser("Commit message", "Finish " + branchType + " " + name);
@@ -260,9 +258,9 @@ public class GitUtils {
      * @throws InterruptedCommandException
      *             If was previously merging ANOTHER branch
      */
-    private static boolean previouslyFinishingThisFeature(String workingDir, String featureName, Writer writer,
-            String command) throws IOException, InterruptedCommandException {
-        File mergeMarker = new File(getGeatConfigFolfer(workingDir), "MERGE");
+    private static boolean previouslyFinishingThisFeature(String featureName, Writer writer, String command)
+            throws IOException, InterruptedCommandException {
+        File mergeMarker = new File(getGeatConfigFolfer(), "MERGE");
         if (mergeMarker.exists()) {
             String readFirstLine = Files.readFirstLine(mergeMarker, Charsets.UTF_8);
             String[] split = readFirstLine.split(" ");
@@ -299,9 +297,9 @@ public class GitUtils {
      * 
      * Used when a conflicts occurs during a merge|rebase operation.
      */
-    private static void createMergeAbortedMarker(String workingDir, String source, String target, String name,
-            MergePolicy mergePolicy, String command) throws IOException, InterruptedCommandException {
-        File mergeMarker = new File(getGeatConfigFolfer(workingDir), "MERGE");
+    private static void createMergeAbortedMarker(String source, String target, String name, MergePolicy mergePolicy,
+            String command) throws IOException, InterruptedCommandException {
+        File mergeMarker = new File(getGeatConfigFolfer(), "MERGE");
         Files.createParentDirs(mergeMarker);
         Files.touch(mergeMarker);
         Files.write(("MERGE " + source + " IN " + target).getBytes(), mergeMarker);
@@ -317,8 +315,8 @@ public class GitUtils {
         throw ice;
     }
 
-    private static File getGeatConfigFolfer(String workingDir) {
-        File folder = new File(new File(workingDir, ".git"), ".geat");
+    private static File getGeatConfigFolfer() {
+        File folder = new File(new File(System.getProperty("user.dir"), ".git"), ".geat");
         if (!folder.exists()) {
             folder.mkdir();
         }
