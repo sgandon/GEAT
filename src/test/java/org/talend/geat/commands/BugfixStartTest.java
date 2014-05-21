@@ -93,17 +93,4 @@ public class BugfixStartTest {
                 .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
     }
 
-    @Test
-    public void testExtractRootFromBranchName() {
-        BugfixStart com = new BugfixStart();
-        Assert.assertEquals("master", com.extractRootFromBranchName("master"));
-        Assert.assertEquals("5.4", com.extractRootFromBranchName("maintenance/5.4"));
-    }
-
-    @Test
-    public void testGetBugfixBranchName() {
-        BugfixStart com = new BugfixStart();
-        Assert.assertEquals("bugfix/master/TDI-12000", com.getBugfixBranchName("master", "TDI-12000"));
-        Assert.assertEquals("bugfix/5.4/TDI-12000", com.getBugfixBranchName("maintenance/5.4", "TDI-12000"));
-    }
 }

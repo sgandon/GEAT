@@ -135,6 +135,20 @@ public class GitUtils {
         }
     }
 
+    public static String getBugfixBranchName(String startPoint, String bugName) {
+        String toReturn = GitConfiguration.getInstance().get("bugfixPrefix");
+        toReturn += "/" + extractRootFromBranchName(startPoint);
+        toReturn += "/" + bugName;
+        return toReturn;
+    }
+
+    protected static String extractRootFromBranchName(String branchName) {
+        if (branchName.startsWith(GitConfiguration.getInstance().get("maintenanceprefix"))) {
+            return branchName.substring(GitConfiguration.getInstance().get("maintenanceprefix").length() + 1);
+        } else {
+            return branchName;
+        }
+    }
     /**
      * Merge (or rebase or squash) a branch on another. Used by FeatureFinish & BugfixFinish.
      * 
@@ -150,7 +164,11 @@ public class GitUtils {
     public static void merge(Writer writer, Git repo, String name, String sourcePrefix, String target,
             String branchType, MergePolicy mergePolicy, String command) throws IOException,
             InterruptedCommandException, GitAPIException, IncorrectRepositoryStateException {
-        String source = sourcePrefix + "/" + name;
+        String source = getBugfixBranchName(target, name);
+        if (branchType.equals("feature")){
+            source = sourcePrefix + "/" + name;
+        }
+        
         boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
         boolean continueAfterConflict = previouslyFinishingThisFeature(repo.getRepository().getDirectory().getParent(),

@@ -90,7 +90,7 @@ public class BugfixStart extends Command {
             startPoint = InputsUtils.askUser(listBranches, defaultValue);
         }
 
-        String bugBranchName = getBugfixBranchName(startPoint, bugName);
+        String bugBranchName = GitUtils.getBugfixBranchName(startPoint, bugName);
         boolean hasRemote = GitUtils.hasRemote("origin", repo.getRepository());
 
         // Test if such a branch exists locally:
@@ -146,21 +146,6 @@ public class BugfixStart extends Command {
         // TODO use coming bugfix-push command constant
         // writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
         // + "bugfix-push" + " " + bugName);
-    }
-
-    protected String getBugfixBranchName(String startPoint, String bugName) {
-        String toReturn = GitConfiguration.getInstance().get("bugfixPrefix");
-        toReturn += "/" + extractRootFromBranchName(startPoint);
-        toReturn += "/" + bugName;
-        return toReturn;
-    }
-
-    protected String extractRootFromBranchName(String branchName) {
-        if (branchName.startsWith(GitConfiguration.getInstance().get("maintenanceprefix"))) {
-            return branchName.substring(GitConfiguration.getInstance().get("maintenanceprefix").length() + 1);
-        } else {
-            return branchName;
-        }
     }
 
 }
