@@ -53,24 +53,28 @@ public class FeatureFinish extends Command {
         }
         featureName = args[1];
 
+        if (args.length >= 3) {
+            mergePolicy = parseMergePolicy(args[2]);
+        } else {
+            mergePolicy = MergePolicy.valueOf(GitConfiguration.getInstance().get("finishmergemode").toUpperCase());
+        }
+
+        return this;
+    }
+
+    protected MergePolicy parseMergePolicy(String arg) throws IllegalCommandArgumentException {
         try {
-            if (args.length >= 3) {
-                mergePolicy = MergePolicy.valueOf(args[2].toUpperCase());
-            } else {
-                mergePolicy = MergePolicy.valueOf(GitConfiguration.getInstance().get("finishmergemode").toUpperCase());
-            }
+            return MergePolicy.valueOf(arg.toUpperCase());
         } catch (IllegalArgumentException e) {
             StringBuilder sb = new StringBuilder();
 
-            sb.append("Unknown merge policy '" + args[2] + "'");
+            sb.append("Unknown merge policy '" + arg + "'");
             sb.append("Availables merge policy are:");
             for (MergePolicy current : MergePolicy.values()) {
                 sb.append(" - " + current.name().toLowerCase());
             }
             throw new IllegalCommandArgumentException(sb.toString());
         }
-
-        return this;
     }
 
     @Override
