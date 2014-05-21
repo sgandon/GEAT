@@ -64,7 +64,10 @@ public class BugfixFinish extends FeatureFinish {
             if (target == null) {
                 try {
                     target = guessTarget();
-                } catch (IOException | GitAPIException e) {
+                } catch (GitAPIException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
                     e.printStackTrace();
                     throw new RuntimeException(e);
                 }
@@ -74,7 +77,10 @@ public class BugfixFinish extends FeatureFinish {
         if (args.length == 2) {
             try {
                 target = guessTarget();
-            } catch (IOException | GitAPIException e) {
+            } catch (GitAPIException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
