@@ -69,7 +69,6 @@ public class FeatureFinishTest {
 
         // Call our command:
         FeatureFinish command = new FeatureFinish();
-        command.setWorkingDir(file1.getParent());
         command.setFeatureName("feature1");
         command.setMergePolicy(MergePolicy.REBASE);
         command.run();
@@ -86,7 +85,6 @@ public class FeatureFinishTest {
     private FeatureFinish createCommandInstance() throws GitAPIException, IOException {
         Git git = JUnitUtils.createTempRepo();
         JUnitUtils.createInitialCommit(git, "file1");
-        return (FeatureFinish) CommandsRegistry.INSTANCE.getCommand(FeatureFinish.NAME).setWorkingDir(
-                git.getRepository().getDirectory().getParent());
+        return (FeatureFinish) CommandsRegistry.INSTANCE.getCommand(FeatureFinish.NAME);
     }
 }

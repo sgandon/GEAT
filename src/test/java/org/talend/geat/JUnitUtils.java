@@ -12,6 +12,7 @@ public class JUnitUtils {
 
     public static Git createTempRepo() throws GitAPIException, IOException {
         File tempDir = Files.createTempDir();
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
         Git.init().setDirectory(tempDir).call();
         Git git = Git.open(tempDir);
         return git;

@@ -19,21 +19,22 @@ public class GitConfigurationTest {
 
     // @Test
     public void testNonInit() throws GitAPIException {
-        thrown.expect(RuntimeException.class);
-        thrown.expectMessage("Configuration not set");
+        thrown.expect(IllegalStateException.class);
 
         File tempDir = Files.createTempDir();
 
-        Git.init().setDirectory(tempDir).call();
-        GitConfiguration.getInstance().get("test");
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
+
+        Assert.assertNull(GitConfiguration.getInstance().get("test"));
     }
 
     @Test
     public void testInit() throws IOException, GitAPIException {
         File tempDir = Files.createTempDir();
 
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
+
         Git.init().setDirectory(tempDir).call();
-        GitConfiguration.setInstance(tempDir.getAbsolutePath());
 
         Assert.assertNull(GitConfiguration.getInstance().get("test"));
         Assert.assertEquals("squash", GitConfiguration.getInstance().get("finishmergemode"));

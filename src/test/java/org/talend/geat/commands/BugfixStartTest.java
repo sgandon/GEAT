@@ -57,8 +57,8 @@ public class BugfixStartTest {
         JUnitUtils.createInitialCommit(git, "file1");
         Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/master/tagada"));
         CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME)
-                .parseArgs(new String[] { BugfixStart.NAME, "tagada", "master" })
-                .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
+                .parseArgs(new String[] { BugfixStart.NAME, "tagada", "master" }).setWriter(new DoNothingWriter())
+                .run();
         Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/master/tagada"));
     }
 
@@ -71,7 +71,7 @@ public class BugfixStartTest {
         Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/1.0/tagada"));
         CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME)
                 .parseArgs(new String[] { BugfixStart.NAME, "tagada", "maintenance/1.0" })
-                .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
+                .setWriter(new DoNothingWriter()).run();
         Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/1.0/tagada"));
 
         Assert.assertEquals("maintenance/1.0", GitConfiguration.getInstance().get("bugfixStartPoint"));
@@ -89,8 +89,8 @@ public class BugfixStartTest {
         Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/master/tagada"));
 
         CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME)
-                .parseArgs(new String[] { BugfixStart.NAME, "tagada", "master" })
-                .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
+                .parseArgs(new String[] { BugfixStart.NAME, "tagada", "master" }).setWriter(new DoNothingWriter())
+                .run();
     }
 
 }

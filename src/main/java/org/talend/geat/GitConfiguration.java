@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
+import org.talend.geat.SanityCheck.CheckLevel;
+import org.talend.geat.exception.IncorrectRepositoryStateException;
 
 /**
  * Used to interact with git config.
@@ -18,27 +20,33 @@ import org.eclipse.jgit.lib.StoredConfig;
  */
 public class GitConfiguration {
 
-    public static final String   CONFIG_PREFIX             = "geat";
+    public static final String      CONFIG_PREFIX = "geat";
 
     private static GitConfiguration singleton;
 
-    private StoredConfig         config;
-
-    public static void setInstance(String workingDir) throws IOException {
-        if (singleton == null) {
-            singleton = new GitConfiguration();
-            Git repo = Git.open(new File(workingDir));
-            singleton.config = repo.getRepository().getConfig();
-            singleton.setDefaultValues();
-        }
-    }
+    private StoredConfig            config;
 
     public static GitConfiguration getInstance() {
         if (singleton == null) {
-            throw new RuntimeException("Configuration not set");
-        } else {
-            return singleton;
+            try {
+                SanityCheck.check(CheckLevel.GIT_REPO_ONLY);
+            } catch (IncorrectRepositoryStateException e) {
+                throw new IllegalStateException("Cannot read configuration (cause:" + e.getMessage() + ")");
+            }
+
+            String workingDir = System.getProperty("user.dir");
+            File workingDirFile = new File(workingDir);
+
+            try {
+                Git repo = Git.open(workingDirFile);
+                singleton = new GitConfiguration();
+                singleton.config = repo.getRepository().getConfig();
+                singleton.setDefaultValues();
+            } catch (IOException e) {
+                // Should not occurs (SanityCheck bellow)
+            }
         }
+        return singleton;
     }
 
     private static final Map<String, String> defaultValues = new HashMap<String, String>();

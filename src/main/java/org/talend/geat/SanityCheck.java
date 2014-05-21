@@ -24,7 +24,8 @@ public class SanityCheck {
         NO_UNCOMMITTED_CHANGES; // in addition to GIT_REPO_ONLY, also checks that there are now uncommitted changes
     }
 
-    public static void check(String workingDir, CheckLevel checkLevel) throws IncorrectRepositoryStateException {
+    public static void check(CheckLevel checkLevel) throws IncorrectRepositoryStateException {
+        String workingDir = System.getProperty("user.dir");
         if (checkLevel == CheckLevel.NONE) {
             return;
         }

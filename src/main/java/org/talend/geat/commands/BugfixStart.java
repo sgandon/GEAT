@@ -75,7 +75,7 @@ public class BugfixStart extends Command {
 
     public void execute(Writer writer) throws IncorrectRepositoryStateException, IOException, GitAPIException {
         try {
-            SanityCheck.check(getWorkingDir(), CheckLevel.NO_UNCOMMITTED_CHANGES);
+            SanityCheck.check(CheckLevel.NO_UNCOMMITTED_CHANGES);
         } catch (IncorrectRepositoryStateException e) {
             if (!InputsUtils.askUserAsBoolean(e.getDetails() + "\n\nProceed anyway")) {
                 return;

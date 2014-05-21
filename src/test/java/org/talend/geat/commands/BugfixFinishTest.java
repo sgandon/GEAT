@@ -27,7 +27,6 @@ public class BugfixFinishTest {
         git.branchCreate().setName("bugfix/1.0/myBug").call();
 
         BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
-                .setWorkingDir(git.getRepository().getDirectory().getParent())
                 .parseArgs(new String[] { BugfixFinish.NAME, "myBug" });
         Assert.assertEquals("myBug", command.featureName);
         Assert.assertEquals(MergePolicy.SQUASH, command.mergePolicy);
@@ -41,7 +40,6 @@ public class BugfixFinishTest {
         git.branchCreate().setName("bugfix/1.0/myBug").call();
 
         BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
-                .setWorkingDir(git.getRepository().getDirectory().getParent())
                 .parseArgs(new String[] { BugfixFinish.NAME, "myBug", "rebase" });
         Assert.assertEquals("myBug", command.featureName);
         Assert.assertEquals(MergePolicy.REBASE, command.mergePolicy);
@@ -55,7 +53,6 @@ public class BugfixFinishTest {
         git.branchCreate().setName("bugfix/1.0/myBug").call();
 
         BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
-                .setWorkingDir(git.getRepository().getDirectory().getParent())
                 .parseArgs(new String[] { BugfixFinish.NAME, "myBug", "squash" });
         Assert.assertEquals("myBug", command.featureName);
         Assert.assertEquals(MergePolicy.SQUASH, command.mergePolicy);
@@ -70,7 +67,6 @@ public class BugfixFinishTest {
         git.branchCreate().setName("bugfix/2.0/myBug").call();
 
         BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
-                .setWorkingDir(git.getRepository().getDirectory().getParent())
                 .parseArgs(new String[] { BugfixFinish.NAME, "myBug", "2.0" });
         Assert.assertEquals("myBug", command.featureName);
         Assert.assertEquals(MergePolicy.SQUASH, command.mergePolicy);
@@ -85,7 +81,6 @@ public class BugfixFinishTest {
         git.branchCreate().setName("bugfix/2.0/myBug").call();
 
         BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
-                .setWorkingDir(git.getRepository().getDirectory().getParent())
                 .parseArgs(new String[] { BugfixFinish.NAME, "myBug", "2.0", "rebase" });
         Assert.assertEquals("myBug", command.featureName);
         Assert.assertEquals(MergePolicy.REBASE, command.mergePolicy);
@@ -100,7 +95,6 @@ public class BugfixFinishTest {
         git.branchCreate().setName("bugfix/1.0/myBug").call();
 
         BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
-                .setWorkingDir(git.getRepository().getDirectory().getParent())
                 .parseArgs(new String[] { BugfixFinish.NAME, "myBug", "master", "rebase" });
         Assert.assertEquals("myBug", command.featureName);
         Assert.assertEquals(MergePolicy.REBASE, command.mergePolicy);
@@ -114,7 +108,6 @@ public class BugfixFinishTest {
         git.branchCreate().setName("bugfix/master/myBug").call();
 
         BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
-                .setWorkingDir(git.getRepository().getDirectory().getParent())
                 .parseArgs(new String[] { BugfixFinish.NAME, "myBug", "rebase" });
         Assert.assertEquals("myBug", command.featureName);
         Assert.assertEquals(MergePolicy.REBASE, command.mergePolicy);
@@ -130,7 +123,6 @@ public class BugfixFinishTest {
         git.branchCreate().setName("bugfix/2.0/myBug").call();
 
         BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
-                .setWorkingDir(git.getRepository().getDirectory().getParent())
                 .parseArgs(new String[] { BugfixFinish.NAME, "myBug" });
     }
 
@@ -143,7 +135,6 @@ public class BugfixFinishTest {
         git.branchCreate().setName("bugfix/2.0/myBug").call();
 
         BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
-                .setWorkingDir(git.getRepository().getDirectory().getParent())
                 .parseArgs(new String[] { BugfixFinish.NAME, "myBug", "rebase" });
     }
 
@@ -154,7 +145,6 @@ public class BugfixFinishTest {
         JUnitUtils.createInitialCommit(git, "file1");
 
         BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
-                .setWorkingDir(git.getRepository().getDirectory().getParent())
                 .parseArgs(new String[] { BugfixFinish.NAME, "myBug", "rebase" });
     }
 
@@ -211,7 +201,6 @@ public class BugfixFinishTest {
 
         // Call our command:
         BugfixFinish command = new BugfixFinish();
-        command.setWorkingDir(file1.getParent());
         command.setFeatureName("myBug");
         command.setMergePolicy(MergePolicy.REBASE);
         command.setTarget("master");
@@ -265,7 +254,6 @@ public class BugfixFinishTest {
 
         // Call our command:
         BugfixFinish command = new BugfixFinish();
-        command.setWorkingDir(file1.getParent());
         command.setFeatureName("myBug");
         command.setMergePolicy(MergePolicy.REBASE);
         command.setTarget("maintenance/1.0");
