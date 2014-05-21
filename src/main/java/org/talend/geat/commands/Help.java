@@ -2,7 +2,6 @@ package org.talend.geat.commands;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Map.Entry;
 
 import org.talend.geat.SanityCheck.CheckLevel;
 
@@ -24,8 +23,8 @@ public class Help extends Command {
 
     public void execute(Writer writer) throws IOException {
         writer.write("Available commands are:");
-        for (Entry<String, Command> command : CommandsRegistry.INSTANCE.getCommands().entrySet()) {
-            writer.write(" - " + command.getKey() + " - " + command.getValue().getDescription());
+        for (String key : CommandsRegistry.INSTANCE.orderedCommands) {
+            writer.write(" - " + key + " - " + CommandsRegistry.INSTANCE.getCommand(key).getDescription());
         }
     }
 
