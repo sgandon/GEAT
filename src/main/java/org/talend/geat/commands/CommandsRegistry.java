@@ -38,6 +38,7 @@ public class CommandsRegistry {
         commands.put(FeaturePush.NAME, new FeaturePush());
         commands.put(FeaturePull.NAME, new FeaturePull());
         commands.put(BugfixStart.NAME, new BugfixStart());
+        commands.put(BugfixFinish.NAME, new BugfixFinish());
 
         orderedCommands.add(Help.NAME);
         orderedCommands.add(Version.NAME);
@@ -46,6 +47,7 @@ public class CommandsRegistry {
         orderedCommands.add(FeaturePush.NAME);
         orderedCommands.add(FeaturePull.NAME);
         orderedCommands.add(BugfixStart.NAME);
+        orderedCommands.add(BugfixFinish.NAME);
     }
 
     protected Map<String, Command> getCommands() {

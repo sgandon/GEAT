@@ -275,4 +275,16 @@ public class GitUtilsTest {
         } catch (NotRemoteException e) {
         }
     }
+
+    @Test
+    public void testExtractRootFromBranchName() {
+        Assert.assertEquals("master", GitUtils.extractRootFromBranchName("master"));
+        Assert.assertEquals("5.4", GitUtils.extractRootFromBranchName("maintenance/5.4"));
+    }
+
+    @Test
+    public void testGetBugfixBranchName() {
+        Assert.assertEquals("bugfix/master/TDI-12000", GitUtils.getBugfixBranchName("master", "TDI-12000"));
+        Assert.assertEquals("bugfix/5.4/TDI-12000", GitUtils.getBugfixBranchName("maintenance/5.4", "TDI-12000"));
+    }
 }
