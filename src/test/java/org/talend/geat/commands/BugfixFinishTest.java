@@ -1,5 +1,6 @@
 package org.talend.geat.commands;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.jgit.api.Git;
@@ -8,8 +9,11 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.talend.geat.GitUtils;
 import org.talend.geat.JUnitUtils;
 import org.talend.geat.exception.IllegalCommandArgumentException;
+import org.talend.geat.exception.IncorrectRepositoryStateException;
+import org.talend.geat.exception.InterruptedCommandException;
 
 public class BugfixFinishTest {
 
@@ -89,6 +93,35 @@ public class BugfixFinishTest {
     }
 
     @Test
+    public void testParseArgsOkMaster1() throws IllegalCommandArgumentException, GitAPIException, IOException {
+        Git git = JUnitUtils.createTempRepo();
+        JUnitUtils.createInitialCommit(git, "file1");
+        git.branchCreate().setName("bugfix/master/myBug").call();
+        git.branchCreate().setName("bugfix/1.0/myBug").call();
+
+        BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
+                .setWorkingDir(git.getRepository().getDirectory().getParent())
+                .parseArgs(new String[] { BugfixFinish.NAME, "myBug", "master", "rebase" });
+        Assert.assertEquals("myBug", command.featureName);
+        Assert.assertEquals(MergePolicy.REBASE, command.mergePolicy);
+        Assert.assertEquals("master", command.target);
+    }
+
+    @Test
+    public void testParseArgsOkMaster2() throws IllegalCommandArgumentException, GitAPIException, IOException {
+        Git git = JUnitUtils.createTempRepo();
+        JUnitUtils.createInitialCommit(git, "file1");
+        git.branchCreate().setName("bugfix/master/myBug").call();
+
+        BugfixFinish command = (BugfixFinish) CommandsRegistry.INSTANCE.getCommand(BugfixFinish.NAME)
+                .setWorkingDir(git.getRepository().getDirectory().getParent())
+                .parseArgs(new String[] { BugfixFinish.NAME, "myBug", "rebase" });
+        Assert.assertEquals("myBug", command.featureName);
+        Assert.assertEquals(MergePolicy.REBASE, command.mergePolicy);
+        Assert.assertEquals("master", command.target);
+    }
+
+    @Test
     public void testParseArgsError1() throws IllegalCommandArgumentException, GitAPIException, IOException {
         thrown.expect(IllegalCommandArgumentException.class);
         Git git = JUnitUtils.createTempRepo();
@@ -148,6 +181,108 @@ public class BugfixFinishTest {
         thrown.expect(IllegalCommandArgumentException.class);
         BugfixFinish com = new BugfixFinish();
         com.extractStartpointFromBugName("TDI-12000");
+    }
+
+    @Test
+    public void testExecuteBasicMaster() throws GitAPIException, IOException, IncorrectRepositoryStateException,
+            InterruptedCommandException {
+        // Prepare:
+        Git git = JUnitUtils.createTempRepo();
+
+        File file1 = JUnitUtils.createInitialCommit(git, "file1");
+
+        git.branchCreate().setName("bugfix/master/myBug").call();
+        File file4 = JUnitUtils.createInitialCommit(git, "file4");
+        git.checkout().setName("bugfix/master/myBug").call();
+        File file2 = JUnitUtils.createInitialCommit(git, "file2");
+        File file3 = JUnitUtils.createInitialCommit(git, "file3");
+
+        // Test prepare:
+        Assert.assertTrue(file1.exists());
+        Assert.assertTrue(file2.exists());
+        Assert.assertTrue(file3.exists());
+        Assert.assertFalse(file4.exists());
+
+        git.checkout().setName("master").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertFalse(file2.exists());
+        Assert.assertFalse(file3.exists());
+        Assert.assertTrue(file4.exists());
+
+        // Call our command:
+        BugfixFinish command = new BugfixFinish();
+        command.setWorkingDir(file1.getParent());
+        command.setFeatureName("myBug");
+        command.setMergePolicy(MergePolicy.REBASE);
+        command.setTarget("master");
+        command.run();
+
+        // Test after:
+        git.checkout().setName("master").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertTrue(file2.exists());
+        Assert.assertTrue(file3.exists());
+        Assert.assertTrue(file4.exists());
+        Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/master/myBug"));
+    }
+
+    @Test
+    public void testExecuteBasicMaint() throws GitAPIException, IOException, IncorrectRepositoryStateException,
+            InterruptedCommandException {
+        // Prepare:
+        Git git = JUnitUtils.createTempRepo();
+
+        File file1 = JUnitUtils.createInitialCommit(git, "file1");
+
+        git.branchCreate().setName("maintenance/1.0").call();
+        File file2 = JUnitUtils.createInitialCommit(git, "file2");
+
+        git.checkout().setName("maintenance/1.0").call();
+        File file3 = JUnitUtils.createInitialCommit(git, "file3");
+
+        git.branchCreate().setName("bugfix/1.0/myBug").call();
+        git.checkout().setName("bugfix/1.0/myBug").call();
+        File file4 = JUnitUtils.createInitialCommit(git, "file4");
+
+        // Test prepare:
+        git.checkout().setName("master").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertTrue(file2.exists());
+        Assert.assertFalse(file3.exists());
+        Assert.assertFalse(file4.exists());
+
+        git.checkout().setName("maintenance/1.0").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertFalse(file2.exists());
+        Assert.assertTrue(file3.exists());
+        Assert.assertFalse(file4.exists());
+
+        git.checkout().setName("bugfix/1.0/myBug").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertFalse(file2.exists());
+        Assert.assertTrue(file3.exists());
+        Assert.assertTrue(file4.exists());
+
+        // Call our command:
+        BugfixFinish command = new BugfixFinish();
+        command.setWorkingDir(file1.getParent());
+        command.setFeatureName("myBug");
+        command.setMergePolicy(MergePolicy.REBASE);
+        command.setTarget("maintenance/1.0");
+        command.run();
+
+        // Test after:
+        git.checkout().setName("master").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertTrue(file2.exists());
+        Assert.assertFalse(file3.exists());
+        Assert.assertFalse(file4.exists());
+        git.checkout().setName("maintenance/1.0").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertFalse(file2.exists());
+        Assert.assertTrue(file3.exists());
+        Assert.assertTrue(file4.exists());
+        Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/0.1/myBug"));
     }
 
 }

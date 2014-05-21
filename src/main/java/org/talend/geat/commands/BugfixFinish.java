@@ -125,4 +125,12 @@ public class BugfixFinish extends FeatureFinish {
         return base;
     }
 
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
 }
