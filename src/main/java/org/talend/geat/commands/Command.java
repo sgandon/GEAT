@@ -5,7 +5,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.talend.geat.GitConfiguration;
 import org.talend.geat.SanityCheck;
 import org.talend.geat.SanityCheck.CheckLevel;
 import org.talend.geat.exception.IllegalCommandArgumentException;
@@ -22,14 +21,10 @@ public abstract class Command {
 
     private boolean callable = true;
 
-    private String workingDir;
-
     private Writer  writer   = new AutoFlushLineWriter(new OutputStreamWriter(System.out));
 
     public Command() {
         super();
-
-        setWorkingDir(System.getProperty("user.dir"));
     }
 
     /**
@@ -77,7 +72,7 @@ public abstract class Command {
             InterruptedCommandException {
         checkCallable();
 
-        SanityCheck.check(workingDir, getCheckLevel());
+        SanityCheck.check(getCheckLevel());
 
         callable = false;
 
@@ -90,19 +85,8 @@ public abstract class Command {
         }
     }
 
-    public Command setWorkingDir(String path) {
-        this.workingDir = path;
-        try {
-            GitConfiguration.setInstance(getWorkingDir());
-        } catch (IOException e) {
-            // TODO Manage this cleaner
-            e.printStackTrace();
-        }
-        return this;
-    }
-
     protected String getWorkingDir() {
-        return workingDir;
+        return System.getProperty("user.dir");
     }
 
     public Writer getWriter() {

@@ -20,46 +20,57 @@ public class SanityCheckTest {
 
     @Test
     public void testCheckNone1() throws GitAPIException, IncorrectRepositoryStateException {
-        SanityCheck.check("/one/folder/that/should/not/exists", CheckLevel.NONE);
+        System.setProperty("user.dir", "/one/folder/that/should/not/exists");
+        SanityCheck.check(CheckLevel.NONE);
     }
 
     @Test
     public void testCheckNone2() throws GitAPIException, IncorrectRepositoryStateException {
         File tempDir = Files.createTempDir();
-        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NONE);
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
+
+        SanityCheck.check(CheckLevel.NONE);
     }
 
     @Test
     public void testCheckNone3() throws GitAPIException, IncorrectRepositoryStateException {
         File tempDir = Files.createTempDir();
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
+
         Git.init().setDirectory(tempDir).call();
-        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NONE);
+        SanityCheck.check(CheckLevel.NONE);
     }
 
     @Test
     public void testCheckGitRepoOnlyNonExistingFolder() throws IncorrectRepositoryStateException {
         thrown.expect(IncorrectRepositoryStateException.class);
-        SanityCheck.check("/one/folder/that/should/not/exists", CheckLevel.GIT_REPO_ONLY);
+        System.setProperty("user.dir", "/one/folder/that/should/not/exists");
+
+        SanityCheck.check(CheckLevel.GIT_REPO_ONLY);
     }
 
     @Test
     public void testCheckGitRepoOnlyExistingFolder() throws IncorrectRepositoryStateException {
         thrown.expect(IncorrectRepositoryStateException.class);
         File tempDir = Files.createTempDir();
-        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY);
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
+
+        SanityCheck.check(CheckLevel.GIT_REPO_ONLY);
     }
 
     @Test
     public void testCheckGitRepoOnlyGitRepo() throws GitAPIException, IncorrectRepositoryStateException {
         File tempDir = Files.createTempDir();
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
         Git.init().setDirectory(tempDir).call();
-        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY);
+        SanityCheck.check(CheckLevel.GIT_REPO_ONLY);
     }
 
     @Test
     public void testCheckUntracked1() throws GitAPIException, IOException, IncorrectRepositoryStateException {
         thrown.expect(IncorrectRepositoryStateException.class);
         File tempDir = Files.createTempDir();
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
 
         Git.init().setDirectory(tempDir).call();
 
@@ -68,12 +79,13 @@ public class SanityCheckTest {
         child.createNewFile();
         repo.add().addFilepattern("child").call();
 
-        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NO_UNCOMMITTED_CHANGES);
+        SanityCheck.check(CheckLevel.NO_UNCOMMITTED_CHANGES);
     }
 
     @Test
     public void testCheckUntracked2() throws GitAPIException, IOException, IncorrectRepositoryStateException {
         File tempDir = Files.createTempDir();
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
 
         Git.init().setDirectory(tempDir).call();
 
@@ -82,12 +94,13 @@ public class SanityCheckTest {
         child.createNewFile();
         repo.add().addFilepattern("child").call();
 
-        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.GIT_REPO_ONLY);
+        SanityCheck.check(CheckLevel.GIT_REPO_ONLY);
     }
 
     @Test
     public void testCheckUntracked3() throws GitAPIException, IOException, IncorrectRepositoryStateException {
         File tempDir = Files.createTempDir();
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
 
         Git.init().setDirectory(tempDir).call();
 
@@ -97,14 +110,15 @@ public class SanityCheckTest {
         repo.add().addFilepattern("child").call();
 
         repo.commit().setMessage("Initial commit").call();
-        SanityCheck.check(tempDir.getAbsolutePath(), CheckLevel.NO_UNCOMMITTED_CHANGES);
+        SanityCheck.check(CheckLevel.NO_UNCOMMITTED_CHANGES);
     }
 
     @Test
     public void testCheckUntrackedWithUtils() throws GitAPIException, IOException, IncorrectRepositoryStateException {
         Git git = JUnitUtils.createTempRepo();
+        System.setProperty("user.dir", git.getRepository().getDirectory().getParent());
         JUnitUtils.createInitialCommit(git, "file1");
-        SanityCheck.check(git.getRepository().getDirectory().getParent(), CheckLevel.GIT_REPO_ONLY);
-        SanityCheck.check(git.getRepository().getDirectory().getParent(), CheckLevel.NO_UNCOMMITTED_CHANGES);
+        SanityCheck.check(CheckLevel.GIT_REPO_ONLY);
+        SanityCheck.check(CheckLevel.NO_UNCOMMITTED_CHANGES);
     }
 }

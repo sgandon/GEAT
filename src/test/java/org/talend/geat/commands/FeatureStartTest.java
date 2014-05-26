@@ -47,7 +47,7 @@ public class FeatureStartTest {
         JUnitUtils.createInitialCommit(git, "file1");
         Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "feature/tagada"));
         CommandsRegistry.INSTANCE.getCommand(FeatureStart.NAME).parseArgs(new String[] { FeatureStart.NAME, "tagada" })
-                .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
+                .setWriter(new DoNothingWriter()).run();
         Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "feature/tagada"));
     }
 
@@ -63,7 +63,7 @@ public class FeatureStartTest {
         Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "feature/tagada"));
 
         CommandsRegistry.INSTANCE.getCommand(FeatureStart.NAME).parseArgs(new String[] { FeatureStart.NAME, "tagada" })
-                .setWorkingDir(git.getRepository().getDirectory().getParent()).setWriter(new DoNothingWriter()).run();
+                .setWriter(new DoNothingWriter()).run();
     }
 
 }

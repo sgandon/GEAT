@@ -25,19 +25,15 @@ import com.jcraft.jsch.UserInfo;
 public class GeatMain {
 
     public static void main(String[] args) {
-        String workingDir = System.getProperty("user.dir");
-
         if (args.length == 1 && args[0].equals("dev")) {
             args = new String[] { "help" };
             args = new String[] { "feature-start", "tagada" };
             args = new String[] { "feature-finish", "config" };
-            // workingDir = "/tmp/test";
+            System.setProperty("user.dir", "/tmp/test");
         }
 
         try {
-            GitConfiguration.setInstance(workingDir);
-
-            if (GitUtils.hasRemote("origin", Git.open(new File(workingDir)).getRepository())) {
+            if (GitUtils.hasRemote("origin", Git.open(new File(System.getProperty("user.dir"))).getRepository())) {
                 initSsh();
             }
         } catch (IOException e) {

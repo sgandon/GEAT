@@ -72,10 +72,11 @@ public class CommandTest {
 
     private DoNothingCommand getDoNothingCommandInstance(boolean gitInit) throws GitAPIException {
         final File tempDir = Files.createTempDir();
+        System.setProperty("user.dir", tempDir.getAbsolutePath());
         if (gitInit) {
             Git.init().setDirectory(tempDir).call();
         }
-        return (DoNothingCommand) new DoNothingCommand().setWorkingDir(tempDir.getAbsolutePath()).setWriter(
+        return (DoNothingCommand) new DoNothingCommand().setWriter(
                 new DoNothingWriter());
     }
 
