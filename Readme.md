@@ -3,6 +3,8 @@ Tool make usage of git workflow easier.
 
 Workflow is defined [here](https://wiki.talend.com/pages/viewpage.action?pageId=7800031)
 
+![](https://travis-ci.org/smallet/GEAT.svg?branch=master)
+
 ## Basics
 #### Work on a new feature?
     geat feature-start TDI-28776-memoryLeak
