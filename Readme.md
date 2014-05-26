@@ -3,7 +3,9 @@ Tool make usage of git workflow easier.
 
 Workflow is defined [here](https://wiki.talend.com/pages/viewpage.action?pageId=7800031)
 
+<a href="https://travis-ci.org/smallet/GEAT/builds">
 ![](https://travis-ci.org/smallet/GEAT.svg?branch=master)
+</a>
 
 ## Basics
 #### Work on a new feature?
