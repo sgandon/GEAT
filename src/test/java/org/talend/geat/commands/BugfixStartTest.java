@@ -51,7 +51,7 @@ public class BugfixStartTest {
     }
 
     @Test
-    public void testExecuteBasic() throws GitAPIException, IOException, IllegalCommandArgumentException,
+    public void testExecuteMaster() throws GitAPIException, IOException, IllegalCommandArgumentException,
             IncorrectRepositoryStateException, InterruptedCommandException {
         Git git = JUnitUtils.createTempRepo();
         JUnitUtils.createInitialCommit(git, "file1");
@@ -60,6 +60,32 @@ public class BugfixStartTest {
                 .parseArgs(new String[] { BugfixStart.NAME, "tagada", "master" }).setWriter(new DoNothingWriter())
                 .run();
         Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/master/tagada"));
+    }
+
+    @Test
+    public void testExecuteMaintenance() throws GitAPIException, IOException, IllegalCommandArgumentException,
+            IncorrectRepositoryStateException, InterruptedCommandException {
+        Git git = JUnitUtils.createTempRepo();
+        JUnitUtils.createInitialCommit(git, "file1");
+        git.branchCreate().setName("maintenance/5.4").call();
+        Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/5.4/tagada"));
+        CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME)
+                .parseArgs(new String[] { BugfixStart.NAME, "tagada", "maintenance/5.4" })
+                .setWriter(new DoNothingWriter()).run();
+        Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/5.4/tagada"));
+    }
+
+    @Test
+    public void testExecuteRelease() throws GitAPIException, IOException, IllegalCommandArgumentException,
+            IncorrectRepositoryStateException, InterruptedCommandException {
+        Git git = JUnitUtils.createTempRepo();
+        JUnitUtils.createInitialCommit(git, "file1");
+        git.branchCreate().setName("release/5.4.2").call();
+        Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/5.4.2/tagada"));
+        CommandsRegistry.INSTANCE.getCommand(BugfixStart.NAME)
+                .parseArgs(new String[] { BugfixStart.NAME, "tagada", "release/5.4.2" })
+                .setWriter(new DoNothingWriter()).run();
+        Assert.assertTrue(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/5.4.2/tagada"));
     }
 
     @Test

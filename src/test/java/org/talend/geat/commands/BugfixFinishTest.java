@@ -273,4 +273,61 @@ public class BugfixFinishTest {
         Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/0.1/myBug"));
     }
 
+    @Test
+    public void testExecuteBasicRelease() throws GitAPIException, IOException, IncorrectRepositoryStateException,
+            InterruptedCommandException {
+        // Prepare:
+        Git git = JUnitUtils.createTempRepo();
+
+        File file1 = JUnitUtils.createInitialCommit(git, "file1");
+
+        git.branchCreate().setName("release/5.4.2").call();
+        File file2 = JUnitUtils.createInitialCommit(git, "file2");
+
+        git.checkout().setName("release/5.4.2").call();
+        File file3 = JUnitUtils.createInitialCommit(git, "file3");
+
+        git.branchCreate().setName("bugfix/5.4.2/myBug").call();
+        git.checkout().setName("bugfix/5.4.2/myBug").call();
+        File file4 = JUnitUtils.createInitialCommit(git, "file4");
+
+        // Test prepare:
+        git.checkout().setName("master").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertTrue(file2.exists());
+        Assert.assertFalse(file3.exists());
+        Assert.assertFalse(file4.exists());
+
+        git.checkout().setName("release/5.4.2").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertFalse(file2.exists());
+        Assert.assertTrue(file3.exists());
+        Assert.assertFalse(file4.exists());
+
+        git.checkout().setName("bugfix/5.4.2/myBug").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertFalse(file2.exists());
+        Assert.assertTrue(file3.exists());
+        Assert.assertTrue(file4.exists());
+
+        // Call our command:
+        BugfixFinish command = new BugfixFinish();
+        command.setFeatureName("myBug");
+        command.setMergePolicy(MergePolicy.REBASE);
+        command.setTarget("release/5.4.2");
+        command.run();
+
+        // Test after:
+        git.checkout().setName("master").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertTrue(file2.exists());
+        Assert.assertFalse(file3.exists());
+        Assert.assertFalse(file4.exists());
+        git.checkout().setName("release/5.4.2").call();
+        Assert.assertTrue(file1.exists());
+        Assert.assertFalse(file2.exists());
+        Assert.assertTrue(file3.exists());
+        Assert.assertTrue(file4.exists());
+        Assert.assertFalse(GitUtils.hasLocalBranch(git.getRepository(), "bugfix/5.4.2/myBug"));
+    }
 }

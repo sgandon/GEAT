@@ -145,6 +145,8 @@ public class GitUtils {
     protected static String extractRootFromBranchName(String branchName) {
         if (branchName.startsWith(GitConfiguration.getInstance().get("maintenanceprefix"))) {
             return branchName.substring(GitConfiguration.getInstance().get("maintenanceprefix").length() + 1);
+        } else if (branchName.startsWith(GitConfiguration.getInstance().get("releasePrefix"))) {
+            return branchName.substring(GitConfiguration.getInstance().get("releasePrefix").length() + 1);
         } else {
             return branchName;
         }

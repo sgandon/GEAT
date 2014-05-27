@@ -85,7 +85,7 @@ public class BugfixStart extends Command {
         Git repo = Git.open(new File(getWorkingDir()));
 
         if (startPoint == null) {
-            List<String> listBranches = GitUtils.listBranches(repo.getRepository(), "master|maintenance/.*");
+            List<String> listBranches = GitUtils.listBranches(repo.getRepository(), "master|maintenance/.*|release/.*");
             String defaultValue = GitConfiguration.getInstance().get("bugfixStartPoint");
             startPoint = InputsUtils.askUser(listBranches, defaultValue);
         }

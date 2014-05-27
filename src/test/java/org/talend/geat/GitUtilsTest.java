@@ -280,11 +280,13 @@ public class GitUtilsTest {
     public void testExtractRootFromBranchName() {
         Assert.assertEquals("master", GitUtils.extractRootFromBranchName("master"));
         Assert.assertEquals("5.4", GitUtils.extractRootFromBranchName("maintenance/5.4"));
+        Assert.assertEquals("5.4.2", GitUtils.extractRootFromBranchName("release/5.4.2"));
     }
 
     @Test
     public void testGetBugfixBranchName() {
         Assert.assertEquals("bugfix/master/TDI-12000", GitUtils.getBugfixBranchName("master", "TDI-12000"));
         Assert.assertEquals("bugfix/5.4/TDI-12000", GitUtils.getBugfixBranchName("maintenance/5.4", "TDI-12000"));
+        Assert.assertEquals("bugfix/5.4.2/TDI-12000", GitUtils.getBugfixBranchName("release/5.4.2", "TDI-12000"));
     }
 }
