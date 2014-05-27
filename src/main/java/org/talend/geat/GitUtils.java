@@ -241,7 +241,7 @@ public class GitUtils {
         if (hasRemote) {
             writer.write(" - New commits from 'origin/" + source + "' has been pulled");
         }
-        writer.write(" - The " + branchType + " branch '" + target + "' was rebased into '" + source + "'");
+        writer.write(" - The " + branchType + " branch '" + source + "' was rebased into '" + target + "'");
         writer.write(" - " + branchType + " branch '" + source + "' has been deleted");
         writer.write(" - You are now on branch '" + target + "'");
         if (hasRemote) {
