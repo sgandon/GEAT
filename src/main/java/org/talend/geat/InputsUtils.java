@@ -18,6 +18,10 @@ public class InputsUtils {
     }
 
     public static String askUser(List<String> choices, String defaultValue) {
+        if (choices.size() == 1) {
+            return choices.get(0);
+        }
+
         Collections.sort(choices);
 
         Map<Integer, String> choicesMap = new TreeMap<Integer, String>();
