@@ -23,6 +23,7 @@ Create a new remote branch and set local branch to track it
 ### Work on a new bugfix?
     geat bugfix-start TDI-28776-memoryLeak
 Create a local branch bugfix/5.4/TDI-28776-memoryLeak based on maintenance/5.4
+
 Startpoint (branch to create this branch on) will be asked if no specified
 
 ### Finish your bugfix?
@@ -44,7 +45,7 @@ to prevent prompt, you can specify startpoint at call:
     geat bugfix-start TDI-28776-memoryLeak 5.4
 
 ### Few version of a bugfix
-If you have few bugfix branches for the same issue (like bugfix/5.4/TDI-28776-memoryLeak and bugfix/5.4/TDI-28776-memoryLeak for example), you need to specify the target when finish:
+If you have few bugfix branches for the same issue (like bugfix/5.3/TDI-28776-memoryLeak and bugfix/5.4/TDI-28776-memoryLeak for example), you need to specify the target when finish:
 
     geat bugfix-finish TDI-28776-memoryLeak 5.4
     
