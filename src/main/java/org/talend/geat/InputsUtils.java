@@ -22,7 +22,7 @@ public class InputsUtils {
 
         Map<Integer, String> choicesMap = new TreeMap<Integer, String>();
 
-        int defaultValueIndex = 0;
+        Integer defaultValueIndex = null;
 
         int i = 1;
         String question = "";
@@ -64,7 +64,11 @@ public class InputsUtils {
     }
 
     public static int askUserAsInt(String question, Integer defaultValue) {
-        String answer = askUser(question, "" + defaultValue);
+        String defaultValueAsString = "" + defaultValue;
+        if (defaultValue == null) {
+            defaultValueAsString = null;
+        }
+        String answer = askUser(question, defaultValueAsString);
         return Integer.parseInt(answer);
     }
 
