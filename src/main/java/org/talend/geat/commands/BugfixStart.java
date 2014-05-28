@@ -141,7 +141,7 @@ public class BugfixStart extends Command {
         writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
                 + BugfixFinish.NAME + " " + bugName + " <policy>");
         writer.write("");
-        writer.write("To share this branch, use:");
+        // writer.write("To share this branch, use:");
         // writer.write("");
         // TODO use coming bugfix-push command constant
         // writer.write(Strings.repeat(" ", Configuration.INSTANCE.getAsInt("geat.indentForCommandTemplates")) + "geat "
