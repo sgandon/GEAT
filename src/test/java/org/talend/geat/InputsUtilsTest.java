@@ -14,7 +14,7 @@ public class InputsUtilsTest {
         List<String> choices = new ArrayList<String>();
         choices.add("a");
 
-        Assert.assertEquals("a", InputsUtils.askUser(choices, "tagada"));
+        Assert.assertEquals("a", InputsUtils.askUser("ah", choices, "tagada"));
     }
 
 }

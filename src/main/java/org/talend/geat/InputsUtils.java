@@ -17,7 +17,7 @@ public class InputsUtils {
         return askUser(question, "");
     }
 
-    public static String askUser(List<String> choices, String defaultValue) {
+    public static String askUser(String question, List<String> choices, String defaultValue) {
         if (choices.size() == 1) {
             return choices.get(0);
         }
@@ -29,7 +29,7 @@ public class InputsUtils {
         Integer defaultValueIndex = null;
 
         int i = 1;
-        String question = "";
+        question += "\n";
         for (String currentChoice : choices) {
             choicesMap.put(i, currentChoice);
             question += i + ") " + currentChoice + "\n";
