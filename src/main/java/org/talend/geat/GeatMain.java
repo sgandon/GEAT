@@ -76,7 +76,7 @@ public class GeatMain {
     private static void initSsh() {
         String sshPassphrase = GitConfiguration.getInstance().get("sshpassphrase");
         if (sshPassphrase == null) {
-            sshPassphrase = InputsUtils.askUser("SSH passphrase, leave empty to skip", null);
+            sshPassphrase = InputsUtils.askUser("SSH passphrase", "");
             if (InputsUtils.askUserAsBoolean("Do you want to save this passphrase in your local gitconfig file")) {
                 GitConfiguration.getInstance().set(GitConfiguration.CONFIG_PREFIX, "sshpassphrase", sshPassphrase);
             }
