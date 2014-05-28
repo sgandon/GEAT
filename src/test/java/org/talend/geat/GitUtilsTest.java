@@ -18,16 +18,9 @@ import com.google.common.io.Files;
 
 public class GitUtilsTest {
 
-    private Git createTempRepo() throws GitAPIException, IOException {
-        File tempDir = Files.createTempDir();
-        Git.init().setDirectory(tempDir).call();
-        Git git = Git.open(tempDir);
-        return git;
-    }
-
     @Test
     public void testListBranches() throws IOException, GitAPIException {
-        Git git = createTempRepo();
+        Git git = JUnitUtils.createTempRepo();
         createInitialCommit(git, "myFile");
 
         List<String> expected = new ArrayList<String>();
@@ -52,15 +45,15 @@ public class GitUtilsTest {
 
     @Test
     public void testHasRemoteBasic() throws IOException, GitAPIException {
-        Git git = createTempRepo();
+        Git git = JUnitUtils.createTempRepo();
 
         Assert.assertFalse(GitUtils.hasRemote("origin", git.getRepository()));
     }
 
     @Test
     public void testHasRemoteTrue() throws IOException, GitAPIException {
-        Git git = createTempRepo();
-        Git remote = createTempRepo();
+        Git git = JUnitUtils.createTempRepo();
+        Git remote = JUnitUtils.createTempRepo();
 
         Assert.assertFalse(GitUtils.hasRemote("origin", git.getRepository()));
 
@@ -73,7 +66,7 @@ public class GitUtilsTest {
 
     @Test
     public void testHasRemoteBranchBasic() throws IOException, GitAPIException {
-        Git git = createTempRepo();
+        Git git = JUnitUtils.createTempRepo();
 
         Assert.assertFalse(GitUtils.hasRemoteBranch(git.getRepository(), "theBranch"));
     }
@@ -89,8 +82,8 @@ public class GitUtilsTest {
     }
 
     private Git commonTestRemoteBranch(boolean branch) throws GitAPIException, IOException {
-        Git git = createTempRepo();
-        Git remote = createTempRepo();
+        Git git = JUnitUtils.createTempRepo();
+        Git remote = JUnitUtils.createTempRepo();
 
         Assert.assertFalse(GitUtils.hasRemote("origin", git.getRepository()));
         createInitialCommit(remote, "aFile");
@@ -114,7 +107,7 @@ public class GitUtilsTest {
 
     @Test
     public void testCallFetchWithLocal() throws GitAPIException, IOException, NotRemoteException {
-        Git remote = createTempRepo();
+        Git remote = JUnitUtils.createTempRepo();
         createInitialCommit(remote, "file1");
         remote.branchCreate().setName("theBranch").call();
 
@@ -142,7 +135,7 @@ public class GitUtilsTest {
 
     @Test
     public void testCallFetchNoLocal() throws GitAPIException, IOException, NotRemoteException {
-        Git remote = createTempRepo();
+        Git remote = JUnitUtils.createTempRepo();
         createInitialCommit(remote, "file1");
         remote.branchCreate().setName("theBranch").call();
 
@@ -170,7 +163,7 @@ public class GitUtilsTest {
 
     @Test
     public void testCallFetchWithLocalNoOtherBranches() throws GitAPIException, IOException, NotRemoteException {
-        Git remote = createTempRepo();
+        Git remote = JUnitUtils.createTempRepo();
         createInitialCommit(remote, "file1");
         remote.branchCreate().setName("theBranch").call();
         remote.branchCreate().setName("secondBranch").call();
@@ -222,7 +215,7 @@ public class GitUtilsTest {
 
     @Test
     public void testCallFetchNoLocalNoOtherBranches() throws GitAPIException, IOException, NotRemoteException {
-        Git remote = createTempRepo();
+        Git remote = JUnitUtils.createTempRepo();
         createInitialCommit(remote, "file1");
         remote.branchCreate().setName("theBranch").call();
 
@@ -259,7 +252,7 @@ public class GitUtilsTest {
 
     @Test
     public void testCallFetchNoRemote() throws GitAPIException, IOException {
-        Git remote = createTempRepo();
+        Git remote = JUnitUtils.createTempRepo();
         createInitialCommit(remote, "file1");
         remote.branchCreate().setName("theBranch").call();
 

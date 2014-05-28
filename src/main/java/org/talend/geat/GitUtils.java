@@ -236,6 +236,10 @@ public class GitUtils {
 
         // 4. Remove feature branch
         repo.branchDelete().setBranchNames(source).setForce(mergePolicy == MergePolicy.SQUASH).call();
+        if (hasRemote && hasRemoteBranch(repo.getRepository(), source)) {
+            RefSpec refSpec = new RefSpec().setSource(null).setDestination("refs/heads/" + source);
+            repo.push().setRefSpecs(refSpec).setRemote("origin").call();
+        }
 
         writer.write("Summary of actions:");
         if (hasRemote) {
