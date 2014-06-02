@@ -87,9 +87,9 @@ public class EntryPoint {
 
         DbUtils.executeQuery("DELETE FROM executions WHERE branch='" + branch + "' AND revision=" + timestamp);
 
-        DbUtils.executeQuery("INSERT INTO executions SET branch='" + branch + "', revision=" + timestamp + ", launch_date='"
-                + DateFormater.getInstance().format(new Date()) + "', status='Launched', log_files='"
-                + Misc.getOutputFolderPath(branch, timestamp) + "'");
+        DbUtils.executeQuery("INSERT INTO executions SET branch='" + branch + "', revision='" + timestamp
+                + "', launch_date='" + DateFormater.getInstance().format(new Date())
+                + "', status='Launched', log_files='" + Misc.getOutputFolderPath(branch, timestamp) + "'");
 
         try {
             Scripts.launch("preScripts", timestamp, branch);
@@ -142,8 +142,9 @@ public class EntryPoint {
             throws SQLException {
         StringBuffer sb = new StringBuffer();
         sb.append("UPDATE executions SET status='" + status + "'");
-        if (setEndDate)
+        if (setEndDate) {
             sb.append(", end_date='" + DateFormater.getInstance().format(new Date()) + "'");
+        }
         sb.append(" WHERE branch='" + branch + "' AND revision=" + timestamp);
         DbUtils.executeQuery(sb.toString());
     }

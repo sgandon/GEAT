@@ -82,7 +82,7 @@ SET character_set_client = utf8;
 CREATE TABLE `executions` (
   `id` int(11) NOT NULL auto_increment,
   `branch` varchar(50) NOT NULL,
-  `revision` int(11) NOT NULL,
+  `revision` varchar(50) NOT NULL,
   `launch_date` datetime NOT NULL,
   `status` varchar(250) default NULL,
   `log_files` varchar(250) default NULL,

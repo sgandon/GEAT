@@ -51,9 +51,9 @@ public class ArchiveResults {
 
         query = "INSERT INTO results_def SELECT r.moment, r.origin, r.description, ex.id id_exec, st.id id_status, j.id id_job "
                 + "FROM " + branchTable + " r, executions ex, jobs j, status st " + "WHERE ex.branch='" + branch
-                + "' AND ex.revision="
+                + "' AND ex.revision='"
                 + timestamp
-                + " AND r.job=j.name AND r.language=j.language AND r.substatus=st.sub_status";
+                + "' AND r.job=j.name AND r.language=j.language AND r.substatus=st.sub_status";
         DbUtils.executeQuery(query);
 
         // Log the non-treated status before drop the table:
