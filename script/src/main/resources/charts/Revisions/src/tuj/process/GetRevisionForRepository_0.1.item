@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="ASCII"?>
+<talendfile:ProcessType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" defaultContext="Default">
+  <context confirmationNeeded="false" name="Default">
+    <contextParameter comment="" name="output_file_path" prompt="FILENAME?" promptNeeded="false" type="id_String" value="/tmp/out.csv"/>
+    <contextParameter comment="" name="current_svn_dir" prompt="new1?" promptNeeded="false" type="id_String" value="/home/stephane/talend/repositories/tos_3_1"/>
+    <contextParameter comment="" name="svn_revision_entry_point" prompt="new1?" promptNeeded="false" type="id_String" value="33000"/>
+  </context>
+  <parameters>
+    <elementParameter field="DIRECTORY" name="COMP_DEFAULT_FILE_DIR" value="/home/stephane/talend/bin/30/TIS_EE-All-r19980-V3.0.1/workspace" contextMode="false"/>
+    <elementParameter field="CHECK" name="displaySubjobs" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="AUTHOR" value="Mallet, St&#xe9;phane" contextMode="false"/>
+    <elementParameter field="TEXT" name="STATUS" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="NAME" value="GetRevisionForRepository" contextMode="false"/>
+    <elementParameter field="TEXT" name="VERSION" value="0.1" contextMode="false"/>
+    <elementParameter field="TEXT" name="PURPOSE" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="DESCRIPTION" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" value="0" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" value="0" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPTIONS" value="none" contextMode="false"/>
+    <elementParameter field="CHECK" name="MULTI_THREAD_EXECATION" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="PARALLELIZE_UNIT_SIZE" value="25000" contextMode="false"/>
+    <elementParameter field="CHECK" name="IMPLICIT_TCONTEXTLOAD" value="false" contextMode="false"/>
+    <elementParameter field="RADIO" name="FROM_FILE_FLAG_IMPLICIT_CONTEXT" value="false" contextMode="false"/>
+    <elementParameter field="RADIO" name="FROM_DATABASE_FLAG_IMPLICIT_CONTEXT" value="false" contextMode="false"/>
+    <elementParameter field="FILE" name="IMPLICIT_TCONTEXTLOAD_FILE" value="&quot;/home/stephane/talend/bin/TOS-All-r8443-V2.3.0RC3/workspace/in.csv&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;;&quot;" contextMode="false"/>
+    <elementParameter field="PROPERTY_TYPE" name="PROPERTY_TYPE_IMPLICIT_CONTEXT" value="" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY_TYPE_IMPLICIT_CONTEXT:PROPERTY_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY_TYPE_IMPLICIT_CONTEXT:REPOSITORY_PROPERTY_TYPE" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_TYPE_IMPLICIT_CONTEXT" value="tDBInput" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION_IMPLICIT_CONTEXT" value="ojdbc14-10g.jar" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PROPERTIES_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="FILE" name="DBFILE_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="DBTABLE_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="QUERY_CONDITION_IMPLICIT_CONTEXT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="LOAD_NEW_VARIABLE" value="Warning" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="NOT_LOAD_OLD_VARIABLE" value="Warning" contextMode="false"/>
+    <elementParameter field="CHECK" name="PRINT_OPERATIONS" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="DISABLE_ERROR" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="DISABLE_WARNINGS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="DISABLE_INFO" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_STATCATCHER_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_LOGCATCHER_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_METERCATCHER_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_CONSOLE_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_FILES_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="FILE_PATH" value="&quot;/home/stephane/talend/bin/TOS-All-r7045-V2.3.0M1/workspace/.metadata&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FILENAME_STATS" value="&quot;stats_file.txt&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FILENAME_LOGS" value="&quot;logs_file.txt&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FILENAME_METTER" value="&quot;metter_file.txt&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="ON_DATABASE_FLAG" value="false" contextMode="false"/>
+    <elementParameter field="PROPERTY_TYPE" name="PROPERTY_TYPE" value="" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY_TYPE:PROPERTY_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY_TYPE:REPOSITORY_PROPERTY_TYPE" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_TYPE" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" value="ojdbc14-10g.jar" contextMode="false"/>
+    <elementParameter field="TEXT" name="HOST" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PORT" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="DBNAME" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="PASS" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="FILE" name="DBFILE" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE_STATS" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE_LOGS" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="DBTABLE" name="TABLE_METER" value="&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_RUNTIME_ERRORS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_USER_ERRORS" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_USER_WARNING" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="CATCH_REALTIME_STATS" value="false" contextMode="false"/>
+  </parameters>
+  <node componentName="tSystem" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="96" posY="160">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tSystem_1" contextMode="false"/>
+    <elementParameter field="TEXT" name="COMPONENT_NAME" value="tSystem" contextMode="false"/>
+    <elementParameter field="TEXT" name="TRANSLATED_COMPONENT_NAME" value="tSystem" contextMode="false"/>
+    <elementParameter field="TEXT" name="VERSION" value="0.101 (ALPHA)" contextMode="false"/>
+    <elementParameter field="TEXT" name="FAMILY" value="System" contextMode="false"/>
+    <elementParameter field="CHECK" name="START" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="STARTABLE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="DUMMY" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="TSTATCATCHER_STATS" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="HELP" value="org.talend.help.tSystem" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="CURRENT_OS" value="Linux" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="IREPORT_PATH" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_COLOR" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE_COLOR" value="" contextMode="false"/>
+    <elementParameter field="CHECK" name="PARALLELIZE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="PARALLELIZE_NUMBER" value="2" contextMode="false"/>
+    <elementParameter field="CHECK" name="ROOTDIR" value="false" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="DIRECTORY" value="&quot;/home/stephane/talend/bin/TOS-All-r8443-V2.3.0RC3/workspace&quot;" contextMode="false"/>
+    <elementParameter field="MEMO_JAVA" name="COMMAND" value="&quot;svn log &quot; + context.getProperty(&quot;current_svn_dir&quot;) +&#xA;&quot; --revision &quot;+context.svn_revision_entry_point+&quot;:&quot;+globalMap.get(&quot;repository_revision&quot;)+&quot; --quiet&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="OUTPUT" value="NORMAL_OUTPUT" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ERROROUTPUT" value="OUTPUT_TO_CONSOLE" contextMode="false"/>
+    <elementParameter field="CHECK" name="REPOSITORY_ALLOW_AUTO_SWITCH" value="false" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="PARAMS" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__" contextMode="false"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b>__UNIQUE_NAME__&lt;/b>&lt;br>__COMMENT__" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tSystem_1">
+      <column defaultValue="" key="false" length="255" name="outputline" nullable="true" precision="0" sourceType="" type="id_String"/>
+    </metadata>
+  </node>
+  <node componentName="tFilterRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="224" posY="160">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tFilterRow_2" contextMode="false"/>
+    <elementParameter field="TEXT" name="COMPONENT_NAME" value="tFilterRow" contextMode="false"/>
+    <elementParameter field="TEXT" name="TRANSLATED_COMPONENT_NAME" value="tFilterRow" contextMode="false"/>
+    <elementParameter field="TEXT" name="VERSION" value="0.102 (ALPHA)" contextMode="false"/>
+    <elementParameter field="TEXT" name="FAMILY" value="Processing" contextMode="false"/>
+    <elementParameter field="CHECK" name="STARTABLE" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="DUMMY" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="TSTATCATCHER_STATS" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="HELP" value="org.talend.help.tFilterRow" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="CURRENT_OS" value="Linux" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="IREPORT_PATH" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_COLOR" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE_COLOR" value="" contextMode="false"/>
+    <elementParameter field="CHECK" name="PARALLELIZE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="PARALLELIZE_NUMBER" value="2" contextMode="false"/>
+    <elementParameter field="CHECK" name="REPOSITORY_ALLOW_AUTO_SWITCH" value="false" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" value="" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FILTER:SCHEMA_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FILTER:REPOSITORY_SCHEMA_TYPE" value="" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_REJECT:SCHEMA_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_REJECT:REPOSITORY_SCHEMA_TYPE" value="" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="LOGICAL_OP" value="||" contextMode="false"/>
+    <elementParameter field="TABLE" name="CONDITIONS" contextMode="false"/>
+    <elementParameter field="CHECK" name="USE_ADVANCED" value="true" contextMode="false"/>
+    <elementParameter field="MEMO_JAVA" name="ADVANCED_COND" value="input_row.outputline.startsWith(&quot;r&quot;)" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__" contextMode="false"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b>__UNIQUE_NAME__&lt;/b>&lt;br>__COMMENT__" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tFilterRow_2">
+      <column defaultValue="" key="false" length="255" name="outputline" nullable="true" precision="0" sourceType="" type="id_String"/>
+    </metadata>
+    <metadata connector="FILTER" name="FILTER">
+      <column defaultValue="" key="false" length="255" name="outputline" nullable="true" precision="0" sourceType="" type="id_String"/>
+    </metadata>
+    <metadata connector="REJECT" name="REJECT">
+      <column defaultValue="" key="false" length="255" name="outputline" nullable="true" precision="0" sourceType="" type="id_String"/>
+    </metadata>
+  </node>
+  <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="352" posY="160">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tJavaRow_3" contextMode="false"/>
+    <elementParameter field="TEXT" name="COMPONENT_NAME" value="tJavaRow" contextMode="false"/>
+    <elementParameter field="TEXT" name="TRANSLATED_COMPONENT_NAME" value="tJavaRow" contextMode="false"/>
+    <elementParameter field="TEXT" name="VERSION" value="0.101 (ALPHA)" contextMode="false"/>
+    <elementParameter field="TEXT" name="FAMILY" value="Custom Code" contextMode="false"/>
+    <elementParameter field="CHECK" name="STARTABLE" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="DUMMY" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="TSTATCATCHER_STATS" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="HELP" value="org.talend.help.tJavaRow" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="CURRENT_OS" value="Linux" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="IREPORT_PATH" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_COLOR" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE_COLOR" value="" contextMode="false"/>
+    <elementParameter field="CHECK" name="PARALLELIZE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="PARALLELIZE_NUMBER" value="2" contextMode="false"/>
+    <elementParameter field="CHECK" name="REPOSITORY_ALLOW_AUTO_SWITCH" value="false" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" value="" contextMode="false"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="output_row.outputline = input_row.outputline.substring(1, input_row.outputline.indexOf(&quot;|&quot;)).trim();" contextMode="false"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__" contextMode="false"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b>__UNIQUE_NAME__&lt;/b>&lt;br>__COMMENT__" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tJavaRow_3">
+      <column defaultValue="" key="false" length="255" name="outputline" nullable="true" precision="0" sourceType="" type="id_String"/>
+    </metadata>
+  </node>
+  <node componentName="tFileOutputDelimited" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="480" posY="160">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tFileOutputDelimited_1" contextMode="false"/>
+    <elementParameter field="TEXT" name="COMPONENT_NAME" value="tFileOutputDelimited" contextMode="false"/>
+    <elementParameter field="TEXT" name="TRANSLATED_COMPONENT_NAME" value="tFileOutputDelimited" contextMode="false"/>
+    <elementParameter field="TEXT" name="VERSION" value="0.101 (ALPHA)" contextMode="false"/>
+    <elementParameter field="TEXT" name="FAMILY" value="File/Output" contextMode="false"/>
+    <elementParameter field="CHECK" name="STARTABLE" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="DUMMY" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="TSTATCATCHER_STATS" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="HELP" value="org.talend.help.tFileOutputDelimited" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="CURRENT_OS" value="Linux" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="IREPORT_PATH" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_COLOR" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE_COLOR" value="" contextMode="false"/>
+    <elementParameter field="CHECK" name="PARALLELIZE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="PARALLELIZE_NUMBER" value="2" contextMode="false"/>
+    <elementParameter field="PROPERTY_TYPE" name="PROPERTY" value="" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" value="" contextMode="false"/>
+    <elementParameter field="FILE" name="FILENAME" value="context.output_file_path" contextMode="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="APPEND" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="INCLUDEHEADER" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="REPOSITORY_ALLOW_AUTO_SWITCH" value="false" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" value="" contextMode="false"/>
+    <elementParameter field="CHECK" name="ADVANCED_SEPARATOR" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="THOUSANDS_SEPARATOR" value="','" contextMode="false"/>
+    <elementParameter field="TEXT" name="DECIMAL_SEPARATOR" value="'.'" contextMode="false"/>
+    <elementParameter field="CHECK" name="CSV_OPTION" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="ESCAPE_CHAR" value="&quot;&quot;&quot;" contextMode="false"/>
+    <elementParameter field="TEXT" name="TEXT_ENCLOSURE" value="&quot;&quot;&quot;" contextMode="false"/>
+    <elementParameter field="CHECK" name="CREATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="SPLIT" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="SPLIT_EVERY" value="1000" contextMode="false"/>
+    <elementParameter field="CHECK" name="FLUSHONROW" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="FLUSHONROW_NUM" value="1" contextMode="false"/>
+    <elementParameter field="CHECK" name="ROW_MODE" value="false" contextMode="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15" contextMode="false"/>
+    <elementParameter field="CHECK" name="DELETE_EMPTYFILE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__" contextMode="false"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b>__UNIQUE_NAME__&lt;/b>&lt;br>__COMMENT__" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tFileOutputDelimited_1">
+      <column defaultValue="" key="false" length="255" name="outputline" nullable="true" precision="0" sourceType="" type="id_String"/>
+    </metadata>
+  </node>
+  <node componentName="tSystem" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="96" posY="64">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tSystem_3" contextMode="false"/>
+    <elementParameter field="TEXT" name="COMPONENT_NAME" value="tSystem" contextMode="false"/>
+    <elementParameter field="TEXT" name="TRANSLATED_COMPONENT_NAME" value="tSystem" contextMode="false"/>
+    <elementParameter field="TEXT" name="VERSION" value="0.101 (ALPHA)" contextMode="false"/>
+    <elementParameter field="TEXT" name="FAMILY" value="System" contextMode="false"/>
+    <elementParameter field="CHECK" name="START" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="STARTABLE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="DUMMY" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="TSTATCATCHER_STATS" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="HELP" value="org.talend.help.tSystem" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="CURRENT_OS" value="Linux" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="IREPORT_PATH" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_COLOR" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE_COLOR" value="" contextMode="false"/>
+    <elementParameter field="CHECK" name="PARALLELIZE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="PARALLELIZE_NUMBER" value="2" contextMode="false"/>
+    <elementParameter field="CHECK" name="ROOTDIR" value="false" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="DIRECTORY" value="&quot;/home/stephane/talend/bin/TOS-All-r8443-V2.3.0RC3/workspace&quot;" contextMode="false"/>
+    <elementParameter field="MEMO_JAVA" name="COMMAND" value="&quot;svn st -uqN &quot; + context.current_svn_dir" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="OUTPUT" value="NORMAL_OUTPUT" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ERROROUTPUT" value="OUTPUT_TO_CONSOLE" contextMode="false"/>
+    <elementParameter field="CHECK" name="REPOSITORY_ALLOW_AUTO_SWITCH" value="false" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="PARAMS" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__" contextMode="false"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b>__UNIQUE_NAME__&lt;/b>&lt;br>__COMMENT__" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tSystem_3">
+      <column key="false" length="255" name="outputline" nullable="true" precision="0" sourceType="" type="id_String"/>
+    </metadata>
+  </node>
+  <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="224" posY="64">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tJavaRow_2" contextMode="false"/>
+    <elementParameter field="TEXT" name="COMPONENT_NAME" value="tJavaRow" contextMode="false"/>
+    <elementParameter field="TEXT" name="TRANSLATED_COMPONENT_NAME" value="tJavaRow" contextMode="false"/>
+    <elementParameter field="TEXT" name="VERSION" value="0.101 (ALPHA)" contextMode="false"/>
+    <elementParameter field="TEXT" name="FAMILY" value="Custom Code" contextMode="false"/>
+    <elementParameter field="CHECK" name="STARTABLE" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="DUMMY" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="TSTATCATCHER_STATS" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="HELP" value="org.talend.help.tJavaRow" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="CURRENT_OS" value="Linux" contextMode="false"/>
+    <elementParameter field="DIRECTORY" name="IREPORT_PATH" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_COLOR" value="" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE_COLOR" value="" contextMode="false"/>
+    <elementParameter field="CHECK" name="PARALLELIZE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="PARALLELIZE_NUMBER" value="2" contextMode="false"/>
+    <elementParameter field="CHECK" name="REPOSITORY_ALLOW_AUTO_SWITCH" value="false" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" value="BUILT_IN" contextMode="false"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" value="" contextMode="false"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="String[] splited = input_row.outputline.split(&quot; &quot;);&#xA;try {&#xA;  int revision = Integer.parseInt(splited[splited.length - 1].trim());&#xA;  globalMap.put(&quot;repository_revision&quot;, revision);&#xA;  // System.out.println(&quot;repository_revision=&quot; + revision);&#xA;}catch (NumberFormatException e){&#xA;}" contextMode="false"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;" contextMode="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__" contextMode="false"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b>__UNIQUE_NAME__&lt;/b>&lt;br>__COMMENT__" contextMode="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row" contextMode="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value="" contextMode="false"/>
+    <metadata connector="FLOW" name="tJavaRow_2"/>
+  </node>
+  <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tSystem_1" offsetLabelX="0" offsetLabelY="0" source="tSystem_1" target="tFilterRow_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="false" contextMode="false"/>
+  </connection>
+  <connection connectorName="FILTER" label="row2" lineStyle="0" metaname="FILTER" offsetLabelX="0" offsetLabelY="0" source="tFilterRow_2" target="tJavaRow_3">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="false" contextMode="false"/>
+  </connection>
+  <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tJavaRow_3" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_3" target="tFileOutputDelimited_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="false" contextMode="false"/>
+  </connection>
+  <connection connectorName="FLOW" label="row6" lineStyle="0" metaname="tSystem_3" offsetLabelX="0" offsetLabelY="0" source="tSystem_3" target="tJavaRow_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true" contextMode="false"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;" contextMode="false"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute" contextMode="false"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value="" contextMode="false"/>
+    <elementParameter field="TABLE" name="THRESHLODS" contextMode="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="false" contextMode="false"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tSystem_3" offsetLabelX="0" offsetLabelY="0" source="tSystem_3" target="tSystem_1">
+    <elementParameter field="CHECK" name="ACTIVATE" value="true" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="false" contextMode="false"/>
+  </connection>
+  <subjob>
+    <elementParameter field="CHECK" name="COLLAPSED" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tSystem_1" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="SUBJOB_DISPLAYED" value="true" contextMode="false"/>
+  </subjob>
+  <subjob>
+    <elementParameter field="CHECK" name="COLLAPSED" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="false" contextMode="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tSystem_3" contextMode="false"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240" contextMode="false"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250" contextMode="false"/>
+    <elementParameter field="CHECK" name="UPDATE_COMPONENTS" value="false" contextMode="false"/>
+    <elementParameter field="CHECK" name="SUBJOB_DISPLAYED" value="true" contextMode="false"/>
+  </subjob>
+</talendfile:ProcessType>

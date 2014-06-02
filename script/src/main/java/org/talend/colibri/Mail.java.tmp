@@ -1,0 +1,74 @@
+// ============================================================================
+//
+// Copyright (C) 2006-2009 Talend Inc. - www.talend.com
+//
+// This source code is available under agreement available at
+// %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
+//
+// You should have received a copy of the agreement
+// along with this program; if not, write to Talend SA
+// 9 rue Pages 92150 Suresnes, France
+//
+// ============================================================================
+package org.talend.colibri;
+
+import java.util.Date;
+import java.util.Properties;
+
+import javax.mail.Address;
+import javax.mail.Authenticator;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+import org.apache.log4j.Logger;
+import org.talend.colibri.properties.Bundles;
+
+/**
+ * DOC stephane class global comment. Detailled comment
+ */
+public class Mail {
+
+    private static Logger log = Logger.getLogger(Mail.class);
+
+    public static void send(Exception ex) {
+        try {
+            Properties p = new Properties();
+
+            for (String key : Bundles.keySet()) {
+                if (key.startsWith("mail.")) {
+                    p.put(key, Bundles.getString(key));
+                }
+            }
+
+            Session sendMailSession = Session.getInstance(p, new Authenticator() {
+            });
+
+            Message mailMessage = new MimeMessage(sendMailSession);
+            Address from;
+            from = new InternetAddress(Bundles.getString("mail.from"));
+            mailMessage.setFrom(from);
+
+            Address[] adds = InternetAddress.parse(Bundles.getString("mail.to"));
+            mailMessage.addRecipients(javax.mail.Message.RecipientType.TO, adds);
+
+            mailMessage.setSubject("Error in tuj execution");
+            mailMessage.setSentDate(new Date());
+            Multipart mainPart = new MimeMultipart();
+            BodyPart html = new MimeBodyPart();
+            html.setContent(ex.toString(), "text/html; charset=utf-8");
+            mainPart.addBodyPart(html);
+            mailMessage.setContent(mainPart);
+            Transport.send(mailMessage);
+        } catch (MessagingException e) {
+            log.warn("Problem when sending mail", e);
+        }
+    }
+}

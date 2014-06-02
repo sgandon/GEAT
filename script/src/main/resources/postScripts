@@ -1,0 +1,8 @@
+# existing params: {branch}, {revision}, {outputFolder}
+# Format=title,command
+
+# Charts:
+#chartRevision,cd charts/Revisions/;./Revisions_run.sh --context_param:GENERATED_IMAGE_PATH=/ttp/web/charts/3revisionCoverage-{branch}.png --context_param:svn_dir={jobs.source.java} --context_param:branch={branch}
+#chartExecTime,cd charts/ExecutionTime/;./ExecutionTime_run.sh
+#chartErrorRate,cd charts/ErrorRate/;./ErrorRate_run.sh
+#chartNbTuj,cd charts/nbTuj;./nbTuj_run.sh

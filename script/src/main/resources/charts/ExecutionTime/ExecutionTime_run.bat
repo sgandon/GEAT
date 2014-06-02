@@ -1,0 +1,1 @@
+java -Xms256M -Xmx1024M -cp ../lib/jfreechart-1.0.3.jar;../lib/jcommon-1.0.6.jar;../lib/mysql-connector-java-5.1.0-bin.jar;../lib/systemRoutines.jar;../lib/userRoutines.jar;.;executiontime_0_1.jar;../lib; tuj.executiontime_0_1.ExecutionTime --context=prod %* 

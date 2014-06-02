@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>TTPScript</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>srcShell</name>
+			<type>2</type>
+			<location>/tmp/Shell-full/src</location>
+		</link>
+		<link>
+			<name>winp</name>
+			<type>2</type>
+			<location>/tmp/winp-1.14-sources</location>
+		</link>
+	</linkedResources>
+</projectDescription>

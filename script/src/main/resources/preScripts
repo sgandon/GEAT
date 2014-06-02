@@ -1,0 +1,9 @@
+# existing params: {branch}, {revision}, {outputFolder}
+# Format=title,command
+
+# Svn update:
+#svnup,cd {buildpath};./svn update {revision}
+
+# Project import:
+# Example of command to import jobs from a remote project:
+#import,java -cp . org.talend.colibri.migration.RemoteProject2StdArch <tis url> <tis project> <tis username> <tis password> <files location path> <destination path> <job filter-optionnal>

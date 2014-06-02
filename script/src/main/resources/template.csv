@@ -1,0 +1,16 @@
+result_host,localhost
+result_port,3306
+result_username,ttpuser
+result_password,ttppassword
+result_database,ttp
+mysql_username,root
+mysql_host,localhost
+mysql_database,tuj_data
+mysql_password,toor
+mysql_port,3306
+oracle_host,talend-dbms
+oracle_port,1521
+oracle_database,TALEND
+oracle_schema,USER_TUJ
+oracle_username,USER_TUJ
+oracle_password,USER_TUJ
