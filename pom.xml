@@ -13,6 +13,7 @@
 
   <modules>
     <module>tuj-runner</module>
+    <module>thamuz</module>
   </modules>
 
   <build>
