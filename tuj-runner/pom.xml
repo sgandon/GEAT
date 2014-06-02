@@ -5,7 +5,7 @@
   <artifactId>tuj-runner</artifactId>
   <parent>
     <groupId>org.talend.colibri</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>colibri</artifactId>
     <version>${mavenVersion}</version>
   </parent>
 
