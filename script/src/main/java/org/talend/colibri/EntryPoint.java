@@ -49,11 +49,11 @@ public class EntryPoint {
             throw new IllegalArgumentException("Waiting " + nbArgs + " arguments [branch revision], receiving "
                     + Arrays.toString(args));
         String branch = args[0];
-        int revision = Integer.parseInt(args[1]);
+        String timestamp = args[1];
 
         try {
             // Purge file system:
-            File outputFolder = new File(Misc.getOutputFolderPath(branch, revision));
+            File outputFolder = new File(Misc.getOutputFolderPath(branch, timestamp));
             if (outputFolder.exists()) {
                 FilesUtils.emptyFolder(outputFolder);
             } else {
@@ -75,7 +75,7 @@ public class EntryPoint {
         log.info("Starting execution");
         log.info("Parameters:");
         log.info(" -> branch=" + branch);
-        log.info(" -> revision=" + revision);
+        log.info(" -> timestamp=" + timestamp);
 
         Bundles.init(branch);
 
@@ -83,67 +83,68 @@ public class EntryPoint {
 
         TablesCreation.modelTablesCreation();
 
-        PurgeDatabase.purge(branch, revision);
+        PurgeDatabase.purge(branch, timestamp);
 
-        DbUtils.executeQuery("DELETE FROM executions WHERE branch='" + branch + "' AND revision=" + revision);
+        DbUtils.executeQuery("DELETE FROM executions WHERE branch='" + branch + "' AND revision=" + timestamp);
 
-        DbUtils.executeQuery("INSERT INTO executions SET branch='" + branch + "', revision=" + revision + ", launch_date='"
+        DbUtils.executeQuery("INSERT INTO executions SET branch='" + branch + "', revision=" + timestamp + ", launch_date='"
                 + DateFormater.getInstance().format(new Date()) + "', status='Launched', log_files='"
-                + Misc.getOutputFolderPath(branch, revision) + "'");
+                + Misc.getOutputFolderPath(branch, timestamp) + "'");
 
         try {
-            Scripts.launch("preScripts", revision, branch);
+            Scripts.launch("preScripts", timestamp, branch);
 
-            CommandLineTest.test(branch, revision);
+            CommandLineTest.test(branch, timestamp);
 
-            updateExecution(branch, revision, "Build ok", false);
+            updateExecution(branch, timestamp, "Build ok", false);
 
             TablesCreation.tempResultTableCreation(branch);
 
-            JobsExecution.execute(branch, revision);
+            JobsExecution.execute(branch, timestamp);
 
-            ArchiveResults.archive(branch, revision);
+            ArchiveResults.archive(branch, timestamp);
 
             // Alertes mail
 
             // Suppression des workspace command line
             // -> dans la thread
 
-            Stats.persists(branch, revision);
+            Stats.persists(branch, timestamp);
 
             // Analyse des composants
 
-            PurgeJobOutput.purgeJobsOk(branch, revision);
+            PurgeJobOutput.purgeJobsOk(branch, timestamp);
 
-            Scripts.launch("postScripts", revision, branch);
-            updateExecution(branch, revision, "Done", true);
+            Scripts.launch("postScripts", timestamp, branch);
+            updateExecution(branch, timestamp, "Done", true);
         } catch (CannotConnectCommandLineException e) {
             log.error(e.getMessage(), e);
-            updateExecution(branch, revision, "Build failed", true);
+            updateExecution(branch, timestamp, "Build failed", true);
         } catch (TimeoutCommandLineException e) {
             log.error(e.getMessage(), e);
-            updateExecution(branch, revision, "Build failed", true);
+            updateExecution(branch, timestamp, "Build failed", true);
         } catch (BadCommandCommandLineException e) {
             log.error(e.getMessage(), e);
-            updateExecution(branch, revision, "Build failed", true);
+            updateExecution(branch, timestamp, "Build failed", true);
         } catch (ScriptFailedException e) {
-            updateExecution(branch, revision, e.getScriptName() + " failed", true);
+            updateExecution(branch, timestamp, e.getScriptName() + " failed", true);
         } catch (Exception e) {
-            updateExecution(branch, revision, "Error", true);
+            updateExecution(branch, timestamp, "Error", true);
             log.error(e.getMessage(), e);
         } finally {
-            ArchiveResults.dropTempTable(branch, revision);
-            ArchiveResults.stats(branch, revision);
+            ArchiveResults.dropTempTable(branch);
+            ArchiveResults.stats(branch, timestamp);
         }
         log.info("Execution finished");
     }
 
-    public static void updateExecution(String branch, int revision, String status, boolean setEndDate) throws SQLException {
+    public static void updateExecution(String branch, String timestamp, String status, boolean setEndDate)
+            throws SQLException {
         StringBuffer sb = new StringBuffer();
         sb.append("UPDATE executions SET status='" + status + "'");
         if (setEndDate)
             sb.append(", end_date='" + DateFormater.getInstance().format(new Date()) + "'");
-        sb.append(" WHERE branch='" + branch + "' AND revision=" + revision);
+        sb.append(" WHERE branch='" + branch + "' AND revision=" + timestamp);
         DbUtils.executeQuery(sb.toString());
     }
 }

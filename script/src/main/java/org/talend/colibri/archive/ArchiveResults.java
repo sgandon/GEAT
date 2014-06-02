@@ -26,11 +26,7 @@ public class ArchiveResults {
 
     private static Logger log = Logger.getLogger(ArchiveResults.class);
 
-    public static void main(String[] args) throws SQLException {
-        stats(args[0], Integer.parseInt(args[1]));
-    }
-
-    public static void archive(String branch, int revision) throws SQLException {
+    public static void archive(String branch, String timestamp) throws SQLException {
         log.info("Archive results");
         String branchTable = DbUtils.getResultTableForBranch(branch);
 
@@ -55,7 +51,9 @@ public class ArchiveResults {
 
         query = "INSERT INTO results_def SELECT r.moment, r.origin, r.description, ex.id id_exec, st.id id_status, j.id id_job "
                 + "FROM " + branchTable + " r, executions ex, jobs j, status st " + "WHERE ex.branch='" + branch
-                + "' AND ex.revision=" + revision + " AND r.job=j.name AND r.language=j.language AND r.substatus=st.sub_status";
+                + "' AND ex.revision="
+                + timestamp
+                + " AND r.job=j.name AND r.language=j.language AND r.substatus=st.sub_status";
         DbUtils.executeQuery(query);
 
         // Log the non-treated status before drop the table:
@@ -71,19 +69,19 @@ public class ArchiveResults {
         resultSet.close();
     }
 
-    public static void dropTempTable(String branch, int revision) throws SQLException {
+    public static void dropTempTable(String branch) throws SQLException {
         log.info("Drop temp table");
         String branchTable = DbUtils.getResultTableForBranch(branch);
         DbUtils.executeQuery("DROP TABLE IF EXISTS " + branchTable);
     }
 
-    public static void stats(String branch, int revision) throws SQLException {
+    public static void stats(String branch, String timestamp) throws SQLException {
         log.info("Calculating stats");
         String query = "UPDATE executions SET duration=UNIX_TIMESTAMP(end_date) - UNIX_TIMESTAMP(launch_date) WHERE duration IS NULL AND end_date IS NOT NULL";
         DbUtils.executeQuery(query);
 
         ResultSet resultSet;
-        int idExec = DbUtils.getIdExec(branch, revision);
+        int idExec = DbUtils.getIdExec(branch, timestamp);
 
         query = "UPDATE executions SET nb_jobs=(SELECT COUNT(DISTINCT(id_job)) FROM results_def, jobs WHERE jobs.id=id_job AND jobs.id_validation=1 AND id_exec="
                 + idExec + ") WHERE id=" + idExec;

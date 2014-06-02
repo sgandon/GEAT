@@ -33,11 +33,11 @@ public class JobDispatcher {
 
     private ConcurrentLinkedQueue<LightJob> jobs = new ConcurrentLinkedQueue<LightJob>();
 
-    public void dispatch(List<LightJob> jobs, String branch, int revision) {
+    public void dispatch(List<LightJob> jobs, String branch, String timestamp) {
         String ports = Bundles.getString("commandline.ports");
         log.info(jobs.size() + " jobs to launch on port: " + ports);
 
-        String outputFolderPath = Misc.getOutputFolderPath(branch, revision);
+        String outputFolderPath = Misc.getOutputFolderPath(branch, timestamp);
 
         this.jobs.addAll(jobs);
 

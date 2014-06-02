@@ -14,7 +14,6 @@ package org.talend.colibri.execution;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +21,6 @@ import java.util.MissingResourceException;
 
 import org.apache.log4j.Logger;
 import org.talend.colibri.Misc;
-import org.talend.colibri.database.TablesCreation;
 import org.talend.colibri.properties.Bundles;
 
 /**
@@ -32,20 +30,14 @@ public class JobsExecution {
 
     private static Logger log = Logger.getLogger(JobsExecution.class);
 
-    public static void main(String[] args) throws SQLException {
-        final String branch2 = "branches/branch-3_2";
-        TablesCreation.tempResultTableCreation(branch2);
-        new JobsExecution().execute(branch2, 32761);
-    }
-
-    public static void execute(String branch, int revision) {
-        String outputFolder = Misc.getOutputFolderPath(branch, revision);
+    public static void execute(String branch, String timestamp) {
+        String outputFolder = Misc.getOutputFolderPath(branch, timestamp);
 
         List<LightJob> jobs = new ArrayList<LightJob>();
         jobs.addAll(addJobs(branch, outputFolder, "java"));
         jobs.addAll(addJobs(branch, outputFolder, "perl"));
 
-        new JobDispatcher().dispatch(jobs, branch, revision);
+        new JobDispatcher().dispatch(jobs, branch, timestamp);
     }
 
     private static List<LightJob> addJobs(String branch, String outputFolder, String language) {

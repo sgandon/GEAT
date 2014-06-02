@@ -26,13 +26,13 @@ public class CommandLineTest {
 
     private static Logger log = Logger.getLogger(CommandLineTest.class);
 
-    public static void test(String branch, int revision) throws CannotConnectCommandLineException, IOException,
+    public static void test(String branch, String timestamp) throws CannotConnectCommandLineException, IOException,
             BadCommandCommandLineException, TimeoutCommandLineException {
         log.info("Testing command line");
         String ports = Bundles.getString("commandline.ports");
         int port = Integer.parseInt(ports.split(",")[0]);
 
-        String outputFolderPath = Misc.getOutputFolderPath(branch, revision) + "/logCommandLine#test";
+        String outputFolderPath = Misc.getOutputFolderPath(branch, timestamp) + "/logCommandLine#test";
 
         CommandLine commandLine = new CommandLine(port, outputFolderPath);
         commandLine.startCmdLine();
@@ -48,10 +48,5 @@ public class CommandLineTest {
 
         log.info("Command line ok");
         commandLine.stopCmdLine();
-    }
-
-    public static void main(String[] args) throws CannotConnectCommandLineException, IOException, BadCommandCommandLineException,
-            TimeoutCommandLineException {
-        test("defaut", 1);
     }
 }

@@ -120,12 +120,12 @@ public class Stats {
         getJobstat(jobName, languageP).totalInMillis = millisP;
     }
 
-    public static void persists(String branch, int revision) throws SQLException {
+    public static void persists(String branch, String timestamp) throws SQLException {
         if (!storeJobstats())
             return;
 
         log.info("Saving jobs duration");
-        int idExec = DbUtils.getIdExec(branch, revision);
+        int idExec = DbUtils.getIdExec(branch, timestamp);
         for (JobStat current : list) {
             int idJob = DbUtils.getIdJob(current.language, current.name);
             String query = "INSERT INTO jobs_stats VALUES(" + idExec + ", " + idJob + ", " + current.totalInMillis / 1000 + ", "

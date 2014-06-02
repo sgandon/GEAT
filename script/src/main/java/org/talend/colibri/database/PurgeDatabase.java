@@ -24,9 +24,9 @@ public class PurgeDatabase {
 
     private static Logger log = Logger.getLogger(PurgeDatabase.class);
 
-    public static void purge(String branch, int revision) throws SQLException {
+    public static void purge(String branch, String timestamp) throws SQLException {
         ResultSet executeQuery = DbUtils.executeQueryWithReturn("SELECT id from executions WHERE branch='" + branch
-                + "' AND revision=" + revision);
+                + "' AND revision=" + timestamp);
         if (executeQuery.first())
             purgeTables(executeQuery.getInt("id"));
     }

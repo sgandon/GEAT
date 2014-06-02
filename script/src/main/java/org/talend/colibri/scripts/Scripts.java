@@ -36,16 +36,8 @@ public class Scripts {
 
     private static Logger log = Logger.getLogger(Scripts.class);
 
-    public static void main(String[] args) {
-        try {
-            Bundles.init(args[1]);
-            launch(args[0], Integer.parseInt(args[2]), args[1]);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void launch(String fileName, int revision, String branch) throws IOException, InterruptedException,
+    public static void launch(String fileName, String timestamp, String branch) throws IOException,
+            InterruptedException,
             ScriptFailedException {
         String str;
         BufferedReader in = new BufferedReader(new FileReader(ResourcesUtils.getResource(fileName)));
@@ -55,9 +47,9 @@ public class Scripts {
                     String[] split = str.split(",", 2);
                     String scriptName = split[0];
 
-                    String scriptCommand = replaceParamInScript(split[1], revision, branch);
+                    String scriptCommand = replaceParamInScript(split[1], timestamp, branch);
 
-                    executeLine(fileName, scriptName, scriptCommand, branch, revision);
+                    executeLine(fileName, scriptName, scriptCommand, branch, timestamp);
                 }
             }
         } finally {
@@ -65,7 +57,8 @@ public class Scripts {
         }
     }
 
-    private static void executeLine(String fileName, String scriptName, String scriptCommand, String branch, int revision)
+    private static void executeLine(String fileName, String scriptName, String scriptCommand, String branch,
+            String timestamp)
             throws IOException, InterruptedException, ScriptFailedException {
         if (scriptCommand == null || scriptCommand.length() == 0)
             return;
@@ -74,12 +67,12 @@ public class Scripts {
         log.info("Executing script '" + scriptName + "': [" + scriptCommand + "]");
 
         try {
-            EntryPoint.updateExecution(branch, revision, "Running " + fileName + " " + scriptName, false);
+            EntryPoint.updateExecution(branch, timestamp, "Running " + fileName + " " + scriptName, false);
         } catch (SQLException e) {
             log.warn(e);
         }
 
-        final String logFileName = Misc.getOutputFolderPath(branch, revision) + scriptName + ".log";
+        final String logFileName = Misc.getOutputFolderPath(branch, timestamp) + scriptName + ".log";
 
         final Logger innerLogger = Logger.getLogger(scriptName, new MyLoggerFactory());
         FileAppender appender = null;
@@ -167,10 +160,10 @@ public class Scripts {
         new File(logFileName).delete();
     }
 
-    private static String replaceParamInScript(String script, int revision, String branch) {
-        script = script.replaceAll("\\{revision\\}", "" + revision);
+    private static String replaceParamInScript(String script, String timestamp, String branch) {
+        script = script.replaceAll("\\{revision\\}", "" + timestamp);
         script = script.replaceAll("\\{branch\\}", "" + branch);
-        script = script.replaceAll("\\{outputFolder\\}", "" + Misc.getOutputFolderPath(branch, revision));
+        script = script.replaceAll("\\{outputFolder\\}", "" + Misc.getOutputFolderPath(branch, timestamp));
 
         String sequence = "--";
         while (sequence != null) {

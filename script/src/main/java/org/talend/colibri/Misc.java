@@ -20,8 +20,8 @@ import org.talend.colibri.properties.Bundles;
  */
 public class Misc {
 
-    public static String getOutputFolderPath(String branch, int revision) {
-        return Bundles.getString("jobs.outputFolder") + branch + "/" + revision + "/";
+    public static String getOutputFolderPath(String branch, String timestamp) {
+        return Bundles.getString("jobs.outputFolder") + branch + "/" + timestamp + "/";
     }
 
     public static boolean isWindows() {

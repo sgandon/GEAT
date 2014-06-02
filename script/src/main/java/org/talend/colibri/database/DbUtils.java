@@ -104,10 +104,10 @@ public class DbUtils {
 
     private static Integer idExec = null;
 
-    public static int getIdExec(String branch, int revision) throws SQLException {
+    public static int getIdExec(String branch, String timestamp) throws SQLException {
         if (idExec == null) {
             String query;
-            query = "SELECT id FROM executions WHERE branch='" + branch + "' AND revision=" + revision;
+            query = "SELECT id FROM executions WHERE branch='" + branch + "' AND revision=" + timestamp;
             ResultSet resultSet = DbUtils.executeQueryWithReturn(query);
             if (resultSet.first()) {
                 idExec = resultSet.getInt(1);
