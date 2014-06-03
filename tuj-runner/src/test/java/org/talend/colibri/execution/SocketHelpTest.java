@@ -16,6 +16,7 @@ import java.io.IOException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.talend.colibri.commandline.BadCommandCommandLineException;
 import org.talend.colibri.commandline.CannotConnectCommandLineException;
 import org.talend.colibri.commandline.CommandLine;
@@ -63,15 +64,13 @@ public class SocketHelpTest {
     }
 
     @Test
-    public void testWait5Minutes()  {
+    public void testWait5Minutes() {
         try {
-            Thread.sleep(5*60*1000);
+            Thread.sleep(5 * 60 * 1000);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-
-
 
 }
