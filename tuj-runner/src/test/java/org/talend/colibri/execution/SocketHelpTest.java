@@ -62,4 +62,16 @@ public class SocketHelpTest {
         socketHelp.waitCommand(8002, "logonProject --project-name TOTO --user-login smallet@talend.com --user-password admin");
     }
 
+    @Test
+    public void testWait5Minutes()  {
+        try {
+            Thread.sleep(5*60*1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
