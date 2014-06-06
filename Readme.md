@@ -22,7 +22,7 @@ Create a local branch feature/TDI-28776-memoryLeak based on master
 Create a new remote branch and set local branch to track it
 
 ### Work on a new bugfix?
-    geat bugfix-start TDI-28776-memoryLeak
+    geat bugfix-start TDI-28776-memory
 Create a local branch bugfix/5.4/TDI-28776-memoryLeak based on maintenance/5.4
 
 Startpoint (branch to create this branch on) will be asked if no specified
