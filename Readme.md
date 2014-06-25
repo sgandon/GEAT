@@ -7,11 +7,7 @@ Workflow is defined [here](https://wiki.talend.com/pages/viewpage.action?pageId=
 <a href="https://travis-ci.org/smallet/GEAT/builds">
 ![](https://travis-ci.org/smallet/GEAT.svg?branch=master)
 </a>
-
-
-### Work on a new feature?
-    geat feature-start TDI-28776-memoryLeak
-Create a local branch feature/TDI-28776-memoryLeak based on master
+76-memoryLeak based on master
 
 ### Finish your feature?
     geat feature-finish TDI-28776-memoryLeak
