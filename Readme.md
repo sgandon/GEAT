@@ -14,7 +14,7 @@ Workflow is defined [here](https://wiki.talend.com/pages/viewpage.action?pageId=
 **squash** local branch feature/TDI-28776-memoryLeak on master and delete local (and remote if exist) branch
 
 ### Want to share your feature?
-    geat feature-push TDI-28776-memoryLeak
+    geat feature-push TDI-28776-memoryLeaksssss
 Create a new remote branch and set local branch to track it
 
 ### Work on a new bugfix?
