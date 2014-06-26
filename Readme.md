@@ -17,7 +17,7 @@ dddd
     geat feature-push TDI-28776-memoryLeaksssss
 Create a new remote branch and set local branch to track it
 
-### Work on a new bugfix?
+### Work on a new bugf
     geat bugfix-start TDI-28776-memoryLeak
 Create a local branch bugfix/5.4/TDI-28776-memoryLeak based on maintenance/5.4
 
